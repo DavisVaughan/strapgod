@@ -1,0 +1,24 @@
+Package: strapgod
+Title: Create bootstrapped data frames for efficient computation
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Davis",
+           family = "Vaughan",
+           role = c("aut", "cre"),
+           email = "davis@rstudio.com")
+Description: Create bootstrapped data frames for efficient computation.
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.0
+Imports: 
+    dplyr,
+    tidyr,
+    rlang,
+    purrr,
+    tibble
+Remotes:
+    DavisVaughan/dplyr@virtual-bootstrap-groups
+Suggests: 
+    broom

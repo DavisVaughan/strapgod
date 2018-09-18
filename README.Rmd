@@ -1,0 +1,79 @@
+---
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+# strapgod
+
+The goal of strapgod is to create _virtual groups_ on top of a `tibble` or 
+`grouped_df` that function as bootstraps of the rows of the data frame. You can
+then perform a `summarise()` or use `do()` on this `bootstrapped_df` to perform
+an efficient bootstrapped calculation.
+
+## Installation
+
+You can install the released version of strapgod from [CRAN](https://CRAN.R-project.org) with:
+
+``` r
+# no you cannot
+install.packages("strapgod")
+```
+
+Install from github with:
+
+``` r
+devtools::install_github("DavisVaughan/strapgod")
+```
+
+## Example
+
+Note how creating a `bootstrapped_df` does not add a new column, or new rows,
+but the groups are modified.
+
+```{r}
+library(strapgod)
+library(dplyr)
+
+iris %>%
+  bootstrapify(10)
+```
+
+You can feed a `bootstrapped_df` into `summarise()` or `do()` to perform
+efficient bootstrapped computations.
+
+```{r}
+iris %>%
+  bootstrapify(10) %>%
+  summarise(per_strap_mean = mean(Petal.Width))
+```
+
+The data can be grouped as well.
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  bootstrapify(10) %>%
+  summarise(per_strap_species_mean = mean(Petal.Width))
+```
+
+`dplyr::collect()` can be used to make the implicit virtual groups explicit.
+At that point, they are no longer virtual so the column name is `.strap`.
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  bootstrapify(10) %>%
+  collect()
+```
+
