@@ -35,54 +35,71 @@
 
 #' @rdname bootstrapify
 #' @export
-bootstrapify <- function(.data, .n) {
+bootstrapify <- function(.data, .n, .key = ".bootstrap") {
   UseMethod("bootstrapify")
 }
 
 #' @export
-bootstrapify.data.frame <- function(.data, .n) {
-  bootstrapify(dplyr::tbl_df(.data), .n)
+bootstrapify.data.frame <- function(.data, .n, .key = ".bootstrap") {
+  .key <- dplyr::enquo(.key)
+  bootstrapify(dplyr::tbl_df(.data), .n, !!.key)
 }
 
 #' @export
-bootstrapify.tbl_df <- function(.data, .n) {
+bootstrapify.tbl_df <- function(.data, .n, .key = ".bootstrap") {
 
-  .x <- seq_len(nrow(.data))
+  .key <- dplyr::enquo(.key)
+  .row_slice_ids <- seq_len(nrow(.data))
 
-  new_row_indices <- dplyr::tibble(
-    .virtual_strap = paste0("id_", seq_len(.n)),
-    .rows = replicate(.n, sample(.x, length(.x), replace = TRUE), simplify = FALSE)
-  )
+  groups_tbl <- bootstrap_indices(.row_slice_ids, .n, !!.key)
 
-  attr(.data, "groups") <- new_row_indices
+  # create bootstrapped_df subclass
+  attr(.data, "groups") <- groups_tbl
   class(.data) <- c("bootstrapped_df", "grouped_df", class(.data))
 
   .data
 }
 
 #' @export
-bootstrapify.grouped_df <- function(.data, .n) {
+bootstrapify.grouped_df <- function(.data, .n, .key = ".bootstrap") {
 
-  group_df <- dplyr::group_data(.data)
+  .key <- dplyr::enquo(.key)
 
-  group_rows <- group_df[[".rows"]]
+  # extract existing group_tbl
+  group_tbl <- dplyr::group_data(.data)
+  index_list <- group_tbl[[".rows"]]
 
-  new_row_indices <- purrr::map(group_rows, ~{
-
-    dplyr::tibble(
-      .virtual_strap = paste0("id_", seq_len(.n)),
-      .rows = replicate(.n, sample(.x, length(.x), replace = TRUE), simplify = FALSE)
-    )
-
+  new_row_index_tbl <- purrr::map(index_list, ~{
+    bootstrap_indices(.row_slice_ids = .x, .n = .n, .key = !!.key)
   })
 
-  group_df[[".rows"]] <- new_row_indices
+  # overwrite current .rows and unnest
+  group_tbl[[".rows"]] <- new_row_index_tbl
+  group_tbl <- tidyr::unnest(group_tbl)
 
-  group_df <- tidyr::unnest(group_df) # should not have to specify
-
-  attr(.data, "groups") <- group_df
+  # update groups
+  attr(.data, "groups") <- group_tbl
 
   class(.data) <- c("bootstrapped_df", class(.data))
 
   .data
+}
+
+bootstrap_indices <- function(.row_slice_ids, .n, .key) {
+
+  .key <- dplyr::enquo(.key)
+  .n_ids <- length(.row_slice_ids)
+  .bootstrap_id <- seq_len(.n)
+
+  .index_list <- replicate(
+    n = .n,
+    expr = sample(.row_slice_ids, .n_ids, replace = TRUE),
+    simplify = FALSE
+  )
+
+  dplyr::tibble(
+    !!.key := .bootstrap_id,
+    .rows = .index_list
+  )
+
 }
