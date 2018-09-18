@@ -19,7 +19,7 @@ Imports:
     purrr,
     tibble
 Remotes:
-    DavisVaughan/dplyr@virtual-bootstrap-groups
+    DavisVaughan/dplyr@feature/virtual-bootstrap-groups
 Suggests: 
     broom
 URL: https://github.com/DavisVaughan/strapgod
