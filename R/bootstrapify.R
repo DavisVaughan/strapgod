@@ -91,6 +91,9 @@ bootstrap_indices <- function(.row_slice_ids, .n, .key) {
   .n_ids <- length(.row_slice_ids)
   .bootstrap_id <- seq_len(.n)
 
+  # must unquote the colname as `.rows` is an arg to tibble()
+  .row_col <- ".rows"
+
   .index_list <- replicate(
     n = .n,
     expr = sample(.row_slice_ids, .n_ids, replace = TRUE),
@@ -99,7 +102,7 @@ bootstrap_indices <- function(.row_slice_ids, .n, .key) {
 
   dplyr::tibble(
     !!.key := .bootstrap_id,
-    .rows = .index_list
+    !!.row_col := .index_list
   )
 
 }
