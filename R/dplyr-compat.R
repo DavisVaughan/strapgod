@@ -1,8 +1,34 @@
 # Make virtual groups explicit
 
+#' Force virtual groups to become explicit rows
+#'
+#' When `collect()` is used on a `bootstrapped_df`, the virtual bootstrap groups
+#' are made explicit.
+#'
+#' @param .data A `bootstrapped_df`.
+#' @param .id Optional. A single character that specifies a name for a column
+#' containing a sequence from `1:n` for each bootstrap group.
+#' @param .original_id Optional. A single character that specifies a name for
+#' a column containing the original position of the bootstrapped row.
+#' @param ... Other arguments passed on to methods.
+#'
+#' @examples
+#'
+#' library(dplyr)
+#'
+#' # virtual groups become real rows
+#' collect(bootstrapify(iris, 5))
+#'
+#' # add on the .id column for an identifier per bootstrap
+#' collect(bootstrapify(iris, 5), .id = ".id")
+#'
+#' # add on the .original_id column to know which row this bootstrapped row
+#' # originally came from
+#' collect(bootstrapify(iris, 5), .original_id = ".original_id")
+#'
 #' @importFrom dplyr collect
 #' @export
-collect.bootstrapped_df <- function(.data, ...) {
+collect.bootstrapped_df <- function(.data, .id = NULL, .original_id = NULL, ...) {
 
   data_groups <- attr(.data, "groups")
 
@@ -10,23 +36,60 @@ collect.bootstrapped_df <- function(.data, ...) {
   # better way? store .key as attribute?
   .key <- setdiff(colnames(data_groups), c(colnames(.data), ".rows"))
 
+  # Construct the correct arg list based on whether we include the original id
+  call_args <- construct_arg_list(.key, .original_id)
+
+  # construct add_column() call with the right args inlined
+  add_strap <- rlang::call2("add_column", !!!call_args, .ns = "tibble")
+
   explicit_group_df <- purrr::map2_dfr(
     .x = data_groups[[.key]],
     .y = data_groups[[".rows"]],
     .f = ~{
-      tibble::add_column(
-        .data[.y,],
-        !!.key := .x,
-        .id = .y,
-        .before = 1L
-      )
+      # evaluate the expr in the context of the correct .x and .y
+      rlang::eval_tidy(add_strap)
     }
   )
 
-  orig_groups <- setdiff(colnames(data_groups), ".rows")
+  orig_groups <- dplyr::groups(.data)
   attr(.data, "groups") <- NULL
-  dplyr::group_by_at(explicit_group_df, orig_groups)
 
+  .out <- dplyr::group_by(explicit_group_df, !!!orig_groups)
+
+  # .id = 1:n for each group
+  if(!is.null(.id)) {
+    .out <- dplyr::mutate(.out, !!.id := seq_len(n()))
+    # reorder
+    .out <- dplyr::select(.out, !!.key, !!.id, dplyr::everything())
+  }
+
+  .out
+}
+
+#' @importFrom rlang expr
+#' @importFrom rlang list2
+construct_arg_list <- function(.key, .original_id) {
+
+  if(is.null(.original_id)) {
+
+    call_args <- list2(
+      .data = expr(.data[.y,]),
+      !!.key := expr(.x),
+      .before = 1L
+    )
+
+  } else {
+
+    call_args <- list2(
+      .data = expr(.data[.y,]),
+      !!.key := expr(.x),
+      !!.original_id := expr(.y),
+      .before = 1L
+    )
+
+  }
+
+  call_args
 }
 
 #' @importFrom dplyr mutate

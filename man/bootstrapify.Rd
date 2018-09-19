@@ -4,16 +4,19 @@
 \alias{bootstrapify}
 \title{Create a bootstrapped tibble}
 \usage{
-bootstrapify(.data, .n)
+bootstrapify(.data, .n, .key = ".bootstrap")
 }
 \arguments{
 \item{.data}{A tbl.}
 
 \item{.n}{A integer specifying the number of bootstraps. If the \code{tibble} is
 grouped, this is the number of bootstraps per group.}
+
+\item{.key}{A single character specifying the name of the virtual group
+that is added.}
 }
 \value{
-A \code{bootstrapped_df} with an extra group named \code{.virtual_groups}.
+A \code{bootstrapped_df} with an extra group specified by \code{.key}.
 }
 \description{
 \code{bootstrapify()} creates \emph{virtual groups} on top of a \code{tibble}.
@@ -40,5 +43,10 @@ iris \%>\%
 iris \%>\%
   bootstrapify(5) \%>\%
   do(tidy(lm(Sepal.Width ~ Sepal.Length + Species, data = .)))
+
+# Alter the name of the group with `.key`
+# Materialize them with collect()
+bootstrapify(iris, 5, .key = ".straps")
+collect(bootstrapify(iris, 5, .key = ".straps"))
 
 }

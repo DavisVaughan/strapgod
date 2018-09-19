@@ -9,7 +9,10 @@
 #' @param .n A integer specifying the number of bootstraps. If the `tibble` is
 #' grouped, this is the number of bootstraps per group.
 #'
-#' @return A `bootstrapped_df` with an extra group named `.virtual_groups`.
+#' @param .key A single character specifying the name of the virtual group
+#' that is added.
+#'
+#' @return A `bootstrapped_df` with an extra group specified by `.key`.
 #'
 #' @examples
 #'
@@ -30,6 +33,11 @@
 #' iris %>%
 #'   bootstrapify(5) %>%
 #'   do(tidy(lm(Sepal.Width ~ Sepal.Length + Species, data = .)))
+#'
+#' # Alter the name of the group with `.key`
+#' # Materialize them with collect()
+#' bootstrapify(iris, 5, .key = ".straps")
+#' collect(bootstrapify(iris, 5, .key = ".straps"))
 #'
 #' @name bootstrapify
 
