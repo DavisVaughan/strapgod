@@ -44,7 +44,7 @@ library(dplyr)
 iris %>%
   bootstrapify(10)
 #> # A tibble: 150 x 5
-#> # Groups:   .virtual_strap [10]
+#> # Groups:   .bootstrap [10]
 #>    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 #>           <dbl>       <dbl>        <dbl>       <dbl> <fct>  
 #>  1          5.1         3.5          1.4         0.2 setosa 
@@ -57,7 +57,7 @@ iris %>%
 #>  8          5           3.4          1.5         0.2 setosa 
 #>  9          4.4         2.9          1.4         0.2 setosa 
 #> 10          4.9         3.1          1.5         0.1 setosa 
-#> # ... with 140 more rows
+#> # … with 140 more rows
 ```
 
 You can feed a `bootstrapped_df` into `summarise()` or `do()` to perform
@@ -68,18 +68,18 @@ iris %>%
   bootstrapify(10) %>%
   summarise(per_strap_mean = mean(Petal.Width))
 #> # A tibble: 10 x 2
-#>    .virtual_strap per_strap_mean
-#>    <chr>                   <dbl>
-#>  1 id_1                     1.22
-#>  2 id_2                     1.23
-#>  3 id_3                     1.23
-#>  4 id_4                     1.24
-#>  5 id_5                     1.11
-#>  6 id_6                     1.24
-#>  7 id_7                     1.21
-#>  8 id_8                     1.30
-#>  9 id_9                     1.15
-#> 10 id_10                    1.2
+#>    .bootstrap per_strap_mean
+#>         <int>          <dbl>
+#>  1          1           1.31
+#>  2          2           1.17
+#>  3          3           1.12
+#>  4          4           1.21
+#>  5          5           1.16
+#>  6          6           1.15
+#>  7          7           1.2 
+#>  8          8           1.07
+#>  9          9           1.18
+#> 10         10           1.25
 ```
 
 The data can be grouped as well.
@@ -91,43 +91,69 @@ iris %>%
   summarise(per_strap_species_mean = mean(Petal.Width))
 #> # A tibble: 30 x 3
 #> # Groups:   Species [3]
-#>    Species .virtual_strap per_strap_species_mean
-#>    <fct>   <chr>                           <dbl>
-#>  1 setosa  id_1                            0.24 
-#>  2 setosa  id_2                            0.266
-#>  3 setosa  id_3                            0.26 
-#>  4 setosa  id_4                            0.24 
-#>  5 setosa  id_5                            0.248
-#>  6 setosa  id_6                            0.242
-#>  7 setosa  id_7                            0.246
-#>  8 setosa  id_8                            0.256
-#>  9 setosa  id_9                            0.236
-#> 10 setosa  id_10                           0.246
-#> # ... with 20 more rows
+#>    Species .bootstrap per_strap_species_mean
+#>    <fct>        <int>                  <dbl>
+#>  1 setosa           1                  0.252
+#>  2 setosa           2                  0.236
+#>  3 setosa           3                  0.242
+#>  4 setosa           4                  0.246
+#>  5 setosa           5                  0.226
+#>  6 setosa           6                  0.236
+#>  7 setosa           7                  0.258
+#>  8 setosa           8                  0.242
+#>  9 setosa           9                  0.258
+#> 10 setosa          10                  0.216
+#> # … with 20 more rows
 ```
 
 `dplyr::collect()` can be used to make the implicit virtual groups
-explicit. At that point, they are no longer virtual so the column name
-is `.strap`.
+explicit.
 
 ``` r
 iris %>%
   group_by(Species) %>%
   bootstrapify(10) %>%
   collect()
-#> # A tibble: 1,500 x 7
-#> # Groups:   Species, .strap [30]
-#>    .strap   .id Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-#>    <chr>  <int>        <dbl>       <dbl>        <dbl>       <dbl> <fct>  
-#>  1 id_1      48          4.6         3.2          1.4         0.2 setosa 
-#>  2 id_1       8          5           3.4          1.5         0.2 setosa 
-#>  3 id_1      39          4.4         3            1.3         0.2 setosa 
-#>  4 id_1      45          5.1         3.8          1.9         0.4 setosa 
-#>  5 id_1      31          4.8         3.1          1.6         0.2 setosa 
-#>  6 id_1      31          4.8         3.1          1.6         0.2 setosa 
-#>  7 id_1      50          5           3.3          1.4         0.2 setosa 
-#>  8 id_1       2          4.9         3            1.4         0.2 setosa 
-#>  9 id_1      30          4.7         3.2          1.6         0.2 setosa 
-#> 10 id_1      18          5.1         3.5          1.4         0.3 setosa 
-#> # ... with 1,490 more rows
+#> # A tibble: 1,500 x 6
+#> # Groups:   Species, .bootstrap [30]
+#>    .bootstrap Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+#>         <int>        <dbl>       <dbl>        <dbl>       <dbl> <fct>  
+#>  1          1          4.8         3.4          1.6         0.2 setosa 
+#>  2          1          4.5         2.3          1.3         0.3 setosa 
+#>  3          1          4.6         3.6          1           0.2 setosa 
+#>  4          1          4.9         3.1          1.5         0.1 setosa 
+#>  5          1          5.4         3.7          1.5         0.2 setosa 
+#>  6          1          5.1         3.8          1.6         0.2 setosa 
+#>  7          1          4.6         3.6          1           0.2 setosa 
+#>  8          1          4.8         3            1.4         0.1 setosa 
+#>  9          1          5           3.6          1.4         0.2 setosa 
+#> 10          1          5.7         3.8          1.7         0.3 setosa 
+#> # … with 1,490 more rows
+```
+
+You can specify an `.id` column to get an in-bootstrap sequence from
+`1:n`. You can also specify an `.original_id` column to retrieve the
+original row that the bootstrapped row came from.
+
+``` r
+iris %>%
+  group_by(Species) %>%
+  bootstrapify(10) %>%
+  collect(.id = ".id", .original_id = ".original_id")
+#> # A tibble: 1,500 x 8
+#> # Groups:   Species, .bootstrap [30]
+#>    .bootstrap   .id .original_id Sepal.Length Sepal.Width Petal.Length
+#>         <int> <int>        <int>        <dbl>       <dbl>        <dbl>
+#>  1          1     1            2          4.9         3            1.4
+#>  2          1     2           26          5           3            1.6
+#>  3          1     3           50          5           3.3          1.4
+#>  4          1     4           48          4.6         3.2          1.4
+#>  5          1     5           15          5.8         4            1.2
+#>  6          1     6           20          5.1         3.8          1.5
+#>  7          1     7            8          5           3.4          1.5
+#>  8          1     8           23          4.6         3.6          1  
+#>  9          1     9           13          4.8         3            1.4
+#> 10          1    10           37          5.5         3.5          1.3
+#> # … with 1,490 more rows, and 2 more variables: Petal.Width <dbl>,
+#> #   Species <fct>
 ```

@@ -68,7 +68,6 @@ iris %>%
 ```
 
 `dplyr::collect()` can be used to make the implicit virtual groups explicit.
-At that point, they are no longer virtual so the column name is `.strap`.
 
 ```{r}
 iris %>%
@@ -76,4 +75,16 @@ iris %>%
   bootstrapify(10) %>%
   collect()
 ```
+
+You can specify an `.id` column to get an in-bootstrap sequence from `1:n`. You 
+can also specify an `.original_id` column to retrieve the original row that 
+the bootstrapped row came from.
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  bootstrapify(10) %>%
+  collect(.id = ".id", .original_id = ".original_id")
+```
+
 
