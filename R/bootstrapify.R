@@ -4,15 +4,15 @@
 #'
 #' Currently you can use `summarise()` and `do()` on a `bootstrapped_df`.
 #'
-#' @param .data A tbl.
+#' @param data A tbl.
 #'
-#' @param .n A integer specifying the number of bootstraps. If the `tibble` is
+#' @param n A integer specifying the number of bootstraps. If the `tibble` is
 #' grouped, this is the number of bootstraps per group.
 #'
-#' @param .key A single character specifying the name of the virtual group
+#' @param key A single character specifying the name of the virtual group
 #' that is added.
 #'
-#' @return A `bootstrapped_df` with an extra group specified by `.key`.
+#' @return A `bootstrapped_df` with an extra group specified by `key`.
 #'
 #' @examples
 #'
@@ -34,51 +34,51 @@
 #'   bootstrapify(5) %>%
 #'   do(tidy(lm(Sepal.Width ~ Sepal.Length + Species, data = .)))
 #'
-#' # Alter the name of the group with `.key`
+#' # Alter the name of the group with `key`
 #' # Materialize them with collect()
-#' bootstrapify(iris, 5, .key = ".straps")
-#' collect(bootstrapify(iris, 5, .key = ".straps"))
+#' bootstrapify(iris, 5, key = ".straps")
+#' collect(bootstrapify(iris, 5, key = ".straps"))
 #'
 #' @name bootstrapify
 
 #' @rdname bootstrapify
 #' @export
-bootstrapify <- function(.data, .n, .key = ".bootstrap") {
+bootstrapify <- function(data, n, key = ".bootstrap") {
   UseMethod("bootstrapify")
 }
 
 #' @export
-bootstrapify.data.frame <- function(.data, .n, .key = ".bootstrap") {
-  .key <- dplyr::enquo(.key)
-  bootstrapify(dplyr::tbl_df(.data), .n, !!.key)
+bootstrapify.data.frame <- function(data, n, key = ".bootstrap") {
+  key <- dplyr::enquo(key)
+  bootstrapify(dplyr::tbl_df(data), n, !!key)
 }
 
 #' @export
-bootstrapify.tbl_df <- function(.data, .n, .key = ".bootstrap") {
+bootstrapify.tbl_df <- function(data, n, key = ".bootstrap") {
 
-  .key <- dplyr::enquo(.key)
-  .row_slice_ids <- seq_len(nrow(.data))
+  key <- dplyr::enquo(key)
+  .row_slice_ids <- seq_len(nrow(data))
 
-  groups_tbl <- bootstrap_indices(.row_slice_ids, .n, !!.key)
+  groups_tbl <- bootstrap_indices(.row_slice_ids, n, !!key)
 
   # create bootstrapped_df subclass
-  attr(.data, "groups") <- groups_tbl
-  class(.data) <- c("bootstrapped_df", "grouped_df", class(.data))
+  attr(data, "groups") <- groups_tbl
+  class(data) <- c("bootstrapped_df", "grouped_df", class(data))
 
-  .data
+  data
 }
 
 #' @export
-bootstrapify.grouped_df <- function(.data, .n, .key = ".bootstrap") {
+bootstrapify.grouped_df <- function(data, n, key = ".bootstrap") {
 
-  .key <- dplyr::enquo(.key)
+  key <- dplyr::enquo(key)
 
   # extract existing group_tbl
-  group_tbl <- dplyr::group_data(.data)
+  group_tbl <- dplyr::group_data(data)
   index_list <- group_tbl[[".rows"]]
 
   new_row_index_tbl <- purrr::map(index_list, ~{
-    bootstrap_indices(.row_slice_ids = .x, .n = .n, .key = !!.key)
+    bootstrap_indices(.row_slice_ids = .x, n = n, key = !!key)
   })
 
   # overwrite current .rows and unnest
@@ -86,30 +86,30 @@ bootstrapify.grouped_df <- function(.data, .n, .key = ".bootstrap") {
   group_tbl <- tidyr::unnest(group_tbl)
 
   # update groups
-  attr(.data, "groups") <- group_tbl
+  attr(data, "groups") <- group_tbl
 
-  class(.data) <- c("bootstrapped_df", class(.data))
+  class(data) <- c("bootstrapped_df", class(data))
 
-  .data
+  data
 }
 
-bootstrap_indices <- function(.row_slice_ids, .n, .key) {
+bootstrap_indices <- function(.row_slice_ids, n, key) {
 
-  .key <- dplyr::enquo(.key)
-  .n_ids <- length(.row_slice_ids)
-  .bootstrap_id <- seq_len(.n)
+  key <- dplyr::enquo(key)
+  n_ids <- length(.row_slice_ids)
+  .bootstrap_id <- seq_len(n)
 
   # must unquote the colname as `.rows` is an arg to tibble()
   .row_col <- ".rows"
 
   .index_list <- replicate(
-    n = .n,
-    expr = sample(.row_slice_ids, .n_ids, replace = TRUE),
+    n = n,
+    expr = sample(.row_slice_ids, n_ids, replace = TRUE),
     simplify = FALSE
   )
 
   dplyr::tibble(
-    !!.key := .bootstrap_id,
+    !!key := .bootstrap_id,
     !!.row_col := .index_list
   )
 

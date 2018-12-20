@@ -4,16 +4,16 @@
 \alias{collect.bootstrapped_df}
 \title{Force virtual groups to become explicit rows}
 \usage{
-\method{collect}{bootstrapped_df}(.data, .id = NULL,
-  .original_id = NULL, ...)
+\method{collect}{bootstrapped_df}(x, id = NULL, original_id = NULL,
+  ...)
 }
 \arguments{
-\item{.data}{A \code{bootstrapped_df}.}
+\item{x}{A \code{bootstrapped_df}.}
 
-\item{.id}{Optional. A single character that specifies a name for a column
+\item{id}{Optional. A single character that specifies a name for a column
 containing a sequence from \code{1:n} for each bootstrap group.}
 
-\item{.original_id}{Optional. A single character that specifies a name for
+\item{original_id}{Optional. A single character that specifies a name for
 a column containing the original position of the bootstrapped row.}
 
 \item{...}{Other arguments passed on to methods.}
@@ -29,11 +29,11 @@ library(dplyr)
 # virtual groups become real rows
 collect(bootstrapify(iris, 5))
 
-# add on the .id column for an identifier per bootstrap
-collect(bootstrapify(iris, 5), .id = ".id")
+# add on the id column for an identifier per bootstrap
+collect(bootstrapify(iris, 5), id = ".id")
 
-# add on the .original_id column to know which row this bootstrapped row
+# add on the original_id column to know which row this bootstrapped row
 # originally came from
-collect(bootstrapify(iris, 5), .original_id = ".original_id")
+collect(bootstrapify(iris, 5), original_id = ".original_id")
 
 }

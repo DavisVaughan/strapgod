@@ -44,6 +44,7 @@ but the groups are modified.
 ```{r}
 library(strapgod)
 library(dplyr)
+set.seed(123)
 
 iris %>%
   bootstrapify(10)
@@ -67,6 +68,8 @@ iris %>%
   summarise(per_strap_species_mean = mean(Petal.Width))
 ```
 
+## Materializing bootstraps
+
 `dplyr::collect()` can be used to make the implicit virtual groups explicit.
 
 ```{r}
@@ -76,15 +79,33 @@ iris %>%
   collect()
 ```
 
-You can specify an `.id` column to get an in-bootstrap sequence from `1:n`. You 
-can also specify an `.original_id` column to retrieve the original row that 
+You can specify an `id` column to get an in-bootstrap sequence from `1:n`. You 
+can also specify an `original_id` column to retrieve the original row that 
 the bootstrapped row came from.
 
 ```{r}
 iris %>%
   group_by(Species) %>%
   bootstrapify(10) %>%
-  collect(.id = ".id", .original_id = ".original_id")
+  collect(id = ".id", original_id = ".original_id")
 ```
 
+## `group_*()` Functions
+
+`dplyr 0.8` adds some more neat group-wise functionality, but it is a little
+unstable right now with regards to `group_split(keep = FALSE)` which is used
+by the default of `group_nest()` and `group_map()`.
+
+```{r}
+iris[1:3,] %>%
+  bootstrapify(2) %>% 
+  group_split()
+```
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  bootstrapify(10) %>% 
+  group_nest(keep = TRUE)
+```
 
