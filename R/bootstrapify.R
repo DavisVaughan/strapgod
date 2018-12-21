@@ -6,7 +6,7 @@
 #'
 #' @param data A tbl.
 #'
-#' @param n A integer specifying the number of bootstraps. If the `tibble` is
+#' @param times A integer specifying the number of bootstraps. If the `tibble` is
 #' grouped, this is the number of bootstraps per group.
 #'
 #' @param key A single character specifying the name of the virtual group
@@ -43,23 +43,23 @@
 
 #' @rdname bootstrapify
 #' @export
-bootstrapify <- function(data, n, key = ".bootstrap") {
+bootstrapify <- function(data, times, key = ".bootstrap") {
   UseMethod("bootstrapify")
 }
 
 #' @export
-bootstrapify.data.frame <- function(data, n, key = ".bootstrap") {
+bootstrapify.data.frame <- function(data, times, key = ".bootstrap") {
   key <- dplyr::enquo(key)
-  bootstrapify(dplyr::tbl_df(data), n, !!key)
+  bootstrapify(dplyr::tbl_df(data), times, !!key)
 }
 
 #' @export
-bootstrapify.tbl_df <- function(data, n, key = ".bootstrap") {
+bootstrapify.tbl_df <- function(data, times, key = ".bootstrap") {
 
   key <- dplyr::enquo(key)
   .row_slice_ids <- seq_len(nrow(data))
 
-  groups_tbl <- bootstrap_indices(.row_slice_ids, n, !!key)
+  groups_tbl <- bootstrap_indices(.row_slice_ids, times, !!key)
 
   # create bootstrapped_df subclass
   attr(data, "groups") <- groups_tbl
@@ -69,7 +69,7 @@ bootstrapify.tbl_df <- function(data, n, key = ".bootstrap") {
 }
 
 #' @export
-bootstrapify.grouped_df <- function(data, n, key = ".bootstrap") {
+bootstrapify.grouped_df <- function(data, times, key = ".bootstrap") {
 
   key <- dplyr::enquo(key)
 
@@ -78,7 +78,7 @@ bootstrapify.grouped_df <- function(data, n, key = ".bootstrap") {
   index_list <- group_tbl[[".rows"]]
 
   new_row_index_tbl <- purrr::map(index_list, ~{
-    bootstrap_indices(.row_slice_ids = .x, n = n, key = !!key)
+    bootstrap_indices(.row_slice_ids = .x, times = times, key = !!key)
   })
 
   # overwrite current .rows and unnest
@@ -93,17 +93,17 @@ bootstrapify.grouped_df <- function(data, n, key = ".bootstrap") {
   data
 }
 
-bootstrap_indices <- function(.row_slice_ids, n, key) {
+bootstrap_indices <- function(.row_slice_ids, times, key) {
 
   key <- dplyr::enquo(key)
   n_ids <- length(.row_slice_ids)
-  .bootstrap_id <- seq_len(n)
+  .bootstrap_id <- seq_len(times)
 
   # must unquote the colname as `.rows` is an arg to tibble()
   .row_col <- ".rows"
 
   .index_list <- replicate(
-    n = n,
+    n = times,
     expr = sample(.row_slice_ids, n_ids, replace = TRUE),
     simplify = FALSE
   )
