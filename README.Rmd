@@ -92,20 +92,80 @@ iris %>%
 
 ## `group_*()` Functions
 
-`dplyr 0.8` adds some more neat group-wise functionality, but it is a little
-unstable right now with regards to `group_split(keep = FALSE)` which is used
-by the default of `group_nest()` and `group_map()`.
+`dplyr 0.8` adds some more neat group-wise functionality. 
+
+Here is a full walkthrough of some of the ways you can use `bootstrapify()`,
+using a modified version of the examples in [this rsample issue](https://github.com/tidymodels/rsample/issues/52).
 
 ```{r}
-iris[1:3,] %>%
-  bootstrapify(2) %>% 
-  group_split()
+suppressPackageStartupMessages({
+  library(strapgod)
+  library(dplyr)
+  library(broom)
+  library(ggplot2)
+  library(purrr)
+  library(tidyr)
+})
 ```
 
+### Tidying bootstrapped models 
+
 ```{r}
+# without bootstraps
 iris %>%
   group_by(Species) %>%
-  bootstrapify(10) %>% 
-  group_nest(keep = TRUE)
+  group_map(~tidy(lm(Sepal.Length ~ Petal.Length, data = .x)))
+
+# with bootstraps
+iris %>%
+  group_by(Species) %>%
+  bootstrapify(10) %>%
+  group_map(~tidy(lm(Sepal.Length ~ Petal.Length, data = .x)))
+```
+
+### Plotting bootstrapped results
+
+```{r}
+# without bootstrap
+mtcars %>%
+  ggplot(aes(hp, mpg)) + 
+  geom_smooth(se = FALSE)
+
+# with bootstrap
+mtcars %>%
+  bootstrapify(10) %>%
+  collect() %>%
+  ggplot(aes(hp, mpg, group = .bootstrap)) + 
+  geom_smooth(se = FALSE)
+
+```
+
+### "Multiple models" workflow
+
+```{r}
+# The nest+mutate+unnest combo
+iris %>% 
+  group_by(Species) %>%
+  bootstrapify(10) %>%
+  group_nest() %>%
+  mutate(
+    model = map(data, ~lm(Sepal.Length ~ Petal.Length, data = .x)),
+    coef = map(model, tidy)
+  ) %>%
+  unnest(coef)
+
+# Using rap  
+library(rap)
+
+iris %>% 
+  group_by(Species) %>%
+  bootstrapify(10) %>%
+  group_nest() %>%
+  # cleaner than mutate+map
+  rap(
+    model = ~lm(Sepal.Length ~ Petal.Length, data = data),
+    coef  = ~tidy(model)
+  ) %>%
+  unnest(coef)
 ```
 
