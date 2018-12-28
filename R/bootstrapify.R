@@ -49,17 +49,15 @@ bootstrapify <- function(data, times, key = ".bootstrap") {
 
 #' @export
 bootstrapify.data.frame <- function(data, times, key = ".bootstrap") {
-  key <- dplyr::enquo(key)
-  bootstrapify(dplyr::tbl_df(data), times, !!key)
+  bootstrapify(dplyr::tbl_df(data), times, key)
 }
 
 #' @export
 bootstrapify.tbl_df <- function(data, times, key = ".bootstrap") {
 
-  key <- dplyr::enquo(key)
   .row_slice_ids <- seq_len(nrow(data))
 
-  groups_tbl <- bootstrap_indices(.row_slice_ids, times, !!key)
+  groups_tbl <- bootstrap_indices(.row_slice_ids, times, key)
 
   # create bootstrapped_df subclass
   attr(data, "groups") <- groups_tbl
@@ -71,14 +69,12 @@ bootstrapify.tbl_df <- function(data, times, key = ".bootstrap") {
 #' @export
 bootstrapify.grouped_df <- function(data, times, key = ".bootstrap") {
 
-  key <- dplyr::enquo(key)
-
   # extract existing group_tbl
   group_tbl <- dplyr::group_data(data)
   index_list <- group_tbl[[".rows"]]
 
   new_row_index_tbl <- purrr::map(index_list, ~{
-    bootstrap_indices(.row_slice_ids = .x, times = times, key = !!key)
+    bootstrap_indices(.row_slice_ids = .x, times = times, key = key)
   })
 
   # overwrite current .rows and unnest
@@ -95,7 +91,6 @@ bootstrapify.grouped_df <- function(data, times, key = ".bootstrap") {
 
 bootstrap_indices <- function(.row_slice_ids, times, key) {
 
-  key <- dplyr::enquo(key)
   n_ids <- length(.row_slice_ids)
   .bootstrap_id <- seq_len(times)
 
