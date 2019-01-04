@@ -23,9 +23,9 @@ knitr::opts_chunk$set(
 ## Introduction
 
 The goal of strapgod is to create _virtual groups_ on top of a `tibble` or 
-`grouped_df` that function as bootstraps of the rows of the data frame. You can
-then perform a `summarise()` or use `do()` on this `bootstrapped_df` to perform
-an efficient bootstrapped calculation.
+`grouped_df` that function as resamples of the rows of the data frame. You can
+then perform a `summarise()`, `do()`, or use `group_map()` on this 
+`resampled_df` to perform an efficient resampled / bootstrapped calculation.
 
 ## Installation
 
@@ -44,7 +44,7 @@ devtools::install_github("DavisVaughan/strapgod")
 
 ## Example
 
-Note how creating a `bootstrapped_df` does not add a new column, or new rows,
+Note how creating a `resampled_df` does not add a new column, or new rows,
 but the groups are modified.
 
 ```{r}
@@ -56,7 +56,7 @@ iris %>%
   bootstrapify(10)
 ```
 
-You can feed a `bootstrapped_df` into `summarise()` or `do()` to perform
+You can feed a `resampled_df` into `summarise()` or `do()` to perform
 efficient bootstrapped computations.
 
 ```{r}
@@ -96,6 +96,31 @@ iris %>%
   collect(id = ".id", original_id = ".original_id")
 ```
 
+## `samplify()`
+
+For general sampling, use `samplify()`.
+
+```{r}
+iris %>%
+  samplify(times = 5, size = 10, replace = FALSE)
+```
+
+Be careful not to specify a size larger than one of your groups! This will throw
+an error.
+
+```{r, error=TRUE}
+iris_50_5_group_sizes <- iris[1:55,] %>%
+  group_by(Species) %>%
+  group_trim()
+
+count(iris_50_5_group_sizes, Species)
+
+# size = 10 > min_group_size = 5
+iris_50_5_group_sizes %>%
+  samplify(times = 2, size = 10)
+```
+
+
 ## `group_*()` Functions
 
 `dplyr 0.8` adds some more neat group-wise functionality. 
@@ -131,7 +156,7 @@ iris %>%
 
 ### Plotting bootstrapped results
 
-```{r}
+```{r bootstrap-plots}
 # without bootstrap
 mtcars %>%
   ggplot(aes(hp, mpg)) + 

@@ -1,21 +1,16 @@
 #' Create a bootstrapped tibble
 #'
-#' `bootstrapify()` creates _virtual groups_ on top of a `tibble`.
+#' @description
 #'
-#' Currently you can use `summarise()` and `do()` on a `bootstrapped_df`.
+#' `bootstrapify()` creates a bootstrapped tibble with _virtual groups_.
 #'
-#' @param data A tbl.
+#' @inherit samplify details
 #'
-#' @param times A integer specifying the number of bootstraps. If the `tibble` is
-#' grouped, this is the number of bootstraps per group.
+#' @inherit samplify return
 #'
-#' @param key A single character specifying the name of the virtual group
-#' that is added.
-#'
-#' @return A `bootstrapped_df` with an extra group specified by `key`.
+#' @inheritParams samplify
 #'
 #' @examples
-#'
 #' library(dplyr)
 #' library(broom)
 #'
@@ -34,10 +29,17 @@
 #'   bootstrapify(5) %>%
 #'   do(tidy(lm(Sepal.Width ~ Sepal.Length + Species, data = .)))
 #'
+#' # Alternatively, use the newer group_map()
+#' iris %>%
+#'   bootstrapify(5) %>%
+#'   group_map(~tidy(lm(Sepal.Width ~ Sepal.Length + Species, data = .x)))
+#'
 #' # Alter the name of the group with `key`
 #' # Materialize them with collect()
-#' bootstrapify(iris, 5, key = ".straps")
-#' collect(bootstrapify(iris, 5, key = ".straps"))
+#' straps <- bootstrapify(iris, 5, key = ".straps")
+#' collect(straps)
+#'
+#' @family virtual samplers
 #'
 #' @name bootstrapify
 
@@ -54,58 +56,16 @@ bootstrapify.data.frame <- function(data, times, key = ".bootstrap") {
 
 #' @export
 bootstrapify.tbl_df <- function(data, times, key = ".bootstrap") {
-
-  .row_slice_ids <- seq_len(nrow(data))
-
-  groups_tbl <- bootstrap_indices(.row_slice_ids, times, key)
-
-  # create bootstrapped_df subclass
-  attr(data, "groups") <- groups_tbl
-  class(data) <- c("bootstrapped_df", "grouped_df", class(data))
-
-  data
+  samplify(
+    data = data, times = times, size = NULL,
+    replace = TRUE, key = key
+  )
 }
 
 #' @export
 bootstrapify.grouped_df <- function(data, times, key = ".bootstrap") {
-
-  # extract existing group_tbl
-  group_tbl <- dplyr::group_data(data)
-  index_list <- group_tbl[[".rows"]]
-
-  new_row_index_tbl <- purrr::map(index_list, ~{
-    bootstrap_indices(.row_slice_ids = .x, times = times, key = key)
-  })
-
-  # overwrite current .rows and unnest
-  group_tbl[[".rows"]] <- new_row_index_tbl
-  group_tbl <- tidyr::unnest(group_tbl)
-
-  # update groups
-  attr(data, "groups") <- group_tbl
-
-  class(data) <- c("bootstrapped_df", class(data))
-
-  data
-}
-
-bootstrap_indices <- function(.row_slice_ids, times, key) {
-
-  n_ids <- length(.row_slice_ids)
-  .bootstrap_id <- seq_len(times)
-
-  # must unquote the colname as `.rows` is an arg to tibble()
-  .row_col <- ".rows"
-
-  .index_list <- replicate(
-    n = times,
-    expr = sample(.row_slice_ids, n_ids, replace = TRUE),
-    simplify = FALSE
+  samplify(
+    data = data, times = times, size = NULL,
+    replace = TRUE, key = key
   )
-
-  dplyr::tibble(
-    !!key := .bootstrap_id,
-    !!.row_col := .index_list
-  )
-
 }

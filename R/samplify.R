@@ -1,0 +1,175 @@
+#' Created a resampled tibble
+#'
+#' `samplify()` creates a resampled tibble with _virtual groups_.
+#'
+#' @details
+#'
+#' Currently you can use [dplyr::summarise()], [dplyr::do()], and the group
+#' manipulation functions: [dplyr::group_map()], [dplyr::group_walk()],
+#' [dplyr::group_nest()] and [dplyr::group_split()] on a `resampled_df`.
+#'
+#' @param data A tbl.
+#'
+#' @param times A single integer specifying the number of resamples.
+#' If the `tibble` is grouped, this is the number of resamples per group.
+#'
+#' @param size A single integer specifying the size of each resample.
+#'
+#' @param replace Whether or not to sample with replacement.
+#'
+#' @param key A single character specifying the name of the virtual group
+#' that is added.
+#'
+#' @return A `resampled_df` with an extra group specified by `key`.
+#'
+#' @examples
+#' library(dplyr)
+#' library(broom)
+#'
+#' samplify(iris, times = 3, size = 20)
+#'
+#' iris %>%
+#'   samplify(times = 3, size = 20) %>%
+#'   summarise(per_strap_mean = mean(Petal.Width))
+#'
+#' iris %>%
+#'   group_by(Species) %>%
+#'   samplify(times = 3, size = 20) %>%
+#'   summarise(per_strap_species_mean = mean(Petal.Width))
+#'
+#' # Alter the name of the group with `key`
+#' # Materialize them with collect()
+#' samps <- samplify(iris, times = 3, size = 5, key = ".samps")
+#' collect(samps)
+#'
+#' collect(samps, id = ".id", original_id = ".orig_id")
+#'
+#' @family virtual samplers
+#'
+#' @name samplify
+NULL
+
+#' @rdname samplify
+#' @export
+samplify <- function(data, times, size,
+                     replace = FALSE, key = ".sample") {
+  UseMethod("samplify")
+}
+
+#' @export
+samplify.data.frame <- function(data, times, size,
+                                replace = FALSE, key = ".sample") {
+  samplify(
+    data = dplyr::tbl_df(data),
+    times = times,
+    size = size,
+    replace = FALSE,
+    key = key
+  )
+}
+
+#' @export
+samplify.tbl_df <- function(data, times, size,
+                            replace = FALSE, key = ".sample") {
+
+  .row_slice_ids <- seq_len(nrow(data))
+
+  groups_tbl <- index_sampler(
+    .row_slice_ids = .row_slice_ids,
+    times = times,
+    key = key,
+    size = size,
+    replace = replace
+  )
+
+  # create resampled_df subclass
+  attr(data, "groups") <- groups_tbl
+  class(data) <- c("resampled_df", "grouped_df", class(data))
+
+  data
+}
+
+#' @export
+samplify.grouped_df <- function(data, times, size,
+                                replace = FALSE, key = ".sample") {
+
+  # extract existing group_tbl
+  group_tbl <- dplyr::group_data(data)
+  index_list <- group_tbl[[".rows"]]
+
+  new_row_index_tbl <- purrr::map(index_list, ~{
+    index_sampler(
+      .row_slice_ids = .x,
+      times = times,
+      key = key,
+      size = size,
+      replace = replace
+    )
+  })
+
+  # overwrite current .rows and unnest
+  group_tbl[[".rows"]] <- new_row_index_tbl
+  group_tbl <- tidyr::unnest(group_tbl)
+
+  # update groups
+  attr(data, "groups") <- group_tbl
+  class(data) <- c("resampled_df", class(data))
+
+  data
+}
+
+# ------------------------------------------------------------------------------
+# Utility
+
+# Actually perform the resampling of the row indices
+# and create the group tbl information from that
+
+index_sampler <- function(.row_slice_ids,
+                          times,
+                          key,
+                          size = NULL,
+                          replace = FALSE) {
+
+  # For bootstrapify
+  if (is.null(size)) {
+    size <- length(.row_slice_ids)
+  }
+
+  check_size(size, length(.row_slice_ids), replace)
+
+  .bootstrap_id <- seq_len(times)
+
+  # must unquote the colname as `.rows` is an arg to tibble()
+  .row_col <- ".rows"
+
+  .index_list <- replicate(
+    n = times,
+    expr = sample(
+      x = .row_slice_ids,
+      size = size,
+      replace = replace,
+      prob = NULL
+    ),
+    simplify = FALSE
+  )
+
+  dplyr::tibble(
+    !!key := .bootstrap_id,
+    !!.row_col := .index_list
+  )
+
+}
+
+# dplyr:::check_size()
+check_size <- function (size, n, replace = FALSE) {
+  if (size <= n || replace)
+    return(invisible(size))
+
+  msg <- paste0(
+    "`size` (%i) must be less than or equal to the ",
+    "size of the data / current group (%i), ",
+    "set `replace = TRUE` to use sampling with replacement."
+  )
+
+  stop(sprintf(msg, size, n), call. = FALSE)
+}
