@@ -3,6 +3,14 @@
 
 # strapgod
 
+<center>
+
+![](./man/figures/strap-god.jpg)
+
+</center>
+
+## Introduction
+
 The goal of strapgod is to create *virtual groups* on top of a `tibble`
 or `grouped_df` that function as bootstraps of the rows of the data
 frame. You can then perform a `summarise()` or use `do()` on this
