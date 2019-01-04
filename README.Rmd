@@ -120,6 +120,18 @@ iris_50_5_group_sizes %>%
   samplify(times = 2, size = 10)
 ```
 
+Instead, pass a vector of sizes to `samplify()` if this structure is absolutely
+required for your use case.
+
+```{r}
+# size of 10 for the first group
+# size of 5 for the second group
+# total number of rows is 10 * 2 + 5 * 2 = 30
+iris_50_5_group_sizes %>%
+  samplify(times = 2, size = c(10, 5)) %>%
+  collect()
+```
+
 
 ## `group_*()` Functions
 
@@ -157,6 +169,8 @@ iris %>%
 ### Plotting bootstrapped results
 
 ```{r bootstrap-plots}
+set.seed(123)
+
 # without bootstrap
 mtcars %>%
   ggplot(aes(hp, mpg)) + 

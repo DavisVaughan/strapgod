@@ -57,7 +57,7 @@ bootstrapify.data.frame <- function(data, times, key = ".bootstrap") {
 #' @export
 bootstrapify.tbl_df <- function(data, times, key = ".bootstrap") {
   samplify(
-    data = data, times = times, size = NULL,
+    data = data, times = times, size = nrow(data),
     replace = TRUE, key = key
   )
 }
@@ -65,7 +65,7 @@ bootstrapify.tbl_df <- function(data, times, key = ".bootstrap") {
 #' @export
 bootstrapify.grouped_df <- function(data, times, key = ".bootstrap") {
   samplify(
-    data = data, times = times, size = NULL,
+    data = data, times = times, size = dplyr::group_size(data),
     replace = TRUE, key = key
   )
 }

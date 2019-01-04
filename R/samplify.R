@@ -97,12 +97,12 @@ samplify.grouped_df <- function(data, times, size,
   group_tbl <- dplyr::group_data(data)
   index_list <- group_tbl[[".rows"]]
 
-  new_row_index_tbl <- purrr::map(index_list, ~{
+  new_row_index_tbl <- purrr::map2(index_list, size, ~{
     index_sampler(
       .row_slice_ids = .x,
       times = times,
       key = key,
-      size = size,
+      size = .y,
       replace = replace
     )
   })
@@ -127,13 +127,8 @@ samplify.grouped_df <- function(data, times, size,
 index_sampler <- function(.row_slice_ids,
                           times,
                           key,
-                          size = NULL,
+                          size,
                           replace = FALSE) {
-
-  # For bootstrapify
-  if (is.null(size)) {
-    size <- length(.row_slice_ids)
-  }
 
   check_size(size, length(.row_slice_ids), replace)
 
