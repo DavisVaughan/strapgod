@@ -3,11 +3,11 @@
 
 # strapgod
 
-<center>
+<p align="center">
 
-![](./man/figures/strap-god.jpg)
+<img src="./man/figures/strap-god.jpg">
 
-</center>
+</p>
 
 ## Introduction
 

@@ -16,9 +16,9 @@ knitr::opts_chunk$set(
 ```
 # strapgod
 
-<center>
-![](./man/figures/strap-god.jpg)
-</center>
+<p align="center">
+  <img src="./man/figures/strap-god.jpg">
+</p>
 
 ## Introduction
 
