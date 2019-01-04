@@ -63,7 +63,7 @@ samplify.data.frame <- function(data, times, size,
     data = dplyr::tbl_df(data),
     times = times,
     size = size,
-    replace = FALSE,
+    replace = replace,
     key = key
   )
 }
