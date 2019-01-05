@@ -12,9 +12,10 @@
 ## Introduction
 
 The goal of strapgod is to create *virtual groups* on top of a `tibble`
-or `grouped_df` that function as bootstraps of the rows of the data
-frame. You can then perform a `summarise()` or use `do()` on this
-`bootstrapped_df` to perform an efficient bootstrapped calculation.
+or `grouped_df` that function as resamples of the rows of the data
+frame. You can then perform a `summarise()`, `do()`, or use
+`group_map()` on this `resampled_df` to perform an efficient resampled /
+bootstrapped calculation.
 
 ## Installation
 
@@ -34,7 +35,7 @@ devtools::install_github("DavisVaughan/strapgod")
 
 ## Example
 
-Note how creating a `bootstrapped_df` does not add a new column, or new
+Note how creating a `resampled_df` does not add a new column, or new
 rows, but the groups are modified.
 
 ``` r
@@ -69,7 +70,7 @@ iris %>%
 #> # … with 140 more rows
 ```
 
-You can feed a `bootstrapped_df` into `summarise()` or `do()` to perform
+You can feed a `resampled_df` into `summarise()` or `do()` to perform
 efficient bootstrapped computations.
 
 ``` r
@@ -169,6 +170,79 @@ iris %>%
 #> #   Species <fct>
 ```
 
+## `samplify()`
+
+For general sampling, use `samplify()`.
+
+``` r
+iris %>%
+  samplify(times = 5, size = 10, replace = FALSE)
+#> # A tibble: 150 x 5
+#> # Groups:   .sample [5]
+#>    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+#>           <dbl>       <dbl>        <dbl>       <dbl> <fct>  
+#>  1          5.1         3.5          1.4         0.2 setosa 
+#>  2          4.9         3            1.4         0.2 setosa 
+#>  3          4.7         3.2          1.3         0.2 setosa 
+#>  4          4.6         3.1          1.5         0.2 setosa 
+#>  5          5           3.6          1.4         0.2 setosa 
+#>  6          5.4         3.9          1.7         0.4 setosa 
+#>  7          4.6         3.4          1.4         0.3 setosa 
+#>  8          5           3.4          1.5         0.2 setosa 
+#>  9          4.4         2.9          1.4         0.2 setosa 
+#> 10          4.9         3.1          1.5         0.1 setosa 
+#> # … with 140 more rows
+```
+
+Be careful not to specify a size larger than one of your groups\! This
+will throw an error.
+
+``` r
+iris_50_5_group_sizes <- iris[1:55,] %>%
+  group_by(Species) %>%
+  group_trim()
+
+count(iris_50_5_group_sizes, Species)
+#> # A tibble: 2 x 2
+#> # Groups:   Species [2]
+#>   Species        n
+#>   <fct>      <int>
+#> 1 setosa        50
+#> 2 versicolor     5
+
+# size = 10 > min_group_size = 5
+iris_50_5_group_sizes %>%
+  samplify(times = 2, size = 10)
+#> Error: `size` (10) must be less than or equal to the size of the data / current group (5), set `replace = TRUE` to use sampling with replacement.
+```
+
+Instead, pass a vector of sizes to `samplify()` if this structure is
+absolutely required for your use case.
+
+``` r
+# size of 10 for the first group
+# size of 5 for the second group
+# total number of rows is 10 * 2 + 5 * 2 = 30
+iris_50_5_group_sizes %>%
+  samplify(times = 2, size = c(10, 5)) %>%
+  collect()
+#> # A tibble: 30 x 6
+#> # Groups:   Species, .sample [4]
+#>    .sample Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+#>      <int>        <dbl>       <dbl>        <dbl>       <dbl> <fct>  
+#>  1       1          5.4         3.9          1.3         0.4 setosa 
+#>  2       1          4.8         3.4          1.9         0.2 setosa 
+#>  3       1          5.2         3.5          1.5         0.2 setosa 
+#>  4       1          5.4         3.9          1.7         0.4 setosa 
+#>  5       1          4.6         3.1          1.5         0.2 setosa 
+#>  6       1          5.1         3.4          1.5         0.2 setosa 
+#>  7       1          4.6         3.6          1           0.2 setosa 
+#>  8       1          5.1         3.7          1.5         0.4 setosa 
+#>  9       1          5.4         3.4          1.5         0.4 setosa 
+#> 10       1          5           3.4          1.5         0.2 setosa 
+#> # … with 20 more rows
+```
+
 ## `group_*()` Functions
 
 `dplyr 0.8` adds some more neat group-wise functionality.
@@ -215,22 +289,24 @@ iris %>%
 #> # Groups:   Species, .bootstrap [30]
 #>    Species .bootstrap term         estimate std.error statistic  p.value
 #>  * <fct>        <int> <chr>           <dbl>     <dbl>     <dbl>    <dbl>
-#>  1 setosa           1 (Intercept)     4.20      0.344    12.2   2.57e-16
-#>  2 setosa           1 Petal.Length    0.488     0.235     2.08  4.32e- 2
-#>  3 setosa           2 (Intercept)     4.22      0.444     9.50  1.32e-12
-#>  4 setosa           2 Petal.Length    0.498     0.299     1.67  1.02e- 1
-#>  5 setosa           3 (Intercept)     4.53      0.456     9.93  3.23e-13
-#>  6 setosa           3 Petal.Length    0.331     0.309     1.07  2.90e- 1
-#>  7 setosa           4 (Intercept)     3.81      0.381    10.0   2.41e-13
-#>  8 setosa           4 Petal.Length    0.798     0.253     3.16  2.77e- 3
-#>  9 setosa           5 (Intercept)     4.65      0.428    10.9   1.50e-14
-#> 10 setosa           5 Petal.Length    0.278     0.290     0.959 3.43e- 1
+#>  1 setosa           1 (Intercept)     4.53      0.456     9.93  3.23e-13
+#>  2 setosa           1 Petal.Length    0.331     0.309     1.07  2.90e- 1
+#>  3 setosa           2 (Intercept)     3.81      0.381    10.0   2.41e-13
+#>  4 setosa           2 Petal.Length    0.798     0.253     3.16  2.77e- 3
+#>  5 setosa           3 (Intercept)     4.65      0.428    10.9   1.50e-14
+#>  6 setosa           3 Petal.Length    0.278     0.290     0.959 3.43e- 1
+#>  7 setosa           4 (Intercept)     4.28      0.441     9.69  7.00e-13
+#>  8 setosa           4 Petal.Length    0.432     0.309     1.40  1.68e- 1
+#>  9 setosa           5 (Intercept)     3.88      0.568     6.82  1.38e- 8
+#> 10 setosa           5 Petal.Length    0.750     0.396     1.89  6.45e- 2
 #> # … with 50 more rows
 ```
 
 ### Plotting bootstrapped results
 
 ``` r
+set.seed(123)
+
 # without bootstrap
 mtcars %>%
   ggplot(aes(hp, mpg)) + 
@@ -238,7 +314,7 @@ mtcars %>%
 #> `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+<img src="man/figures/README-bootstrap-plots-1.png" width="100%" />
 
 ``` r
 
@@ -251,7 +327,7 @@ mtcars %>%
 #> `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-2.png" width="100%" />
+<img src="man/figures/README-bootstrap-plots-2.png" width="100%" />
 
 ### “Multiple models” workflow
 
@@ -269,16 +345,16 @@ iris %>%
 #> # A tibble: 60 x 7
 #>    Species .bootstrap term         estimate std.error statistic  p.value
 #>    <fct>        <int> <chr>           <dbl>     <dbl>     <dbl>    <dbl>
-#>  1 setosa           1 (Intercept)     4.14      0.435     9.51  1.28e-12
-#>  2 setosa           1 Petal.Length    0.593     0.301     1.97  5.47e- 2
-#>  3 setosa           2 (Intercept)     4.45      0.452     9.84  4.27e-13
-#>  4 setosa           2 Petal.Length    0.392     0.306     1.28  2.07e- 1
-#>  5 setosa           3 (Intercept)     4.16      0.438     9.51  1.28e-12
-#>  6 setosa           3 Petal.Length    0.560     0.299     1.87  6.76e- 2
-#>  7 setosa           4 (Intercept)     4.38      0.392    11.2   5.91e-15
-#>  8 setosa           4 Petal.Length    0.374     0.264     1.41  1.64e- 1
-#>  9 setosa           5 (Intercept)     5.25      0.544     9.65  7.94e-13
-#> 10 setosa           5 Petal.Length   -0.144     0.368    -0.391 6.98e- 1
+#>  1 setosa           1 (Intercept)    5.09       0.445   11.4    2.61e-15
+#>  2 setosa           1 Petal.Length   0.0208     0.293    0.0710 9.44e- 1
+#>  3 setosa           2 (Intercept)    4.02       0.425    9.46   1.50e-12
+#>  4 setosa           2 Petal.Length   0.715      0.294    2.43   1.88e- 2
+#>  5 setosa           3 (Intercept)    5.10       0.447   11.4    2.83e-15
+#>  6 setosa           3 Petal.Length  -0.0737     0.302   -0.244  8.08e- 1
+#>  7 setosa           4 (Intercept)    3.75       0.428    8.77   1.54e-11
+#>  8 setosa           4 Petal.Length   0.885      0.300    2.95   4.87e- 3
+#>  9 setosa           5 (Intercept)    3.67       0.387    9.48   1.41e-12
+#> 10 setosa           5 Petal.Length   0.954      0.267    3.58   8.10e- 4
 #> # … with 50 more rows
 
 # Using rap  
@@ -297,15 +373,15 @@ iris %>%
 #> # A tibble: 60 x 7
 #>    Species .bootstrap term         estimate std.error statistic  p.value
 #>    <fct>        <int> <chr>           <dbl>     <dbl>     <dbl>    <dbl>
-#>  1 setosa           1 (Intercept)     5.41      0.475    11.4   3.11e-15
-#>  2 setosa           1 Petal.Length   -0.248     0.331    -0.751 4.56e- 1
-#>  3 setosa           2 (Intercept)     3.68      0.392     9.38  2.00e-12
-#>  4 setosa           2 Petal.Length    0.899     0.269     3.34  1.64e- 3
-#>  5 setosa           3 (Intercept)     4.19      0.362    11.6   1.70e-15
-#>  6 setosa           3 Petal.Length    0.556     0.249     2.23  3.03e- 2
-#>  7 setosa           4 (Intercept)     3.84      0.301    12.8   4.58e-17
-#>  8 setosa           4 Petal.Length    0.796     0.202     3.94  2.60e- 4
-#>  9 setosa           5 (Intercept)     4.46      0.414    10.8   2.15e-14
-#> 10 setosa           5 Petal.Length    0.382     0.274     1.39  1.69e- 1
+#>  1 setosa           1 (Intercept)    5.11       0.402   12.7    5.41e-17
+#>  2 setosa           1 Petal.Length  -0.0205     0.262   -0.0783 9.38e- 1
+#>  3 setosa           2 (Intercept)    4.05       0.462    8.77   1.56e-11
+#>  4 setosa           2 Petal.Length   0.661      0.318    2.08   4.31e- 2
+#>  5 setosa           3 (Intercept)    4.23       0.485    8.71   1.92e-11
+#>  6 setosa           3 Petal.Length   0.525      0.330    1.59   1.18e- 1
+#>  7 setosa           4 (Intercept)    3.98       0.300   13.3    1.14e-17
+#>  8 setosa           4 Petal.Length   0.663      0.205    3.23   2.21e- 3
+#>  9 setosa           5 (Intercept)    3.47       0.505    6.88   1.13e- 8
+#> 10 setosa           5 Petal.Length   1.000      0.348    2.87   6.02e- 3
 #> # … with 50 more rows
 ```

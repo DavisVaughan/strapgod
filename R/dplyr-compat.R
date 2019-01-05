@@ -1,11 +1,9 @@
-# Make virtual groups explicit
-
 #' Force virtual groups to become explicit rows
 #'
-#' When `collect()` is used on a `bootstrapped_df`, the virtual bootstrap groups
+#' When `collect()` is used on a `resampled_df`, the virtual bootstrap groups
 #' are made explicit.
 #'
-#' @param x A `bootstrapped_df`.
+#' @param x A `resampled_df`.
 #' @param id Optional. A single character that specifies a name for a column
 #' containing a sequence from `1:n` for each bootstrap group.
 #' @param original_id Optional. A single character that specifies a name for
@@ -29,7 +27,7 @@
 #' @importFrom dplyr collect n
 #' @importFrom rlang :=
 #' @export
-collect.bootstrapped_df <- function(x, id = NULL, original_id = NULL, ...) {
+collect.resampled_df <- function(x, id = NULL, original_id = NULL, ...) {
 
   data_groups <- attr(x, "groups")
 
@@ -95,8 +93,8 @@ construct_arg_list <- function(.key, original_id) {
 
 #' @importFrom dplyr mutate
 #' @export
-mutate.bootstrapped_df <- function(x, ...) {
-  rlang::abort("Mutating a `bootstrapped_df` is not allowed.", call. = FALSE)
+mutate.resampled_df <- function(x, ...) {
+  rlang::abort("Mutating a `resampled_df` is not allowed.", call. = FALSE)
 }
 
 # Global variables required for devtools::check()
