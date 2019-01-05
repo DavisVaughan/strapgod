@@ -60,7 +60,7 @@ samplify <- function(data, times, size,
 samplify.data.frame <- function(data, times, size,
                                 replace = FALSE, key = ".sample") {
   samplify(
-    data = dplyr::tbl_df(data),
+    data = dplyr::as_tibble(data),
     times = times,
     size = size,
     replace = replace,

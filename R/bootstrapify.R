@@ -51,7 +51,7 @@ bootstrapify <- function(data, times, key = ".bootstrap") {
 
 #' @export
 bootstrapify.data.frame <- function(data, times, key = ".bootstrap") {
-  bootstrapify(dplyr::tbl_df(data), times, key)
+  bootstrapify(dplyr::as_tibble(data), times, key)
 }
 
 #' @export
