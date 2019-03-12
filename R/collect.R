@@ -24,73 +24,89 @@
 #' # originally came from
 #' collect(bootstrapify(iris, 5), original_id = ".original_id")
 #'
-#' @importFrom dplyr collect n
+#' @importFrom dplyr collect
 #' @importFrom rlang :=
 #' @export
 collect.resampled_df <- function(x, id = NULL, original_id = NULL, ...) {
 
-  data_groups <- attr(x, "groups")
+  validate_null_or_single_character(id, "id")
+  validate_null_or_single_character(original_id, "original_id")
 
-  # the only column name that is not in the x and is not .rows is the .key
-  # better way? store .key as attribute?
-  .key <- setdiff(colnames(data_groups), c(colnames(x), ".rows"))
+  group_syms <- dplyr::groups(x)
+  group_tbl <- dplyr::group_data(x)
+  x <- dplyr::ungroup(x)
 
-  # Construct the correct arg list based on whether we include the original id
-  call_args <- construct_arg_list(.key, original_id)
+  # The only column names that are not in the x and are not '.rows' is the .key
+  # Could potentially have multiple bootstrap columns
+  .key <- setdiff(colnames(group_tbl), c(colnames(x), ".rows"))
 
-  # construct add_column() call with the right args inlined
-  add_strap <- rlang::call2("add_column", !!!call_args, .ns = "tibble")
+  # Strip off non-virtual groups
+  .out <- dplyr::select(group_tbl, !!!.key, .rows)
 
-  explicit_group_df <- purrr::map2_dfr(
-    .x = data_groups[[.key]],
-    .y = data_groups[[".rows"]],
-    .f = ~{
-      # evaluate the expr in the context of the correct .x and .y
-      rlang::eval_tidy(add_strap)
-    }
-  )
+  # Order of these calls matters
+  .out <- maybe_use_id(.out, id)
+  .out <- add_straps(.out, x)
+  .out <- maybe_use_original_id(.out, original_id)
 
-  orig_groups <- dplyr::groups(x)
-  attr(x, "groups") <- NULL
+  # Flatten (default unnests all the right things)
+  .out <- tidyr::unnest(.out)
 
-  .out <- dplyr::group_by(explicit_group_df, !!!orig_groups)
+  .out <- dplyr::group_by(.out, !!!group_syms)
 
-  # id = 1:n for each group
+  .out
+}
+
+# ------------------------------------------------------------------------------
+
+# id = 1:n for each group
+maybe_use_id <- function(.out, id) {
+
   if(!is.null(id)) {
-    .out <- dplyr::mutate(.out, !!id := seq_len(n()))
-    # reorder
-    .out <- dplyr::select(.out, !!.key, !!id, dplyr::everything())
+
+    id_col <- lapply(.out[[".rows"]], seq_along)
+
+    .out <- tibble::add_column(.out, !!id := id_col, .before = ".rows")
   }
 
   .out
 }
 
-#' @importFrom rlang expr
-#' @importFrom rlang list2
-construct_arg_list <- function(.key, original_id) {
+# Repeat `x` rows to generate the bootstraps
+# TODO - use vec_slice() for speed?
+add_straps <- function(.out, x) {
 
-  if(is.null(original_id)) {
+  .out[["...x"]] <- lapply(
+    X = .out[[".rows"]],
+    FUN = function(idx) x[idx, , drop = FALSE]
+  )
 
-    call_args <- list2(
-      .data = expr(x[.y,]),
-      !!.key := expr(.x),
-      .before = 1L
-    )
-
-  } else {
-
-    call_args <- list2(
-      .data = expr(x[.y,]),
-      !!.key := expr(.x),
-      !!original_id := expr(.y),
-      .before = 1L
-    )
-
-  }
-
-  call_args
+  .out
 }
 
-# Global variables required for devtools::check()
-# Used to build the call in construct_arg_list()
-utils::globalVariables(c(".x", ".y", "x"))
+maybe_use_original_id <- function(.out, original_id) {
+
+  if (!is.null(original_id)) {
+    .out <- dplyr::rename(.out, !!original_id := .rows)
+  }
+  else {
+    .out[[".rows"]] <- NULL
+  }
+
+  .out
+}
+
+# ------------------------------------------------------------------------------
+
+validate_null_or_single_character <- function(.x, .x_nm) {
+
+  if (is.null(.x)) {
+    return(invisible(.x))
+  }
+
+  if (!rlang::is_scalar_character(.x)) {
+    msg <- paste0("`", .x_nm, "` must be a character of size 1.")
+    rlang::abort(msg)
+  }
+
+  invisible(.x)
+}
