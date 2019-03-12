@@ -91,12 +91,6 @@ construct_arg_list <- function(.key, original_id) {
   call_args
 }
 
-#' @importFrom dplyr mutate
-#' @export
-mutate.resampled_df <- function(x, ...) {
-  rlang::abort("Mutating a `resampled_df` is not allowed.", call. = FALSE)
-}
-
 # Global variables required for devtools::check()
 # Used to build the call in construct_arg_list()
 utils::globalVariables(c(".x", ".y", "x"))
