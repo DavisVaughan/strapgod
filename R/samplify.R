@@ -82,6 +82,12 @@ samplify.data.frame <- function(data, times, size, ...,
 samplify.tbl_df <- function(data, times, size, ...,
                             replace = FALSE, key = ".sample") {
 
+  # additional check for size 1 here
+  validate_is(
+    size, "size", rlang::is_scalar_integerish,
+    "a single integer (for ungrouped data frames)"
+  )
+
   .row_slice_ids <- seq_len(nrow(data))
 
   group_info <- index_sampler(
@@ -98,6 +104,8 @@ samplify.tbl_df <- function(data, times, size, ...,
 #' @export
 samplify.grouped_df <- function(data, times, size, ...,
                                 replace = FALSE, key = ".sample") {
+
+  size <- recycle_size(size, dplyr::n_groups(data))
 
   # extract existing group_info
   group_info <- dplyr::group_data(data)
@@ -173,6 +181,23 @@ check_size <- function (size, n, replace = FALSE) {
   )
 
   stop(sprintf(msg, size, n), call. = FALSE)
+}
+
+recycle_size <- function(.x, .n) {
+
+  .n_x <- length(.x)
+
+  if (.n_x == .n) {
+    return(.x)
+  }
+
+  if (.n_x == 1L) {
+    .x <- rep(.x, times = .n)
+    return(.x)
+  }
+
+  msg <- paste0("`size` must be size 1 or ", .n, " (the number of groups).")
+  rlang::abort(msg)
 }
 
 # ------------------------------------------------------------------------------
