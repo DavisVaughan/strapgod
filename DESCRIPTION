@@ -18,8 +18,6 @@ Imports:
     rlang,
     purrr,
     tibble
-Remotes:
-    tidyverse/dplyr
 Suggests: 
     broom
 URL: https://github.com/DavisVaughan/strapgod
