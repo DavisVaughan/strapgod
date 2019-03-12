@@ -100,3 +100,18 @@ test_that("`replace` must be a bool", {
     "a single logical \\(TRUE/FALSE\\)"
   )
 })
+
+test_that("`size` is recycled as necessary", {
+
+  iris_g <- group_by(iris, Species)
+
+  x <- samplify(iris_g, 2, 5)
+
+  x_gd <- group_data(x)
+
+  expect_equal(
+    unique(vapply(x_gd$.rows, length, integer(1))),
+    5
+  )
+
+})
