@@ -1,5 +1,31 @@
 # ------------------------------------------------------------------------------
-# Supported using the default behavior
+# Supported dplyr functions
+
+# In theory we could let the default `summarise()` do its thing. But if the
+# user did a double `bootstrapify()` call, only one level of it will be removed
+# and the post-summarise() object will still be a resampled_df, even though
+# all of the bootstrap rows have been materialized.
+
+#' @importFrom dplyr summarise
+#' @export
+summarise.resampled_df <- function(.data, ...) {
+  maybe_new_grouped_df(NextMethod())
+}
+
+# ------------------------------------------------------------------------------
+# Supported dplyr functions - Standard evaluation backwards compat
+
+#' @importFrom dplyr summarise_
+#' @export
+summarise_.resampled_df <- function(.data, ..., .dots = list()) {
+  maybe_new_grouped_df(NextMethod())
+}
+
+#' @importFrom dplyr summarize_
+#' @export
+summarize_.resampled_df <- function(.data, ..., .dots = list()) {
+  maybe_new_grouped_df(NextMethod())
+}
 
 # summarise()
 # do()
@@ -10,6 +36,15 @@
 # group_map()
 # group_walk()
 # group_split()
+
+maybe_new_grouped_df <- function(x) {
+
+  if (dplyr::is_grouped_df(x)) {
+    x <- dplyr::new_grouped_df(x = x, groups = dplyr::group_data(x))
+  }
+
+  x
+}
 
 # ------------------------------------------------------------------------------
 # dplyr support
@@ -121,18 +156,6 @@ arrange_.resampled_df <- function(.data, ..., .dots = list()) {
 #' @export
 mutate_.resampled_df <- function(.data, ..., .dots = list()) {
   dplyr::mutate_(collect(.data), ..., .dots = .dots)
-}
-
-#' @importFrom dplyr summarise_
-#' @export
-summarise_.resampled_df <- function(.data, ..., .dots = list()) {
-  dplyr::summarise_(collect(.data), ..., .dots = .dots)
-}
-
-#' @importFrom dplyr summarize_
-#' @export
-summarize_.resampled_df <- function(.data, ..., .dots = list()) {
-  dplyr::summarize_(collect(.data), ..., .dots = .dots)
 }
 
 #' @importFrom dplyr slice_
