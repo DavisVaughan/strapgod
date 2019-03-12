@@ -77,8 +77,8 @@ maybe_use_id <- function(.out, id) {
 add_straps <- function(.out, x) {
 
   .out[["...x"]] <- map(
-    X = .out[[".rows"]],
-    FUN = function(idx) x[idx, , drop = FALSE]
+    .x = .out[[".rows"]],
+    .f = function(idx) x[idx, , drop = FALSE]
   )
 
   .out
