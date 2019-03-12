@@ -19,6 +19,7 @@ Imports:
     rlang,
     tibble
 Suggests: 
-    broom
+    broom,
+    testthat
 URL: https://github.com/DavisVaughan/strapgod
 BugReports: https://github.com/DavisVaughan/strapgod/issues
