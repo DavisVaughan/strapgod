@@ -104,15 +104,19 @@ samplify.grouped_df <- function(data, times, size, ...,
   group_tbl <- dplyr::group_data(data)
   index_list <- group_tbl[[".rows"]]
 
-  new_row_index_tbl <- purrr::map2(index_list, size, ~{
-    index_sampler(
-      .row_slice_ids = .x,
-      times = times,
-      key = key,
-      size = .y,
-      replace = replace
-    )
-  })
+  new_row_index_tbl <- map2(
+    .x = index_list,
+    .y = size,
+    .f = function(.x, .y) {
+      index_sampler(
+        .row_slice_ids = .x,
+        times = times,
+        key = key,
+        size = .y,
+        replace = replace
+      )
+    }
+  )
 
   # overwrite current .rows and unnest
   group_tbl[[".rows"]] <- new_row_index_tbl
