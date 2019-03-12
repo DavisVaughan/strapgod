@@ -93,3 +93,10 @@ test_that("can sample with replacement past the number of rows", {
   )
 
 })
+
+test_that("`replace` must be a bool", {
+  expect_error(
+    samplify(iris, 1, 1, replace = NA),
+    "a single logical \\(TRUE/FALSE\\)"
+  )
+})
