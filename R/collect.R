@@ -64,7 +64,7 @@ maybe_use_id <- function(.out, id) {
 
   if(!is.null(id)) {
 
-    id_col <- lapply(.out[[".rows"]], seq_along)
+    id_col <- map(.out[[".rows"]], seq_along)
 
     .out <- tibble::add_column(.out, !!id := id_col, .before = ".rows")
   }
@@ -76,7 +76,7 @@ maybe_use_id <- function(.out, id) {
 # TODO - use vec_slice() for speed?
 add_straps <- function(.out, x) {
 
-  .out[["...x"]] <- lapply(
+  .out[["...x"]] <- map(
     X = .out[[".rows"]],
     FUN = function(idx) x[idx, , drop = FALSE]
   )
