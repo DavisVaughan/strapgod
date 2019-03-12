@@ -55,6 +55,13 @@ NULL
 #' @export
 samplify <- function(data, times, size, ...,
                      replace = FALSE, key = ".sample") {
+
+  check_empty_dots(...)
+  validate_is_scalar_character(key, "key")
+  validate_is_bool(replace, "replace")
+  validate_is_scalar_positive_integerish(times, "times")
+  validate_is_positive_integerish(size, "size")
+
   UseMethod("samplify")
 }
 
@@ -75,8 +82,6 @@ samplify.data.frame <- function(data, times, size, ...,
 samplify.tbl_df <- function(data, times, size, ...,
                             replace = FALSE, key = ".sample") {
 
-  check_empty_dots(...)
-
   .row_slice_ids <- seq_len(nrow(data))
 
   group_info <- index_sampler(
@@ -93,8 +98,6 @@ samplify.tbl_df <- function(data, times, size, ...,
 #' @export
 samplify.grouped_df <- function(data, times, size, ...,
                                 replace = FALSE, key = ".sample") {
-
-  check_empty_dots(...)
 
   # extract existing group_info
   group_info <- dplyr::group_data(data)
@@ -170,4 +173,43 @@ check_size <- function (size, n, replace = FALSE) {
   )
 
   stop(sprintf(msg, size, n), call. = FALSE)
+}
+
+# ------------------------------------------------------------------------------
+# Validation
+
+validate_is <- function(.x, .x_nm, .is_f, .expected) {
+
+  if (!.is_f(.x)) {
+    msg <- paste0("`", .x_nm, "` must be ", .expected, ".")
+    rlang::abort(msg)
+  }
+
+  invisible(.x)
+}
+
+validate_is_scalar_character <- function(.x, .x_nm) {
+  validate_is(.x, .x_nm, rlang::is_scalar_character, "a single character")
+}
+
+is_bool <- function (x) {
+  rlang::is_logical(x, n = 1) && !is.na(x)
+}
+
+validate_is_bool <- function(.x, .x_nm) {
+  validate_is(.x, .x_nm, is_bool, "a single logical (TRUE/FALSE)")
+}
+
+is_positive <- function(x) {
+  isTRUE(all(x > 0))
+}
+
+validate_is_scalar_positive_integerish <- function(.x, .x_nm) {
+  validate_is(.x, .x_nm, rlang::is_scalar_integerish, "a single integer")
+  validate_is(.x, .x_nm, is_positive, "a positive integer")
+}
+
+validate_is_positive_integerish <- function(.x, .x_nm) {
+  validate_is(.x, .x_nm, rlang::is_integerish, "an integer vector")
+  validate_is(.x, .x_nm, is_positive, "a positive integer vector")
 }
