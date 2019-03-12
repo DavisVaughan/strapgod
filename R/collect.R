@@ -24,8 +24,6 @@
 #' # originally came from
 #' collect(bootstrapify(iris, 5), original_id = ".original_id")
 #'
-#' @importFrom dplyr collect
-#' @importFrom rlang :=
 #' @export
 collect.resampled_df <- function(x, id = NULL, original_id = NULL, ...) {
 
