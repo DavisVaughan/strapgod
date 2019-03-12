@@ -8,7 +8,7 @@ Authors@R:
            email = "davis@rstudio.com")
 Description: Create efficient resampled data frames using virtual groups and 
     the 'group_by()' engine of 'dplyr'.
-License: GPL-2
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
