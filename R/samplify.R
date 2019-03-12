@@ -79,7 +79,7 @@ samplify.tbl_df <- function(data, times, size, ...,
 
   .row_slice_ids <- seq_len(nrow(data))
 
-  groups_tbl <- index_sampler(
+  group_info <- index_sampler(
     .row_slice_ids = .row_slice_ids,
     times = times,
     key = key,
@@ -87,11 +87,7 @@ samplify.tbl_df <- function(data, times, size, ...,
     replace = replace
   )
 
-  # create resampled_df subclass
-  attr(data, "groups") <- groups_tbl
-  class(data) <- c("resampled_df", "grouped_df", class(data))
-
-  data
+  dplyr::new_grouped_df(data, group_info, class = "resampled_df")
 }
 
 #' @export
@@ -100,9 +96,9 @@ samplify.grouped_df <- function(data, times, size, ...,
 
   check_empty_dots(...)
 
-  # extract existing group_tbl
-  group_tbl <- dplyr::group_data(data)
-  index_list <- group_tbl[[".rows"]]
+  # extract existing group_info
+  group_info <- dplyr::group_data(data)
+  index_list <- group_info[[".rows"]]
 
   new_row_index_tbl <- map2(
     .x = index_list,
@@ -119,14 +115,10 @@ samplify.grouped_df <- function(data, times, size, ...,
   )
 
   # overwrite current .rows and unnest
-  group_tbl[[".rows"]] <- new_row_index_tbl
-  group_tbl <- tidyr::unnest(group_tbl)
+  group_info[[".rows"]] <- new_row_index_tbl
+  group_info <- tidyr::unnest(group_info)
 
-  # update groups
-  attr(data, "groups") <- group_tbl
-  class(data) <- c("resampled_df", class(data))
-
-  data
+  dplyr::new_grouped_df(data, group_info, class = "resampled_df")
 }
 
 # ------------------------------------------------------------------------------
