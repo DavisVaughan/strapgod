@@ -1,12 +1,13 @@
 Package: strapgod
-Title: Create bootstrapped data frames for efficient computation
+Title: Resampled Data Frames
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Davis",
            family = "Vaughan",
            role = c("aut", "cre"),
            email = "davis@rstudio.com")
-Description: Create bootstrapped data frames for efficient computation.
+Description: Create efficient resampled data frames using virtual groups and 
+    the 'group_by()' engine of 'dplyr'.
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
