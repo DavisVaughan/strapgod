@@ -4,25 +4,24 @@
 \alias{collect.resampled_df}
 \title{Force virtual groups to become explicit rows}
 \usage{
-\method{collect}{resampled_df}(x, id = NULL, original_id = NULL, ...)
+\method{collect}{resampled_df}(x, ..., id = NULL, original_id = NULL)
 }
 \arguments{
 \item{x}{A \code{resampled_df}.}
+
+\item{...}{Not used.}
 
 \item{id}{Optional. A single character that specifies a name for a column
 containing a sequence from \code{1:n} for each bootstrap group.}
 
 \item{original_id}{Optional. A single character that specifies a name for
 a column containing the original position of the bootstrapped row.}
-
-\item{...}{Other arguments passed on to methods.}
 }
 \description{
 When \code{collect()} is used on a \code{resampled_df}, the virtual bootstrap groups
 are made explicit.
 }
 \examples{
-
 library(dplyr)
 
 # virtual groups become real rows

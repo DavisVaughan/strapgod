@@ -4,14 +4,16 @@
 #' are made explicit.
 #'
 #' @param x A `resampled_df`.
+#'
+#' @param ... Not used.
+#'
 #' @param id Optional. A single character that specifies a name for a column
 #' containing a sequence from `1:n` for each bootstrap group.
+#'
 #' @param original_id Optional. A single character that specifies a name for
 #' a column containing the original position of the bootstrapped row.
-#' @param ... Other arguments passed on to methods.
 #'
 #' @examples
-#'
 #' library(dplyr)
 #'
 #' # virtual groups become real rows
@@ -25,8 +27,9 @@
 #' collect(bootstrapify(iris, 5), original_id = ".original_id")
 #'
 #' @export
-collect.resampled_df <- function(x, id = NULL, original_id = NULL, ...) {
+collect.resampled_df <- function(x, ..., id = NULL, original_id = NULL) {
 
+  check_empty_dots(...)
   validate_null_or_single_character(id, "id")
   validate_null_or_single_character(original_id, "original_id")
 
