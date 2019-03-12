@@ -4,13 +4,15 @@
 \alias{bootstrapify}
 \title{Create a bootstrapped tibble}
 \usage{
-bootstrapify(data, times, key = ".bootstrap")
+bootstrapify(data, times, ..., key = ".bootstrap")
 }
 \arguments{
 \item{data}{A tbl.}
 
 \item{times}{A single integer specifying the number of resamples.
 If the \code{tibble} is grouped, this is the number of resamples per group.}
+
+\item{...}{Not used.}
 
 \item{key}{A single character specifying the name of the virtual group
 that is added.}

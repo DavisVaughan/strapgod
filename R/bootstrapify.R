@@ -45,27 +45,35 @@
 
 #' @rdname bootstrapify
 #' @export
-bootstrapify <- function(data, times, key = ".bootstrap") {
+bootstrapify <- function(data, times, ..., key = ".bootstrap") {
   UseMethod("bootstrapify")
 }
 
 #' @export
-bootstrapify.data.frame <- function(data, times, key = ".bootstrap") {
-  bootstrapify(dplyr::as_tibble(data), times, key)
+bootstrapify.data.frame <- function(data, times, ..., key = ".bootstrap") {
+  bootstrapify(dplyr::as_tibble(data), times, ..., key = key)
 }
 
 #' @export
-bootstrapify.tbl_df <- function(data, times, key = ".bootstrap") {
+bootstrapify.tbl_df <- function(data, times, ..., key = ".bootstrap") {
   samplify(
-    data = data, times = times, size = nrow(data),
-    replace = TRUE, key = key
+    data = data,
+    times = times,
+    size = nrow(data),
+    ...,
+    replace = TRUE,
+    key = key
   )
 }
 
 #' @export
-bootstrapify.grouped_df <- function(data, times, key = ".bootstrap") {
+bootstrapify.grouped_df <- function(data, times, ..., key = ".bootstrap") {
   samplify(
-    data = data, times = times, size = dplyr::group_size(data),
-    replace = TRUE, key = key
+    data = data,
+    times = times,
+    size = dplyr::group_size(data),
+    ...,
+    replace = TRUE,
+    key = key
   )
 }

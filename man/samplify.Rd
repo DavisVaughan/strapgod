@@ -4,7 +4,7 @@
 \alias{samplify}
 \title{Created a resampled tibble}
 \usage{
-samplify(data, times, size, replace = FALSE, key = ".sample")
+samplify(data, times, size, ..., replace = FALSE, key = ".sample")
 }
 \arguments{
 \item{data}{A tbl.}
@@ -13,6 +13,8 @@ samplify(data, times, size, replace = FALSE, key = ".sample")
 If the \code{tibble} is grouped, this is the number of resamples per group.}
 
 \item{size}{A single integer specifying the size of each resample.}
+
+\item{...}{Not used.}
 
 \item{replace}{Whether or not to sample with replacement.}
 

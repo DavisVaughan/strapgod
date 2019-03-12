@@ -15,6 +15,8 @@
 #'
 #' @param size A single integer specifying the size of each resample.
 #'
+#' @param ... Not used.
+#'
 #' @param replace Whether or not to sample with replacement.
 #'
 #' @param key A single character specifying the name of the virtual group
@@ -51,26 +53,29 @@ NULL
 
 #' @rdname samplify
 #' @export
-samplify <- function(data, times, size,
+samplify <- function(data, times, size, ...,
                      replace = FALSE, key = ".sample") {
   UseMethod("samplify")
 }
 
 #' @export
-samplify.data.frame <- function(data, times, size,
+samplify.data.frame <- function(data, times, size, ...,
                                 replace = FALSE, key = ".sample") {
   samplify(
     data = dplyr::as_tibble(data),
     times = times,
     size = size,
+    ...,
     replace = replace,
     key = key
   )
 }
 
 #' @export
-samplify.tbl_df <- function(data, times, size,
+samplify.tbl_df <- function(data, times, size, ...,
                             replace = FALSE, key = ".sample") {
+
+  check_empty_dots(...)
 
   .row_slice_ids <- seq_len(nrow(data))
 
@@ -90,8 +95,10 @@ samplify.tbl_df <- function(data, times, size,
 }
 
 #' @export
-samplify.grouped_df <- function(data, times, size,
+samplify.grouped_df <- function(data, times, size, ...,
                                 replace = FALSE, key = ".sample") {
+
+  check_empty_dots(...)
 
   # extract existing group_tbl
   group_tbl <- dplyr::group_data(data)
