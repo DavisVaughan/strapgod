@@ -12,7 +12,10 @@ samplify(data, times, size, ..., replace = FALSE, key = ".sample")
 \item{times}{A single integer specifying the number of resamples.
 If the \code{tibble} is grouped, this is the number of resamples per group.}
 
-\item{size}{A single integer specifying the size of each resample.}
+\item{size}{A single integer specifying the size of each resample. For a
+grouped data frame, this is also allowed to be an integer vector with size
+equal to the number of groups in \code{data}. This can be helpful when sampling
+without replacement when the number of rows per group is very different.}
 
 \item{...}{Not used.}
 

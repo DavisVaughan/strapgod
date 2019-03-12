@@ -13,7 +13,10 @@
 #' @param times A single integer specifying the number of resamples.
 #' If the `tibble` is grouped, this is the number of resamples per group.
 #'
-#' @param size A single integer specifying the size of each resample.
+#' @param size A single integer specifying the size of each resample. For a
+#' grouped data frame, this is also allowed to be an integer vector with size
+#' equal to the number of groups in `data`. This can be helpful when sampling
+#' without replacement when the number of rows per group is very different.
 #'
 #' @param ... Not used.
 #'
