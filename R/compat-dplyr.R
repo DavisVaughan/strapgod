@@ -90,10 +90,10 @@ group_by.resampled_df <- function(.data, ..., add = FALSE, .drop = FALSE) {
   dplyr::group_by(collect(.data), ..., add = add, .drop = .drop)
 }
 
-#' @export
-ungroup.resampled_df <- function(x, ...) {
-  dplyr::ungroup(collect(.data), ...)
-}
+##' @export
+#ungroup.resampled_df <- function(x, ...) {
+#  dplyr::ungroup(collect(.data), ...)
+#}
 
 # ------------------------------------------------------------------------------
 # Backwards compat support for deprecated standard eval dplyr
