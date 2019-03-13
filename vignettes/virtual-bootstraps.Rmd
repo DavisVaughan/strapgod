@@ -1,0 +1,141 @@
+---
+title: "Virtual Bootstraps"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Virtual Bootstraps}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, message=FALSE, warning=FALSE}
+set.seed(123)
+library(strapgod)
+library(dplyr)
+iris <- as_tibble(iris)
+```
+
+# Introduction
+
+The goal of strapgod is to make it easy to create _virtual groups_ on top of tibbles for use with resampling. This means that your tibble is grouped, but you don't actually "materialize" the groups until you actually need them. By doing this, some computations involving large amounts of bootstraps or resamples can be made much more efficient.
+
+# Creating resampled data frames
+
+There are two core functions that help you generate a `"resampled_df"` object.
+
+`bootstrapify()` takes a data frame and bootstraps the rows of that data frame a set number of `times` to generate the virtual groups.
+
+```{r}
+iris_boot <- bootstrapify(iris, times = 10)
+
+nrow(iris)
+nrow(iris_boot)
+
+iris_boot
+```
+
+What you'll immediately notice is that:
+
+- The tibble still only has 150 rows.
+
+- The tibble is now grouped by `.bootstrap`, which isn't a column in the tibble.
+
+The invisible `.bootstrap` column is the virtual group. It hasn't been materialized (there are still only 150 rows, not 150 * 10 rows), but dplyr still seems to know about it.
+
+`samplify()` is the other function that can generate resampled tibbles. It is a slight generalization of `bootstrapify()` that also allows you to specify the size of each resample, and if you want to resample with replacement or not.
+
+```{r}
+iris_samp <- samplify(iris, times = 10, size = 20, replace = FALSE)
+
+iris_samp
+```
+
+This result:
+
+- Has 10 resamples
+
+- Each one is of size 20
+
+- And the resampling was done without replacement each time
+
+# Resampled summaries
+
+What can you do with these neat resampled data frames? Great question! For one thing, you can `summarise()` the tibble to compute bootstrapped summaries quickly and efficiently.
+
+```{r}
+# without the bootstrap
+iris %>%
+  summarise(
+    mean_length = mean(Sepal.Length)
+  )
+
+# with the bootstrap
+iris %>%
+  bootstrapify(10) %>%
+  summarise(
+    mean_length = mean(Sepal.Length)
+  )
+```
+
+This makes it easy to compute bootstraped estimates of individual statistics, along with bootstrapped standard deviations around those estimates.
+
+```{r}
+iris %>%
+  bootstrapify(10) %>%
+  summarise(mean_length = mean(Sepal.Length)) %>%
+  summarise(
+    bootstrapped_mean = mean(mean_length),
+    bootstrapped_sd   = sd(mean_length)
+  )
+```
+
+If you want, you can take an existing grouped data frame and bootstrapify that as well, allowing you to compute bootstrapped statistics _across_ some other variable.
+
+```{r}
+iris_group_strap <- iris %>%
+  group_by(Species) %>%
+  bootstrapify(100) 
+
+iris_group_strap
+```
+
+Reusing the code from above, we can now compute bootstrapped estimates for the mean `Sepal.Length` of each `Species`, along with standard deviations around those estimates.
+
+```{r}
+iris_group_strap %>%
+  summarise(mean_length = mean(Sepal.Length)) %>%
+  summarise(
+    bootstrapped_mean = mean(mean_length),
+    bootstrapped_sd   = sd(mean_length)
+  )
+```
+
+# Understanding virtual groups
+
+The virtual groups are stored in the `group_data()` metadata of the `"resampled_df"` object. Every grouped data frame has one of these, and they are used internally to power the `group_by()` system.
+
+```{r}
+group_data(iris_boot)
+```
+
+The `.bootstrap` column contains the unique values of the group, and the `.rows` column is a list column, where each element is an integer vector. That integer vector holds the rows that belong to that specific group. So, for `.bootstrap == 1`, there is an integer vector with the 150 rows belonging to that resample.
+
+```{r}
+group_data(iris_boot)$.rows[[1]]
+```
+
+When a call to `collect()` is made, this row index information is used to construct the output. Essentially, we start with the `group_data()` and utilize the `.rows` info to replicate the rows of the original data frame for each group, building up the complete resampled data frame.
+
+```{r}
+collect(iris_boot)
+```
+
+To learn more about `collect()`, and the other supported dplyr functions in strapgod, read the `vignette("dplyr-support", "strapgod")`.

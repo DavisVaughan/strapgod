@@ -23,6 +23,9 @@ Imports:
 Suggests: 
     broom,
     testthat,
-    covr
+    covr,
+    knitr,
+    rmarkdown
 URL: https://github.com/DavisVaughan/strapgod
 BugReports: https://github.com/DavisVaughan/strapgod/issues
+VignetteBuilder: knitr

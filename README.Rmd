@@ -29,195 +29,79 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-The goal of strapgod is to create _virtual groups_ on top of a `tibble` or 
-`grouped_df` that function as resamples of the rows of the data frame. You can
-then perform a `summarise()`, `do()`, or use `group_map()` on this 
-`resampled_df` to perform an efficient resampled / bootstrapped calculation.
+The goal of strapgod is to create _virtual groups_ on top of a `tibble` or `grouped_df` that function as resamples of the rows of the original data frame. You can then efficiently perform various dplyr operations on this `resampled_df`, like: `summarise()`, `do()`, `group_map()`, and more, to easily compute bootstrapped and resampled statistics.
 
 ## Installation
 
 You can install the released version of strapgod from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-# no you cannot
 install.packages("strapgod")
 ```
 
-Install from github with:
+Install the development version from GitHub with:
 
 ``` r
 devtools::install_github("DavisVaughan/strapgod")
 ```
 
+## Learning about strapgod
+
+If you aren't already on the [pkgdown site](https://davisvaughan.github.io/strapgod/), I would encourage starting there. From there, you will be able to click on these two vignettes to learn about working with resampled tibbles.
+
+- `vignette("virtual-bootstraps", "strapgod")`
+
+- `vignette("dplyr-support", "strapgod")`
+
 ## Example
 
-Note how creating a `resampled_df` does not add a new column, or new rows,
-but the groups are modified.
+Create resampled data frames with `bootstrapify()` or `samplify()`.
 
-```{r}
+```{r first-strap, warning=FALSE, message=FALSE}
 library(strapgod)
 library(dplyr)
 set.seed(123)
 
-iris %>%
-  bootstrapify(10)
+bootstrapify(iris, 10)
 ```
 
-You can feed a `resampled_df` into `summarise()` or `do()` to perform
+You can feed a `resampled_df` into `summarise()` or `group_map()` to perform
 efficient bootstrapped computations.
 
-```{r}
+```{r summarise}
 iris %>%
   bootstrapify(10) %>%
   summarise(per_strap_mean = mean(Petal.Width))
 ```
 
-The data can be grouped as well.
+The original data can be grouped as well, and the bootstraps will be created for each group.
 
-```{r}
+```{r summarise-by-group}
 iris %>%
   group_by(Species) %>%
   bootstrapify(10) %>%
-  summarise(per_strap_species_mean = mean(Petal.Width))
+  summarise(per_strap_per_species_mean = mean(Petal.Width))
 ```
 
-## Materializing bootstraps
+## Plotting bootstrapped results
 
-`dplyr::collect()` can be used to make the implicit virtual groups explicit.
+A fun example of using strapgod is to create bootstrapped visualizations quickly and easily for hypothetical outcome plots. 
 
-```{r}
-iris %>%
-  group_by(Species) %>%
-  bootstrapify(10) %>%
-  collect()
-```
-
-You can specify an `id` column to get an in-bootstrap sequence from `1:n`. You 
-can also specify an `original_id` column to retrieve the original row that 
-the bootstrapped row came from.
-
-```{r}
-iris %>%
-  group_by(Species) %>%
-  bootstrapify(10) %>%
-  collect(id = ".id", original_id = ".original_id")
-```
-
-## `samplify()`
-
-For general sampling, use `samplify()`.
-
-```{r}
-iris %>%
-  samplify(times = 5, size = 10, replace = FALSE)
-```
-
-Be careful not to specify a size larger than one of your groups! This will throw
-an error.
-
-```{r, error=TRUE}
-iris_50_5_group_sizes <- iris[1:55,] %>%
-  group_by(Species) %>%
-  group_trim()
-
-count(iris_50_5_group_sizes, Species)
-
-# size = 10 > min_group_size = 5
-iris_50_5_group_sizes %>%
-  samplify(times = 2, size = 10)
-```
-
-Instead, pass a vector of sizes to `samplify()` if this structure is absolutely
-required for your use case.
-
-```{r}
-# size of 10 for the first group
-# size of 5 for the second group
-# total number of rows is 10 * 2 + 5 * 2 = 30
-iris_50_5_group_sizes %>%
-  samplify(times = 2, size = c(10, 5)) %>%
-  collect()
-```
-
-
-## `group_*()` Functions
-
-`dplyr 0.8` adds some more neat group-wise functionality. 
-
-Here is a full walkthrough of some of the ways you can use `bootstrapify()`,
-using a modified version of the examples in [this rsample issue](https://github.com/tidymodels/rsample/issues/52).
-
-```{r}
-suppressPackageStartupMessages({
-  library(strapgod)
-  library(dplyr)
-  library(broom)
-  library(ggplot2)
-  library(purrr)
-  library(tidyr)
-})
-```
-
-### Tidying bootstrapped models 
-
-```{r}
-# without bootstraps
-iris %>%
-  group_by(Species) %>%
-  group_map(~tidy(lm(Sepal.Length ~ Petal.Length, data = .x)))
-
-# with bootstraps
-iris %>%
-  group_by(Species) %>%
-  bootstrapify(10) %>%
-  group_map(~tidy(lm(Sepal.Length ~ Petal.Length, data = .x)))
-```
-
-### Plotting bootstrapped results
-
-```{r bootstrap-plots}
+```{r bootstrap-plots, warning=FALSE, message=FALSE}
 set.seed(123)
+library(ggplot2)
 
 # without bootstrap
 mtcars %>%
   ggplot(aes(hp, mpg)) + 
-  geom_smooth(se = FALSE)
+  geom_smooth(se = FALSE) +
+  ylim(y = c(0, 40))
 
 # with bootstrap
 mtcars %>%
   bootstrapify(10) %>%
   collect() %>%
   ggplot(aes(hp, mpg, group = .bootstrap)) + 
-  geom_smooth(se = FALSE)
-
+  geom_smooth(se = FALSE) +
+  ylim(y = c(0, 40))
 ```
-
-### "Multiple models" workflow
-
-```{r}
-# The nest+mutate+unnest combo
-iris %>% 
-  group_by(Species) %>%
-  bootstrapify(10) %>%
-  group_nest() %>%
-  mutate(
-    model = map(data, ~lm(Sepal.Length ~ Petal.Length, data = .x)),
-    coef = map(model, tidy)
-  ) %>%
-  unnest(coef)
-
-# Using rap  
-library(rap)
-
-iris %>% 
-  group_by(Species) %>%
-  bootstrapify(10) %>%
-  group_nest() %>%
-  # cleaner than mutate+map
-  rap(
-    model = ~lm(Sepal.Length ~ Petal.Length, data = data),
-    coef  = ~tidy(model)
-  ) %>%
-  unnest(coef)
-```
-

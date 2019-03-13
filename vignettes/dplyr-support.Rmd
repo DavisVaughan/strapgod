@@ -1,0 +1,165 @@
+---
+title: "Support for dplyr"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Support for dplyr}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, message=FALSE, warning=FALSE}
+set.seed(123)
+library(strapgod)
+library(dplyr)
+```
+
+# Introduction
+
+As much as possible, strapgod attempts to let you use any dplyr function that you want on the `"resampled_df"` object that is returned by `bootstrapify()` and `samplify()`. Some functions have specialized behavior, like `summarise()`, while most others just call `collect()` to materialize the bootstrap rows before passing on to the underlying dplyr function.
+
+What follows is a list of the dplyr functions that have "special" properties when used on a `"resampled_df"`.
+
+# `collect()`
+
+The most important dplyr function for strapgod is `collect()`. Generally, this has been used to force a computation from a data base query and return the results as a tibble, and it has a similar context here. `collect()` forces the materialization of the virtual groups, and returns the full grouped tibble back to you.
+
+```{r}
+x <- bootstrapify(iris, 10)
+
+# Not materialized
+x
+
+# Materialized
+collect(x)
+```
+
+When calling `collect()` directly, there are two arguments available to extract extra information about the bootstraps. 
+
+`id` adds a sequence of integers from `1:n` for each bootstrap group. It would be equivalent to adding the `row_number()` by group after the `collect()`, but saves some typing.
+
+```{r}
+collect(x, id = ".id")
+```
+
+`original_id` tacks on the original row of the current bootstrap observation. It is generally more useful than `id`, as it provides a way to link the bootstrap rows back to the original data.
+
+```{r}
+collect(x, original_id = ".original_id")
+```
+
+# `summarise()`
+
+The motivation for this package was `summarise()`. It efficiently computes the summary results, only materializing the bootstrap rows as they are needed at the C++ level.
+
+```{r}
+summarise(x, mean_length = mean(Sepal.Length))
+```
+
+You can group by other columns before creating the virtual groups, and `bootstrapify()` will respect those extra groups in the `summarise()` call. Pay attention to how easy it is to go from a non-bootstrapped version to a bootstrapped version. It's just one extra line!
+
+```{r}
+# Non-bootstrapped
+iris %>%
+  group_by(Species) %>%
+  summarise(
+    mean_length_across_species = mean(Sepal.Length)
+  )
+
+# Bootstrapped
+iris %>%
+  group_by(Species) %>%
+  bootstrapify(5) %>%
+  summarise(
+    mean_length_across_species = mean(Sepal.Length)
+  )
+```
+
+# `do()`
+
+While `dplyr::do()` is basically deprecated and has been replaced by `group_map()`, it still has its uses sometimes. Like `summarise()`, `do()` materializes the groups only when they are required. Here we run the same linear model on each bootstrapped set of data.
+
+```{r}
+do(x, model = lm(Sepal.Length ~ Sepal.Width, data = .))
+```
+
+# `group_nest()`
+
+`group_nest()` will materialize the groups so that they become columns in the outer tibble after the nest has been performed.
+
+```{r}
+group_nest(x)
+```
+
+# `group_split()`
+
+`group_split()` allows you to materialize all of the bootstrap tibbles into separate tibbles, all bundled together into a list.
+
+```{r}
+group_split(x) %>% head(n = 3)
+```
+
+You can specify `keep = FALSE` if you never want to see the bootstrap columns.
+
+```{r}
+group_split(x, keep = FALSE) %>% head(n = 3)
+```
+
+# `group_map()`
+
+`group_map()` is similar to `do()`, but (as of dplyr 0.8.0.1) always returns a data frame and gives you access to the non-group and group data separately.
+
+```{r}
+# Just show the first 2 rows of each bootstrap
+group_map(x, ~head(.x, n = 2))
+
+# As you iterate though each group, you have access to that
+# group metadata through `.y` if you need it.
+group_map_group_data <- group_map(x, ~tibble(.g = list(.y)))
+
+group_map_group_data
+
+group_map_group_data$.g[[1]]
+```
+
+Like `do()`, it can be a convenient way to run multiple models as long as you return a data frame from each one.
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  group_map(~ broom::tidy(lm(Petal.Length ~ Sepal.Length, data = .x)))
+```
+
+# `ungroup()`
+
+`ungroup()` will return the original tibble back to you, without materializing the virtual groups.
+
+```{r}
+ungroup(x)
+```
+
+# `as_tibble()`
+
+Like `ungroup()`, you can get the original tibble back by converting it to one explicitly with `as_tibble()`.
+
+```{r}
+as_tibble(x)
+```
+
+# Other dplyr functions
+
+Most other dplyr functions work by first calling `collect()`, and then passing off to the underlying dplyr implementation. This means you can use `mutate()` like so:
+
+```{r}
+mutate(x, mean = mean(Sepal.Length))
+```
+
+This doesn't really get you anything in terms of speed, but can be convenient as an automatic way to convert back to a tibble and keep going with your workflow.
