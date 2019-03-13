@@ -134,3 +134,128 @@ test_that("slice()", {
     2
   )
 })
+
+test_that("full_join()", {
+
+  mini_iris <- iris[1:20, 1:2]
+  x <- bootstrapify(mini_iris, 2)
+  y <- tibble(Sepal.Length = 100, new = 1)
+
+  x_fj <- full_join(x, y, by = "Sepal.Length")
+
+  expect_equal(
+    nrow(x_fj),
+    41
+  )
+
+  expect_equal(
+    x_fj$new,
+    c(rep(NA_real_, 40), 1)
+  )
+
+  expect_equal(
+    colnames(x_fj),
+    c(".bootstrap", "Sepal.Length", "Sepal.Width", "new")
+  )
+
+})
+
+test_that("inner_join()", {
+
+  mini_iris <- iris[1:20, 1:2]
+  x <- bootstrapify(mini_iris, 2)
+  y <- tibble(Sepal.Length = 100, new = 1)
+
+  x_ij <- inner_join(x, y, by = "Sepal.Length")
+
+  expect_equal(
+    nrow(x_ij),
+    0
+  )
+
+  expect_equal(
+    colnames(x_ij),
+    c(".bootstrap", "Sepal.Length", "Sepal.Width", "new")
+  )
+
+})
+
+test_that("left_join()", {
+
+  mini_iris <- iris[1:20, 1:2]
+  x <- bootstrapify(mini_iris, 2)
+  y <- tibble(Sepal.Length = 100, new = 1)
+
+  x_lj <- left_join(x, y, by = "Sepal.Length")
+
+  expect_equal(
+    nrow(x_lj),
+    40
+  )
+
+  expect_equal(
+    x_lj$new,
+    rep(NA_real_, times = 40)
+  )
+
+  expect_equal(
+    colnames(x_lj),
+    c(".bootstrap", "Sepal.Length", "Sepal.Width", "new")
+  )
+
+})
+
+test_that("right_join()", {
+
+  mini_iris <- iris[1:20, 1:2]
+  x <- bootstrapify(mini_iris, 2)
+  y <- tibble(Sepal.Length = 100, new = 1)
+
+  x_rj <- right_join(x, y, by = "Sepal.Length")
+
+  expect_equal(
+    nrow(x_rj),
+    1
+  )
+
+  expect_equal(
+    x_rj$new,
+    1
+  )
+
+  expect_equal(
+    colnames(x_rj),
+    c(".bootstrap", "Sepal.Length", "Sepal.Width", "new")
+  )
+
+})
+
+test_that("anti_join()", {
+
+  mini_iris <- iris[1:20, 1:2]
+  x <- bootstrapify(mini_iris, 2)
+  y <- tibble(Sepal.Length = 100, new = 1)
+
+  x_aj <- anti_join(x, y, by = "Sepal.Length")
+
+  expect_equal(
+    x_aj,
+    collect(x)
+  )
+
+})
+
+test_that("semi_join()", {
+
+  mini_iris <- iris[1:20, 1:2]
+  x <- bootstrapify(mini_iris, 2)
+  y <- tibble(Sepal.Length = 100, new = 1)
+
+  x_sj <- semi_join(x, y, by = "Sepal.Length")
+
+  expect_equal(
+    x_sj,
+    collect(x)[0,]
+  )
+
+})

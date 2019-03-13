@@ -64,6 +64,8 @@ group_indices.resampled_df <- function(.data, ...) {
 # ------------------------------------------------------------------------------
 # Interesting dplyr functions - Standard evaluation backwards compat
 
+# nocov start
+
 #' @importFrom dplyr summarise_
 #' @export
 summarise_.resampled_df <- function(.data, ..., .dots = list()) {
@@ -75,6 +77,8 @@ summarise_.resampled_df <- function(.data, ..., .dots = list()) {
 group_indices_.resampled_df <- function(.data, ..., .dots = list()) {
   dplyr::group_indices_(collect(.data), ..., .dots = list())
 }
+
+# nocov end
 
 # ------------------------------------------------------------------------------
 # dplyr support
@@ -181,6 +185,8 @@ group_by.resampled_df <- function(.data, ..., add = FALSE, .drop = FALSE) {
 # ------------------------------------------------------------------------------
 # Backwards compat support for deprecated standard eval dplyr
 
+# nocov start
+
 # Only a few of them need it. arrange_.grouped_df()
 # directly calls arrange_impl() causing a problem.
 
@@ -201,6 +207,8 @@ mutate_.resampled_df <- function(.data, ..., .dots = list()) {
 slice_.resampled_df <- function(.data, ..., .dots = list()) {
   dplyr::slice_(collect(.data), ..., .dots = .dots)
 }
+
+# nocov end
 
 # ------------------------------------------------------------------------------
 # Util
