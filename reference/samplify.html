@@ -163,17 +163,25 @@ that is added.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>resampled_df</code> with an extra group specified by <code>key</code>.</p>
+    <p>A <code>resampled_df</code> with an extra group specified by the <code>key</code>.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Currently you can use <code><a href='https://dplyr.tidyverse.org/reference/summarise.html'>dplyr::summarise()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/do.html'>dplyr::do()</a></code>, and the group
-manipulation functions: <code><a href='https://dplyr.tidyverse.org/reference/group_map.html'>dplyr::group_map()</a></code>, <code><a href='https://dplyr.tidyverse.org/reference/group_map.html'>dplyr::group_walk()</a></code>,
-<code><a href='https://dplyr.tidyverse.org/reference/group_nest.html'>dplyr::group_nest()</a></code> and <code><a href='https://dplyr.tidyverse.org/reference/group_split.html'>dplyr::group_split()</a></code> on a <code>resampled_df</code>.</p>
+    <p>The following functions have special / interesting behavior when used with
+a <code>resampled_df</code>:</p><ul>
+<li><p><code><a href='https://dplyr.tidyverse.org/reference/compute.html'>dplyr::collect()</a></code></p></li>
+<li><p><code><a href='https://dplyr.tidyverse.org/reference/summarise.html'>dplyr::summarise()</a></code></p></li>
+<li><p><code><a href='https://dplyr.tidyverse.org/reference/do.html'>dplyr::do()</a></code></p></li>
+<li><p><code><a href='https://dplyr.tidyverse.org/reference/group_map.html'>dplyr::group_map()</a></code></p></li>
+<li><p><code><a href='https://dplyr.tidyverse.org/reference/group_map.html'>dplyr::group_walk()</a></code></p></li>
+<li><p><code><a href='https://dplyr.tidyverse.org/reference/group_nest.html'>dplyr::group_nest()</a></code></p></li>
+<li><p><code><a href='https://dplyr.tidyverse.org/reference/group_split.html'>dplyr::group_split()</a></code></p></li>
+</ul>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other virtual samplers: <code><a href='bootstrapify.html'>bootstrapify</a></code></p></div>
+    <div class='dont-index'><p><code><a href='collect.resampled_df.html'>collect.resampled_df()</a></code></p>
+<p>Other virtual samplers: <code><a href='bootstrapify.html'>bootstrapify</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
