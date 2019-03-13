@@ -101,8 +101,7 @@
 </div>
 <div id="collect" class="section level1">
 <h1 class="hasAnchor">
-<a href="#collect" class="anchor"></a><code><a href="https://dplyr.tidyverse.org/reference/compute.html">collect()</a></code>
-</h1>
+<a href="#collect" class="anchor"></a>collect()</h1>
 <p>The most important dplyr function for strapgod is <code><a href="https://dplyr.tidyverse.org/reference/compute.html">collect()</a></code>. Generally, this has been used to force a computation from a data base query and return the results as a tibble, and it has a similar context here. <code><a href="https://dplyr.tidyverse.org/reference/compute.html">collect()</a></code> forces the materialization of the virtual groups, and returns the full grouped tibble back to you.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bootstrapify.html">bootstrapify</a></span>(iris, <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"></a>
@@ -180,8 +179,7 @@
 </div>
 <div id="summarise" class="section level1">
 <h1 class="hasAnchor">
-<a href="#summarise" class="anchor"></a><code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code>
-</h1>
+<a href="#summarise" class="anchor"></a>summarise()</h1>
 <p>The motivation for this package was <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code>. It efficiently computes the summary results, only materializing the bootstrap rows as they are needed at the C++ level.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(x, <span class="dt">mean_length =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(Sepal.Length))</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; # A tibble: 10 x 2</span></a>
@@ -240,8 +238,7 @@
 </div>
 <div id="do" class="section level1">
 <h1 class="hasAnchor">
-<a href="#do" class="anchor"></a><code><a href="https://dplyr.tidyverse.org/reference/do.html">do()</a></code>
-</h1>
+<a href="#do" class="anchor"></a>do()</h1>
 <p>While <code><a href="https://dplyr.tidyverse.org/reference/do.html">dplyr::do()</a></code> is basically deprecated and has been replaced by <code><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_map()</a></code>, it still has its uses sometimes. Like <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/do.html">do()</a></code> materializes the groups only when they are required. Here we run the same linear model on each bootstrapped set of data.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/do.html">do</a></span>(x, <span class="dt">model =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/lm">lm</a></span>(Sepal.Length <span class="op">~</span><span class="st"> </span>Sepal.Width, <span class="dt">data =</span> .))</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; Source: local data frame [10 x 2]</span></a>
@@ -263,8 +260,7 @@
 </div>
 <div id="group_nest" class="section level1">
 <h1 class="hasAnchor">
-<a href="#group_nest" class="anchor"></a><code><a href="https://dplyr.tidyverse.org/reference/group_nest.html">group_nest()</a></code>
-</h1>
+<a href="#group_nest" class="anchor"></a>group_nest()</h1>
 <p><code><a href="https://dplyr.tidyverse.org/reference/group_nest.html">group_nest()</a></code> will materialize the groups so that they become columns in the outer tibble after the nest has been performed.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_nest.html">group_nest</a></span>(x)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; # A tibble: 10 x 2</span></a>
@@ -283,8 +279,7 @@
 </div>
 <div id="group_split" class="section level1">
 <h1 class="hasAnchor">
-<a href="#group_split" class="anchor"></a><code><a href="https://dplyr.tidyverse.org/reference/group_split.html">group_split()</a></code>
-</h1>
+<a href="#group_split" class="anchor"></a>group_split()</h1>
 <p><code><a href="https://dplyr.tidyverse.org/reference/group_split.html">group_split()</a></code> allows you to materialize all of the bootstrap tibbles into separate tibbles, all bundled together into a list.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_split.html">group_split</a></span>(x) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="dt">n =</span> <span class="dv">3</span>)</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; [[1]]</span></a>
@@ -386,8 +381,7 @@
 </div>
 <div id="group_map" class="section level1">
 <h1 class="hasAnchor">
-<a href="#group_map" class="anchor"></a><code><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_map()</a></code>
-</h1>
+<a href="#group_map" class="anchor"></a>group_map()</h1>
 <p><code><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_map()</a></code> is similar to <code><a href="https://dplyr.tidyverse.org/reference/do.html">do()</a></code>, but (as of dplyr 0.8.0.1) always returns a data frame and gives you access to the non-group and group data separately.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># Just show the first 2 rows of each bootstrap</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_map</a></span>(x, <span class="op">~</span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(.x, <span class="dt">n =</span> <span class="dv">2</span>))</a>
@@ -458,8 +452,7 @@
 </div>
 <div id="ungroup" class="section level1">
 <h1 class="hasAnchor">
-<a href="#ungroup" class="anchor"></a><code><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup()</a></code>
-</h1>
+<a href="#ungroup" class="anchor"></a>ungroup()</h1>
 <p><code><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup()</a></code> will return the original tibble back to you, without materializing the virtual groups.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>(x)</a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; # A tibble: 150 x 5</span></a>
@@ -479,8 +472,7 @@
 </div>
 <div id="as_tibble" class="section level1">
 <h1 class="hasAnchor">
-<a href="#as_tibble" class="anchor"></a><code><a href="https://dplyr.tidyverse.org/reference/reexports.html">as_tibble()</a></code>
-</h1>
+<a href="#as_tibble" class="anchor"></a>as_tibble()</h1>
 <p>Like <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup()</a></code>, you can get the original tibble back by converting it to one explicitly with <code><a href="https://dplyr.tidyverse.org/reference/reexports.html">as_tibble()</a></code>.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">as_tibble</a></span>(x)</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; # A tibble: 150 x 5</span></a>
@@ -528,14 +520,14 @@
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#introduction">Introduction</a></li>
-      <li><a href="#collect"><code><a href="https://dplyr-tidyverse-org/reference/compute-html">collect()</a></code></a></li>
-      <li><a href="#summarise"><code><a href="https://dplyr-tidyverse-org/reference/summarise-html">summarise()</a></code></a></li>
-      <li><a href="#do"><code><a href="https://dplyr-tidyverse-org/reference/do-html">do()</a></code></a></li>
-      <li><a href="#group_nest"><code><a href="https://dplyr-tidyverse-org/reference/group_nest-html">group_nest()</a></code></a></li>
-      <li><a href="#group_split"><code><a href="https://dplyr-tidyverse-org/reference/group_split-html">group_split()</a></code></a></li>
-      <li><a href="#group_map"><code><a href="https://dplyr-tidyverse-org/reference/group_map-html">group_map()</a></code></a></li>
-      <li><a href="#ungroup"><code><a href="https://dplyr-tidyverse-org/reference/group_by-html">ungroup()</a></code></a></li>
-      <li><a href="#as_tibble"><code><a href="https://dplyr-tidyverse-org/reference/reexports-html">as_tibble()</a></code></a></li>
+      <li><a href="#collect">collect()</a></li>
+      <li><a href="#summarise">summarise()</a></li>
+      <li><a href="#do">do()</a></li>
+      <li><a href="#group_nest">group_nest()</a></li>
+      <li><a href="#group_split">group_split()</a></li>
+      <li><a href="#group_map">group_map()</a></li>
+      <li><a href="#ungroup">ungroup()</a></li>
+      <li><a href="#as_tibble">as_tibble()</a></li>
       <li><a href="#other-dplyr-functions">Other dplyr functions</a></li>
       </ul>
 </div>
