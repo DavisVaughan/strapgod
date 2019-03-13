@@ -159,3 +159,13 @@ mtcars %>%
 ```
 
 <img src="man/figures/README-bootstrap-plots-2.png" width="100%" />
+
+## In the wild
+
+  - Claus Wilke has used strapgod to power some pieces of his
+    [ungeviz](https://github.com/wilkelab/ungeviz) package for
+    visualizing uncertainty.
+
+  - You can watch Claus’s
+    [rstudio::conf 2019](https://resources.rstudio.com/rstudio-conf-2019/visualizing-uncertainty-with-hypothetical-outcomes-plots)
+    talk to see ungeviz and strapgod in action.
