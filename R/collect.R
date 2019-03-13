@@ -33,67 +33,57 @@ collect.resampled_df <- function(x, ..., id = NULL, original_id = NULL) {
   validate_null_or_single_character(id, "id")
   validate_null_or_single_character(original_id, "original_id")
 
-  group_syms <- dplyr::groups(x)
-  group_tbl <- dplyr::group_data(x)
-  x <- dplyr::ungroup(x)
+  # Materialize groups
+  .out <- dplyr::group_map(x, ~.x)
 
-  # The only column names that are not in the x and are not '.rows' is the .key
-  # Could potentially have multiple bootstrap columns
-  .key <- setdiff(colnames(group_tbl), c(colnames(x), ".rows"))
+  # Setup holder for optional columns
+  optional_cols <- list()
 
-  # Strip off non-virtual groups
-  .out <- dplyr::select(group_tbl, !!!.key, .rows)
+  # Maybe add ID column
+  if (!is.null(id)) {
+    id <- rlang::sym(id)
 
-  # Order of these calls matters
-  .out <- maybe_use_id(.out, id)
-  .out <- add_straps(.out, x)
-  .out <- maybe_use_original_id(.out, original_id)
+    .out <- add_id(.out, id)
 
-  # Flatten (default unnests all the right things)
-  .out <- tidyr::unnest(.out)
+    optional_cols <- c(optional_cols, id)
+  }
 
-  .out <- dplyr::group_by(.out, !!!group_syms)
+  # Maybe add original ID column
+  if (!is.null(original_id)) {
+    original_id <- rlang::sym(original_id)
+
+    .out <- add_original_id(.out, x, original_id)
+
+    optional_cols <- c(optional_cols, original_id)
+  }
+
+  # Reorder to groups, optionals, everything else
+  .out <- dplyr::select(
+    .out,
+    dplyr::group_cols(),
+    !!! optional_cols,
+    dplyr::everything()
+  )
 
   .out
 }
 
 # ------------------------------------------------------------------------------
 
-# id = 1:n for each group
-maybe_use_id <- function(.out, id) {
-
-  if(!is.null(id)) {
-
-    id_col <- map(.out[[".rows"]], seq_along)
-
-    .out <- tibble::add_column(.out, !!id := id_col, .before = ".rows")
-  }
-
-  .out
+# For each group, add the id
+add_id <- function(.out, id) {
+  dplyr::mutate(.out, !!id := dplyr::row_number())
 }
 
-# Repeat `x` rows to generate the bootstraps
-# TODO - use vec_slice() for speed?
-add_straps <- function(.out, x) {
+# Extract the original row indices per group, then flatten
+# into an int vector and add that as a column
+# Order _should_ always be correct
+add_original_id <- function(.out, x, original_id) {
+  group_tbl <- dplyr::group_data(x)
 
-  .out[["...x"]] <- map(
-    .x = .out[[".rows"]],
-    .f = function(idx) x[idx, , drop = FALSE]
-  )
+  original_index <- rlang::flatten_int(group_tbl[[".rows"]])
 
-  .out
-}
-
-maybe_use_original_id <- function(.out, original_id) {
-
-  if (!is.null(original_id)) {
-    .out <- dplyr::rename(.out, !!original_id := .rows)
-  }
-  else {
-    .out[[".rows"]] <- NULL
-  }
-
-  .out
+  tibble::add_column(.out, !!original_id := original_index)
 }
 
 # ------------------------------------------------------------------------------
