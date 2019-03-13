@@ -4,7 +4,10 @@ language: r
 sudo: false
 cache: packages
 
-before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
+before_cache:
+  - Rscript -e 'remotes::install_cran("pkgdown")'
+  # For the README
+  - Rscript -e 'remotes::install_cran("ggplot2")'
 
 matrix:
   include:
