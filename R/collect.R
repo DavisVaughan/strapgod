@@ -73,7 +73,8 @@ maybe_use_id <- function(.out, id) {
 }
 
 # Repeat `x` rows to generate the bootstraps
-# TODO - use vec_slice() for speed?
+# Does vctrs::vec_slice() actually speed this up?
+# Limited benchmarking seemed inconclusive
 add_straps <- function(.out, x) {
 
   .out[["...x"]] <- map(
