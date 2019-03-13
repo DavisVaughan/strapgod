@@ -29,7 +29,7 @@ The goal of strapgod is to make it easy to create _virtual groups_ on top of tib
 
 # Creating resampled data frames
 
-There are two core functions that help you generate a `"resampled_df"` object.
+There are two core functions that help you generate a `resampled_df` object.
 
 `bootstrapify()` takes a data frame and bootstraps the rows of that data frame a set number of `times` to generate the virtual groups.
 
@@ -85,7 +85,7 @@ iris %>%
   )
 ```
 
-This makes it easy to compute bootstraped estimates of individual statistics, along with bootstrapped standard deviations around those estimates.
+This makes it easy to compute bootstrapped estimates of individual statistics, along with bootstrapped standard deviations around those estimates.
 
 ```{r}
 iris %>%
@@ -120,19 +120,19 @@ iris_group_strap %>%
 
 # Understanding virtual groups
 
-The virtual groups are stored in the `group_data()` metadata of the `"resampled_df"` object. Every grouped data frame has one of these, and they are used internally to power the `group_by()` system.
+The virtual groups are stored in the `group_data()` metadata of the `resampled_df` object. Every grouped data frame has one of these, and they are used internally to power the dplyr `group_by()` system.
 
 ```{r}
 group_data(iris_boot)
 ```
 
-The `.bootstrap` column contains the unique values of the group, and the `.rows` column is a list column, where each element is an integer vector. That integer vector holds the rows that belong to that specific group. So, for `.bootstrap == 1`, there is an integer vector with the 150 rows belonging to that resample.
+The `.bootstrap` column contains the unique values of the groups, and the `.rows` column is a list column, where each element is an integer vector. That integer vector holds the rows that belong to that specific group. So, for `.bootstrap == 1`, there is a vector with 150 integers identifying the rows belonging to that resample.
 
 ```{r}
 group_data(iris_boot)$.rows[[1]]
 ```
 
-When a call to `collect()` is made, this row index information is used to construct the output. Essentially, we start with the `group_data()` and utilize the `.rows` info to replicate the rows of the original data frame for each group, building up the complete resampled data frame.
+When a call to `collect()` is made, this row index information is used to construct the output. Essentially, we start with the `group_data()` and utilize the `.rows` info to replicate the rows of the original data frame for each group, building up the complete resampled data frame. Notice how we now have the `150 * 10 = 1500` rows from the 10 bootstraps.
 
 ```{r}
 collect(iris_boot)

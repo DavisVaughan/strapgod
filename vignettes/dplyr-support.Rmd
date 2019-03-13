@@ -24,9 +24,9 @@ library(dplyr)
 
 # Introduction
 
-As much as possible, strapgod attempts to let you use any dplyr function that you want on the `"resampled_df"` object that is returned by `bootstrapify()` and `samplify()`. Some functions have specialized behavior, like `summarise()`, while most others just call `collect()` to materialize the bootstrap rows before passing on to the underlying dplyr function.
+As much as possible, strapgod attempts to let you use any dplyr function that you want on the `resampled_df` object that is returned by `bootstrapify()` and `samplify()`. Some functions have specialized behavior, like `summarise()`, while most others just call `collect()` to materialize the bootstrap rows before passing on to the underlying dplyr function.
 
-What follows is a list of the dplyr functions that have "special" properties when used on a `"resampled_df"`.
+What follows is a list of the dplyr functions that have "special" properties when used on a `resampled_df`.
 
 # collect()
 
@@ -99,6 +99,12 @@ do(x, model = lm(Sepal.Length ~ Sepal.Width, data = .))
 group_nest(x)
 ```
 
+You can set `keep = TRUE` to include the groups in the inner tibbles as well.
+
+```{r}
+group_nest(x, keep = TRUE)$data[[1]]
+```
+
 # group_split()
 
 `group_split()` allows you to materialize all of the bootstrap tibbles into separate tibbles, all bundled together into a list.
@@ -122,7 +128,7 @@ group_split(x, keep = FALSE) %>% head(n = 3)
 group_map(x, ~head(.x, n = 2))
 
 # As you iterate though each group, you have access to that
-# group metadata through `.y` if you need it.
+# group's metadata through `.y` if you need it.
 group_map_group_data <- group_map(x, ~tibble(.g = list(.y)))
 
 group_map_group_data
