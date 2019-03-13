@@ -1,5 +1,15 @@
 # ------------------------------------------------------------------------------
-# Supported dplyr functions
+# Interesting dplyr functions
+
+# summarise()
+# do()
+# ungroup()
+# group_nest()
+# group_map()
+# group_walk()
+# group_split()
+# group_keys()
+# group_indices()
 
 # In theory we could let the default `summarise()` do its thing. But if the
 # user did a double `bootstrapify()` call, only one level of it will be removed
@@ -12,8 +22,47 @@ summarise.resampled_df <- function(.data, ...) {
   maybe_new_grouped_df(NextMethod())
 }
 
+# For `group_nest()`, the default method works unless `keep = TRUE`. In that
+# case, we need to `collect()` so the groups are available to be 'kept'.
+
+#' @importFrom dplyr group_nest
+#' @export
+group_nest.resampled_df <- function(.tbl, ..., .key = "data", keep = FALSE) {
+
+  if (keep) {
+    dplyr::group_nest(collect(.tbl), ..., .key = .key, keep = keep)
+  }
+  else {
+    NextMethod()
+  }
+
+}
+
+# Same idea as group_nest()
+
+#' @importFrom dplyr group_split
+#' @export
+group_split.resampled_df <- function(.tbl, ..., keep = TRUE) {
+
+  if (keep) {
+    dplyr::group_split(collect(.tbl), ..., keep = keep)
+  }
+  else {
+    NextMethod()
+  }
+
+}
+
+# `group_indices()` returns garbage unless we `collect()` first
+
+#' @importFrom dplyr group_indices
+#' @export
+group_indices.resampled_df <- function(.data, ...) {
+  dplyr::group_indices(collect(.data), ...)
+}
+
 # ------------------------------------------------------------------------------
-# Supported dplyr functions - Standard evaluation backwards compat
+# Interesting dplyr functions - Standard evaluation backwards compat
 
 #' @importFrom dplyr summarise_
 #' @export
@@ -25,25 +74,6 @@ summarise_.resampled_df <- function(.data, ..., .dots = list()) {
 #' @export
 summarize_.resampled_df <- function(.data, ..., .dots = list()) {
   maybe_new_grouped_df(NextMethod())
-}
-
-# summarise()
-# do()
-
-# ungroup()
-
-# group_nest()
-# group_map()
-# group_walk()
-# group_split()
-
-maybe_new_grouped_df <- function(x) {
-
-  if (dplyr::is_grouped_df(x)) {
-    x <- dplyr::new_grouped_df(x = x, groups = dplyr::group_data(x))
-  }
-
-  x
 }
 
 # ------------------------------------------------------------------------------
@@ -137,7 +167,15 @@ slice.resampled_df <- function(.data, ...) {
 #' @importFrom dplyr group_by
 #' @export
 group_by.resampled_df <- function(.data, ..., add = FALSE, .drop = FALSE) {
-  dplyr::group_by(collect(.data), ..., add = add, .drop = .drop)
+
+  if (add) {
+    .data <- collect(.data)
+  }
+  else {
+    .data <- dplyr::ungroup(.data)
+  }
+
+ dplyr::group_by(.data, ..., add = add, .drop = .drop)
 }
 
 # ------------------------------------------------------------------------------
@@ -162,4 +200,16 @@ mutate_.resampled_df <- function(.data, ..., .dots = list()) {
 #' @export
 slice_.resampled_df <- function(.data, ..., .dots = list()) {
   dplyr::slice_(collect(.data), ..., .dots = .dots)
+}
+
+# ------------------------------------------------------------------------------
+# Util
+
+maybe_new_grouped_df <- function(x) {
+
+  if (dplyr::is_grouped_df(x)) {
+    x <- dplyr::new_grouped_df(x = x, groups = dplyr::group_data(x))
+  }
+
+  x
 }
