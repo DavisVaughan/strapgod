@@ -24,10 +24,10 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 ## Introduction
 
 The goal of strapgod is to create *virtual groups* on top of a `tibble`
-or `grouped_df` that function as resamples of the rows of the original
-data frame. You can then efficiently perform various dplyr operations on
-this `resampled_df`, like: `summarise()`, `do()`, `group_map()`, and
-more, to easily compute bootstrapped and resampled statistics.
+or `grouped_df` as a way of resampling the original data frame. You can
+then efficiently perform various dplyr operations on this
+`resampled_df`, like: `summarise()`, `do()`, `group_map()`, and more, to
+easily compute bootstrapped and resampled statistics.
 
 ## Installation
 
@@ -58,6 +58,9 @@ vignettes to learn about working with resampled tibbles.
 ## Example
 
 Create resampled data frames with `bootstrapify()` or `samplify()`.
+Notice how we grouped by the *virtual* column, `.bootstrap` and there
+are still only 150 rows even though we bootstrapped this dataset 10
+times.
 
 ``` r
 library(strapgod)
@@ -145,10 +148,9 @@ mtcars %>%
   ylim(y = c(0, 40))
 ```
 
-<img src="man/figures/README-bootstrap-plots-1.png" width="100%" />
+<img src="man/figures/README-non-bootstrap-plots-1.png" width="100%" />
 
 ``` r
-
 # with bootstrap
 mtcars %>%
   bootstrapify(10) %>%
@@ -158,7 +160,7 @@ mtcars %>%
   ylim(y = c(0, 40))
 ```
 
-<img src="man/figures/README-bootstrap-plots-2.png" width="100%" />
+<img src="man/figures/README-bootstrap-plots-1.png" width="100%" />
 
 ## In the wild
 

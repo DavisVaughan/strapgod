@@ -29,7 +29,7 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-The goal of strapgod is to create _virtual groups_ on top of a `tibble` or `grouped_df` that function as resamples of the rows of the original data frame. You can then efficiently perform various dplyr operations on this `resampled_df`, like: `summarise()`, `do()`, `group_map()`, and more, to easily compute bootstrapped and resampled statistics.
+The goal of strapgod is to create _virtual groups_ on top of a `tibble` or `grouped_df` as a way of resampling the original data frame. You can then efficiently perform various dplyr operations on this `resampled_df`, like: `summarise()`, `do()`, `group_map()`, and more, to easily compute bootstrapped and resampled statistics.
 
 ## Installation
 
@@ -55,7 +55,7 @@ If you aren't already on the [pkgdown site](https://davisvaughan.github.io/strap
 
 ## Example
 
-Create resampled data frames with `bootstrapify()` or `samplify()`.
+Create resampled data frames with `bootstrapify()` or `samplify()`. Notice how we grouped by the _virtual_ column, `.bootstrap` and there are still only 150 rows even though we bootstrapped this dataset 10 times.
 
 ```{r first-strap, warning=FALSE, message=FALSE}
 library(strapgod)
@@ -87,7 +87,7 @@ iris %>%
 
 A fun example of using strapgod is to create bootstrapped visualizations quickly and easily for hypothetical outcome plots. 
 
-```{r bootstrap-plots, warning=FALSE, message=FALSE}
+```{r non-bootstrap-plots, warning=FALSE, message=FALSE}
 set.seed(123)
 library(ggplot2)
 
@@ -96,7 +96,9 @@ mtcars %>%
   ggplot(aes(hp, mpg)) + 
   geom_smooth(se = FALSE) +
   ylim(y = c(0, 40))
+```
 
+```{r bootstrap-plots, warning=FALSE, message=FALSE}
 # with bootstrap
 mtcars %>%
   bootstrapify(10) %>%
