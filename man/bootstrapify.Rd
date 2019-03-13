@@ -18,15 +18,23 @@ If the \code{tibble} is grouped, this is the number of resamples per group.}
 that is added.}
 }
 \value{
-A \code{resampled_df} with an extra group specified by \code{key}.
+A \code{resampled_df} with an extra group specified by the \code{key}.
 }
 \description{
 \code{bootstrapify()} creates a bootstrapped tibble with \emph{virtual groups}.
 }
 \details{
-Currently you can use \code{\link[dplyr:summarise]{dplyr::summarise()}}, \code{\link[dplyr:do]{dplyr::do()}}, and the group
-manipulation functions: \code{\link[dplyr:group_map]{dplyr::group_map()}}, \code{\link[dplyr:group_walk]{dplyr::group_walk()}},
-\code{\link[dplyr:group_nest]{dplyr::group_nest()}} and \code{\link[dplyr:group_split]{dplyr::group_split()}} on a \code{resampled_df}.
+The following functions have special / interesting behavior when used with
+a \code{resampled_df}:
+\itemize{
+\item \code{\link[dplyr:collect]{dplyr::collect()}}
+\item \code{\link[dplyr:summarise]{dplyr::summarise()}}
+\item \code{\link[dplyr:do]{dplyr::do()}}
+\item \code{\link[dplyr:group_map]{dplyr::group_map()}}
+\item \code{\link[dplyr:group_walk]{dplyr::group_walk()}}
+\item \code{\link[dplyr:group_nest]{dplyr::group_nest()}}
+\item \code{\link[dplyr:group_split]{dplyr::group_split()}}
+}
 }
 \examples{
 library(dplyr)
@@ -59,6 +67,8 @@ collect(straps)
 
 }
 \seealso{
+\code{\link[=collect.resampled_df]{collect.resampled_df()}}
+
 Other virtual samplers: \code{\link{samplify}}
 }
 \concept{virtual samplers}

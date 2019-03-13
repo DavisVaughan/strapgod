@@ -8,6 +8,8 @@
 #'
 #' @inherit samplify return
 #'
+#' @seealso [collect.resampled_df()]
+#'
 #' @inheritParams samplify
 #'
 #' @examples

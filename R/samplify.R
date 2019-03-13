@@ -4,9 +4,22 @@
 #'
 #' @details
 #'
-#' Currently you can use [dplyr::summarise()], [dplyr::do()], and the group
-#' manipulation functions: [dplyr::group_map()], [dplyr::group_walk()],
-#' [dplyr::group_nest()] and [dplyr::group_split()] on a `resampled_df`.
+#' The following functions have special / interesting behavior when used with
+#' a `resampled_df`:
+#'
+#' - [dplyr::collect()]
+#'
+#' - [dplyr::summarise()]
+#'
+#' - [dplyr::do()]
+#'
+#' - [dplyr::group_map()]
+#'
+#' - [dplyr::group_walk()]
+#'
+#' - [dplyr::group_nest()]
+#'
+#' - [dplyr::group_split()]
 #'
 #' @param data A tbl.
 #'
@@ -25,7 +38,7 @@
 #' @param key A single character specifying the name of the virtual group
 #' that is added.
 #'
-#' @return A `resampled_df` with an extra group specified by `key`.
+#' @return A `resampled_df` with an extra group specified by the `key`.
 #'
 #' @examples
 #' library(dplyr)
@@ -77,6 +90,8 @@
 #'   collect()
 #'
 #' @family virtual samplers
+#'
+#' @seealso [collect.resampled_df()]
 #'
 #' @name samplify
 NULL
