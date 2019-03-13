@@ -12,4 +12,6 @@ matrix:
     - Rscript -e 'covr::codecov()'
   - r: oldrel
   - r: 3.2
-  - r: 3.1
+  # R 3.1 has a broken NextMethod() mechanism
+  # so summarise() won't work
+  #- r: 3.1
