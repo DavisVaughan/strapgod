@@ -3,6 +3,18 @@
 
 # strapgod
 
+<!-- badges: start -->
+
+[![Codecov test
+coverage](https://codecov.io/gh/DavisVaughan/strapgod/branch/master/graph/badge.svg)](https://codecov.io/gh/DavisVaughan/strapgod?branch=master)
+[![Travis build
+status](https://travis-ci.org/DavisVaughan/strapgod.svg?branch=master)](https://travis-ci.org/DavisVaughan/strapgod)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/strapgod)](https://cran.r-project.org/package=strapgod)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+<!-- badges: end -->
+
 <p align="center">
 
 <img src="./man/figures/strap-god.jpg">
@@ -40,6 +52,11 @@ rows, but the groups are modified.
 
 ``` r
 library(strapgod)
+#> 
+#> Attaching package: 'strapgod'
+#> The following object is masked from 'package:stats':
+#> 
+#>     filter
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
@@ -260,6 +277,7 @@ suppressPackageStartupMessages({
   library(purrr)
   library(tidyr)
 })
+#> Warning: package 'tidyr' was built under R version 3.5.2
 ```
 
 ### Tidying bootstrapped models
@@ -272,7 +290,7 @@ iris %>%
 #> # A tibble: 6 x 6
 #> # Groups:   Species [3]
 #>   Species    term         estimate std.error statistic  p.value
-#> * <fct>      <chr>           <dbl>     <dbl>     <dbl>    <dbl>
+#>   <fct>      <chr>           <dbl>     <dbl>     <dbl>    <dbl>
 #> 1 setosa     (Intercept)     4.21     0.416      10.1  1.61e-13
 #> 2 setosa     Petal.Length    0.542    0.282       1.92 6.07e- 2
 #> 3 versicolor (Intercept)     2.41     0.446       5.39 2.08e- 6
@@ -288,7 +306,7 @@ iris %>%
 #> # A tibble: 60 x 7
 #> # Groups:   Species, .bootstrap [30]
 #>    Species .bootstrap term         estimate std.error statistic  p.value
-#>  * <fct>        <int> <chr>           <dbl>     <dbl>     <dbl>    <dbl>
+#>    <fct>        <int> <chr>           <dbl>     <dbl>     <dbl>    <dbl>
 #>  1 setosa           1 (Intercept)     4.53      0.456     9.93  3.23e-13
 #>  2 setosa           1 Petal.Length    0.331     0.309     1.07  2.90e- 1
 #>  3 setosa           2 (Intercept)     3.81      0.381    10.0   2.41e-13

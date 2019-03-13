@@ -20,6 +20,7 @@ Imports:
     tibble
 Suggests: 
     broom,
-    testthat
+    testthat,
+    covr
 URL: https://github.com/DavisVaughan/strapgod
 BugReports: https://github.com/DavisVaughan/strapgod/issues

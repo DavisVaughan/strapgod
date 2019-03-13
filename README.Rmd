@@ -16,6 +16,13 @@ knitr::opts_chunk$set(
 ```
 # strapgod
 
+<!-- badges: start -->
+[![Codecov test coverage](https://codecov.io/gh/DavisVaughan/strapgod/branch/master/graph/badge.svg)](https://codecov.io/gh/DavisVaughan/strapgod?branch=master)
+[![Travis build status](https://travis-ci.org/DavisVaughan/strapgod.svg?branch=master)](https://travis-ci.org/DavisVaughan/strapgod)
+[![CRAN status](https://www.r-pkg.org/badges/version/strapgod)](https://cran.r-project.org/package=strapgod)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+<!-- badges: end -->
+
 <p align="center">
   <img src="./man/figures/strap-god.jpg">
 </p>
