@@ -135,6 +135,20 @@ test_that("slice()", {
   )
 })
 
+test_that("pull()", {
+  x <- bootstrapify(iris, 2)
+
+  expect_equal(
+    length(pull(x, ".bootstrap")),
+    300
+  )
+
+  expect_equal(
+    length(pull(x, "Sepal.Length")),
+    300
+  )
+})
+
 test_that("full_join()", {
 
   mini_iris <- iris[1:20, 1:2]
@@ -258,4 +272,95 @@ test_that("semi_join()", {
     collect(x)[0,]
   )
 
+})
+
+# ------------------------------------------------------------------------------
+# dplyr functions implictly supported
+
+context("test-dplyr-compat-extra")
+
+test_that("add_count()", {
+  x <- bootstrapify(iris, 2)
+  expect_equal(
+    nrow(add_count(x)),
+    300
+  )
+})
+
+test_that("add_tally()", {
+  x <- bootstrapify(iris, 2)
+
+  expect_equal(
+    nrow(add_tally(x)),
+    300
+  )
+
+  expect_equal(
+    nrow(add_tally(x, .bootstrap, sort = TRUE)),
+    300
+  )
+
+  expect_equal(
+    unique(add_tally(x, .bootstrap, sort = TRUE)$n),
+    c(300, 150)
+  )
+})
+
+test_that("as_tibble()", {
+
+  x <- bootstrapify(iris, 2)
+
+  x_at <- as_tibble(x)
+
+  # can convert to tibble without expanding
+  # virtual groups
+  expect_equal(
+    nrow(x_at),
+    150
+  )
+
+  expect_false(".bootstrap" %in% colnames(x_at))
+  expect_false("resampled_df" %in% class(x_at))
+
+})
+
+test_that("bind_rows() fails sadly", {
+
+  x <- bootstrapify(iris, 2)
+
+  # Cant currently do anything about this
+  expect_error(
+    bind_rows(x, iris),
+    "Column `.bootstrap` is unknown"
+  )
+
+})
+
+test_that("bind_cols() works", {
+
+  x <- bootstrapify(iris, 2)
+
+  x_bc_1 <- bind_cols(x, iris)
+
+  expect_is(x_bc_1, "resampled_df")
+
+  expect_equal(
+    ncol(x_bc_1),
+    10
+  )
+
+  expect_equal(
+    nrow(x_bc_1),
+    150
+  )
+
+  expect_equal(
+    nrow(collect(x_bc_1)),
+    300
+  )
+
+  x_bc_2 <- bind_cols(iris, x)
+
+  expect_is(x_bc_2, "data.frame")
+  expect_false("tbl_df" %in% class(x_bc_2))
 })

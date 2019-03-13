@@ -132,6 +132,12 @@ slice.resampled_df <- function(.data, ...) {
   dplyr::slice(collect(.data), ...)
 }
 
+#' @importFrom dplyr pull
+#' @export
+pull.resampled_df <- function(.data, var = -1) {
+  dplyr::pull(collect(.data), var = !!rlang::enquo(var))
+}
+
 #' @importFrom dplyr full_join
 #' @export
 full_join.resampled_df <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ...) {
