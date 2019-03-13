@@ -70,10 +70,10 @@ summarise_.resampled_df <- function(.data, ..., .dots = list()) {
   maybe_new_grouped_df(NextMethod())
 }
 
-#' @importFrom dplyr summarize_
+#' @importFrom dplyr group_indices_
 #' @export
-summarize_.resampled_df <- function(.data, ..., .dots = list()) {
-  maybe_new_grouped_df(NextMethod())
+group_indices_.resampled_df <- function(.data, ..., .dots = list()) {
+  dplyr::group_indices_(collect(.data), ..., .dots = list())
 }
 
 # ------------------------------------------------------------------------------
@@ -116,6 +116,18 @@ distinct.resampled_df <- function(.data, ..., .keep_all = FALSE) {
   dplyr::distinct(collect(.data), ..., .keep_all = .keep_all)
 }
 
+#' @importFrom dplyr select
+#' @export
+select.resampled_df <- function(.data, ...) {
+  dplyr::select(collect(.data), ...)
+}
+
+#' @importFrom dplyr slice
+#' @export
+slice.resampled_df <- function(.data, ...) {
+  dplyr::slice(collect(.data), ...)
+}
+
 #' @importFrom dplyr full_join
 #' @export
 full_join.resampled_df <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ...) {
@@ -150,18 +162,6 @@ anti_join.resampled_df <- function(x, y, by = NULL, copy = FALSE, ...) {
 #' @export
 semi_join.resampled_df <- function(x, y, by = NULL, copy = FALSE, ...) {
   dplyr::semi_join(collect(x), collect(y), by = by, copy = copy, ...)
-}
-
-#' @importFrom dplyr select
-#' @export
-select.resampled_df <- function(.data, ...) {
-  dplyr::select(collect(.data), ...)
-}
-
-#' @importFrom dplyr slice
-#' @export
-slice.resampled_df <- function(.data, ...) {
-  dplyr::slice(collect(.data), ...)
 }
 
 #' @importFrom dplyr group_by
