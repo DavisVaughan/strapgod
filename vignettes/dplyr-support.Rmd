@@ -28,7 +28,7 @@ As much as possible, strapgod attempts to let you use any dplyr function that yo
 
 What follows is a list of the dplyr functions that have "special" properties when used on a `"resampled_df"`.
 
-# `collect()`
+# collect()
 
 The most important dplyr function for strapgod is `collect()`. Generally, this has been used to force a computation from a data base query and return the results as a tibble, and it has a similar context here. `collect()` forces the materialization of the virtual groups, and returns the full grouped tibble back to you.
 
@@ -56,7 +56,7 @@ collect(x, id = ".id")
 collect(x, original_id = ".original_id")
 ```
 
-# `summarise()`
+# summarise()
 
 The motivation for this package was `summarise()`. It efficiently computes the summary results, only materializing the bootstrap rows as they are needed at the C++ level.
 
@@ -83,7 +83,7 @@ iris %>%
   )
 ```
 
-# `do()`
+# do()
 
 While `dplyr::do()` is basically deprecated and has been replaced by `group_map()`, it still has its uses sometimes. Like `summarise()`, `do()` materializes the groups only when they are required. Here we run the same linear model on each bootstrapped set of data.
 
@@ -91,7 +91,7 @@ While `dplyr::do()` is basically deprecated and has been replaced by `group_map(
 do(x, model = lm(Sepal.Length ~ Sepal.Width, data = .))
 ```
 
-# `group_nest()`
+# group_nest()
 
 `group_nest()` will materialize the groups so that they become columns in the outer tibble after the nest has been performed.
 
@@ -99,7 +99,7 @@ do(x, model = lm(Sepal.Length ~ Sepal.Width, data = .))
 group_nest(x)
 ```
 
-# `group_split()`
+# group_split()
 
 `group_split()` allows you to materialize all of the bootstrap tibbles into separate tibbles, all bundled together into a list.
 
@@ -113,7 +113,7 @@ You can specify `keep = FALSE` if you never want to see the bootstrap columns.
 group_split(x, keep = FALSE) %>% head(n = 3)
 ```
 
-# `group_map()`
+# group_map()
 
 `group_map()` is similar to `do()`, but (as of dplyr 0.8.0.1) always returns a data frame and gives you access to the non-group and group data separately.
 
@@ -138,7 +138,7 @@ iris %>%
   group_map(~ broom::tidy(lm(Petal.Length ~ Sepal.Length, data = .x)))
 ```
 
-# `ungroup()`
+# ungroup()
 
 `ungroup()` will return the original tibble back to you, without materializing the virtual groups.
 
@@ -146,7 +146,7 @@ iris %>%
 ungroup(x)
 ```
 
-# `as_tibble()`
+# as_tibble()
 
 Like `ungroup()`, you can get the original tibble back by converting it to one explicitly with `as_tibble()`.
 
