@@ -57,3 +57,80 @@ test_that("can group_by() after bootstrapify()", {
   )
 
 })
+
+test_that("mutate()", {
+  x <- bootstrapify(iris, 2)
+  expect_equal(
+    nrow(mutate(x, x = 4)),
+    300
+  )
+})
+
+test_that("transmute()", {
+  x <- bootstrapify(iris, 2)
+  expect_equal(
+    nrow(transmute(x, x = 4)),
+    300
+  )
+})
+
+test_that("filter()", {
+  x <- bootstrapify(iris, 2)
+  expect_equal(
+    nrow(filter(x, .bootstrap <= 1)),
+    150
+  )
+})
+
+test_that("arrange()", {
+  x <- bootstrapify(iris, 2)
+
+  expect_equal(
+    nrow(arrange(x, desc(.bootstrap))),
+    300
+  )
+
+  expect_equal(
+    arrange(x, desc(.bootstrap))$.bootstrap,
+    rep(c(2,1), each = 150)
+  )
+})
+
+test_that("distinct()", {
+  x <- bootstrapify(iris, 2)
+
+  expect_equal(
+    colnames(distinct(x)),
+    c(".bootstrap", colnames(iris))
+  )
+
+  expect_equal(
+    distinct(x, .bootstrap),
+    group_by(tibble(.bootstrap = 1:2), .bootstrap)
+  )
+
+})
+
+test_that("select()", {
+  x <- bootstrapify(iris, 2)
+
+  expect_equal(
+    colnames(select(x, group_cols())),
+    ".bootstrap"
+  )
+
+  expect_equal(
+    nrow(select(x, group_cols())),
+    300
+  )
+
+})
+
+test_that("slice()", {
+  x <- bootstrapify(iris, 2)
+
+  expect_equal(
+    nrow(slice(x, 1)),
+    2
+  )
+})
