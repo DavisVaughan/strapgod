@@ -149,6 +149,15 @@ test_that("pull()", {
   )
 })
 
+test_that("rename()", {
+  x <- bootstrapify(iris, 2)
+
+  expect_equal(
+    colnames(rename(x, y = .bootstrap)),
+    c("y", colnames(iris))
+  )
+})
+
 test_that("full_join()", {
 
   mini_iris <- iris[1:20, 1:2]
@@ -363,4 +372,13 @@ test_that("bind_cols() works", {
 
   expect_is(x_bc_2, "data.frame")
   expect_false("tbl_df" %in% class(x_bc_2))
+})
+
+test_that("sample_n()", {
+  x <- bootstrapify(iris, 2)
+
+  expect_equal(
+    nrow(sample_n(x, 5)),
+    10
+  )
 })

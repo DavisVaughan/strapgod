@@ -138,6 +138,12 @@ pull.resampled_df <- function(.data, var = -1) {
   dplyr::pull(collect(.data), var = !!rlang::enquo(var))
 }
 
+#' @importFrom dplyr rename
+#' @export
+rename.resampled_df <- function(.data, ...) {
+  dplyr::rename(collect(.data), ...)
+}
+
 #' @importFrom dplyr full_join
 #' @export
 full_join.resampled_df <- function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ...) {
