@@ -1,3 +1,7 @@
+## Resubmission
+Removed the single quotes around `group_by()` in the Description and expanded
+upon the advantages of the package in the Description.
+
 ## Comments
 This is the first release of this package.
 
