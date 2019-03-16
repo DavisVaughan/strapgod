@@ -1,13 +1,15 @@
 Package: strapgod
 Title: Resampled Data Frames
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: 
     person(given = "Davis",
            family = "Vaughan",
            role = c("aut", "cre"),
            email = "davis@rstudio.com")
-Description: Create efficient resampled data frames using virtual groups and 
-    the 'group_by()' engine of 'dplyr'.
+Description: Create data frames with virtual groups that can be used with 
+    'dplyr' to efficiently compute resampled statistics, generate the data for
+    hypothetical outcome plots, and fit multiple models on resampled variations
+    of the original data.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
