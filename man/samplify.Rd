@@ -38,6 +38,7 @@ a \code{resampled_df}:
 \item \code{\link[dplyr:summarise]{dplyr::summarise()}}
 \item \code{\link[dplyr:do]{dplyr::do()}}
 \item \code{\link[dplyr:group_map]{dplyr::group_map()}}
+\item \code{\link[dplyr:group_modify]{dplyr::group_modify()}}
 \item \code{\link[dplyr:group_walk]{dplyr::group_walk()}}
 \item \code{\link[dplyr:group_nest]{dplyr::group_nest()}}
 \item \code{\link[dplyr:group_split]{dplyr::group_split()}}

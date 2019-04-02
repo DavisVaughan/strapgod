@@ -31,6 +31,7 @@ a \code{resampled_df}:
 \item \code{\link[dplyr:summarise]{dplyr::summarise()}}
 \item \code{\link[dplyr:do]{dplyr::do()}}
 \item \code{\link[dplyr:group_map]{dplyr::group_map()}}
+\item \code{\link[dplyr:group_modify]{dplyr::group_modify()}}
 \item \code{\link[dplyr:group_walk]{dplyr::group_walk()}}
 \item \code{\link[dplyr:group_nest]{dplyr::group_nest()}}
 \item \code{\link[dplyr:group_split]{dplyr::group_split()}}
@@ -55,10 +56,10 @@ iris \%>\%
   bootstrapify(5) \%>\%
   do(tidy(lm(Sepal.Width ~ Sepal.Length + Species, data = .)))
 
-# Alternatively, use the newer group_map()
+# Alternatively, use the newer group_modify()
 iris \%>\%
   bootstrapify(5) \%>\%
-  group_map(~tidy(lm(Sepal.Width ~ Sepal.Length + Species, data = .x)))
+  group_modify(~tidy(lm(Sepal.Width ~ Sepal.Length + Species, data = .x)))
 
 # Alter the name of the group with `key`
 # Materialize them with collect()

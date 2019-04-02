@@ -35,6 +35,27 @@ test_that("group_nest() with `keep = TRUE`", {
 
 })
 
+test_that("group_modify()", {
+
+  x <- iris %>%
+    bootstrapify(5)
+
+  expect_equal(
+    group_modify(x, ~.x),
+    collect(x)
+  )
+
+  x_gm <- group_modify(x, ~dplyr::tibble(.g = list(.y)))
+
+  expect_equal(nrow(x_gm), 5)
+
+  expect_equal(
+    x_gm$.g[[1]],
+    dplyr::tibble(.bootstrap = 1L)
+  )
+
+})
+
 test_that("group_map()", {
 
   x <- iris %>%
@@ -42,16 +63,22 @@ test_that("group_map()", {
 
   expect_equal(
     group_map(x, ~.x),
-    collect(x)
+    group_split(x, keep = FALSE)
   )
 
   x_gm <- group_map(x, ~dplyr::tibble(.g = list(.y)))
 
-  expect_equal(nrow(x_gm), 5)
+  expect_is(x_gm, "list")
 
+  expect_identical(
+    x_gm[[1]],
+    tibble(.g = list(tibble(.bootstrap = 1L)))
+  )
+
+  # `keep` argument
   expect_equal(
-    x_gm$.g[[1]],
-    dplyr::tibble(.bootstrap = 1L)
+    unlist(group_map(x, ~ncol(.x), keep = TRUE)),
+    rep(6, times = 5)
   )
 
 })
