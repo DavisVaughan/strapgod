@@ -65,7 +65,7 @@ set.seed(123)
 bootstrapify(iris, 10)
 ```
 
-You can feed a `resampled_df` into `summarise()` or `group_map()` to perform
+You can feed a `resampled_df` into `summarise()` or `group_modify()` to perform
 efficient bootstrapped computations.
 
 ```{r summarise}

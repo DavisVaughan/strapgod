@@ -85,7 +85,7 @@ iris %>%
 
 # do()
 
-While `dplyr::do()` is basically deprecated and has been replaced by `group_map()`, it still has its uses sometimes. Like `summarise()`, `do()` materializes the groups only when they are required. Here we run the same linear model on each bootstrapped set of data.
+While `dplyr::do()` is basically deprecated and has been replaced by `group_modify()`, it still has its uses sometimes. Like `summarise()`, `do()` materializes the groups only when they are required. Here we run the same linear model on each bootstrapped set of data.
 
 ```{r}
 do(x, model = lm(Sepal.Length ~ Sepal.Width, data = .))
@@ -119,29 +119,29 @@ You can specify `keep = FALSE` if you never want to see the bootstrap columns.
 group_split(x, keep = FALSE) %>% head(n = 3)
 ```
 
-# group_map()
+# group_modify()
 
-`group_map()` is similar to `do()`, but (as of dplyr 0.8.0.1) always returns a data frame and gives you access to the non-group and group data separately.
+`group_modify()` is similar to `do()`, but (as of dplyr 0.8.0.1) always returns a data frame and gives you access to the non-group and group data separately.
 
 ```{r}
 # Just show the first 2 rows of each bootstrap
-group_map(x, ~head(.x, n = 2))
+group_modify(x, ~head(.x, n = 2))
 
 # As you iterate though each group, you have access to that
 # group's metadata through `.y` if you need it.
-group_map_group_data <- group_map(x, ~tibble(.g = list(.y)))
+group_modify_group_data <- group_modify(x, ~tibble(.g = list(.y)))
 
-group_map_group_data
+group_modify_group_data
 
-group_map_group_data$.g[[1]]
+group_modify_group_data$.g[[1]]
 ```
 
 Like `do()`, it can be a convenient way to run multiple models as long as you return a data frame from each one.
 
 ```{r}
-iris %>%
-  group_by(Species) %>%
-  group_map(~ broom::tidy(lm(Petal.Length ~ Sepal.Length, data = .x)))
+x %>%
+  group_by(Species, add = TRUE) %>%
+  group_modify(~ broom::tidy(lm(Petal.Length ~ Sepal.Length, data = .x)))
 ```
 
 # ungroup()

@@ -31,10 +31,10 @@
 #'   bootstrapify(5) %>%
 #'   do(tidy(lm(Sepal.Width ~ Sepal.Length + Species, data = .)))
 #'
-#' # Alternatively, use the newer group_map()
+#' # Alternatively, use the newer group_modify()
 #' iris %>%
 #'   bootstrapify(5) %>%
-#'   group_map(~tidy(lm(Sepal.Width ~ Sepal.Length + Species, data = .x)))
+#'   group_modify(~tidy(lm(Sepal.Width ~ Sepal.Length + Species, data = .x)))
 #'
 #' # Alter the name of the group with `key`
 #' # Materialize them with collect()

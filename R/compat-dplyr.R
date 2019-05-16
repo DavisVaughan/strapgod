@@ -6,6 +6,7 @@
 # ungroup()
 # group_nest()
 # group_map()
+# group_modify()
 # group_walk()
 # group_split()
 # group_keys()

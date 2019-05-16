@@ -15,6 +15,8 @@
 #'
 #' - [dplyr::group_map()]
 #'
+#' - [dplyr::group_modify()]
+#'
 #' - [dplyr::group_walk()]
 #'
 #' - [dplyr::group_nest()]
