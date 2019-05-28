@@ -1,3 +1,5 @@
+# strapgod (development version)
+
 # strapgod 0.0.2
 
 * In dplyr 0.8.1, the behavior of `group_map()` was moved to `group_modify()`,
