@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">strapgod</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
       </span>
     </div>
 
@@ -165,6 +165,7 @@ a <code>resampled_df</code>:</p><ul>
 <li><p><code><a href='https://dplyr.tidyverse.org/reference/summarise.html'>dplyr::summarise()</a></code></p></li>
 <li><p><code><a href='https://dplyr.tidyverse.org/reference/do.html'>dplyr::do()</a></code></p></li>
 <li><p><code><a href='https://dplyr.tidyverse.org/reference/group_map.html'>dplyr::group_map()</a></code></p></li>
+<li><p><code><a href='https://dplyr.tidyverse.org/reference/group_map.html'>dplyr::group_modify()</a></code></p></li>
 <li><p><code><a href='https://dplyr.tidyverse.org/reference/group_map.html'>dplyr::group_walk()</a></code></p></li>
 <li><p><code><a href='https://dplyr.tidyverse.org/reference/group_nest.html'>dplyr::group_nest()</a></code></p></li>
 <li><p><code><a href='https://dplyr.tidyverse.org/reference/group_split.html'>dplyr::group_split()</a></code></p></li>
@@ -206,11 +207,11 @@ a <code>resampled_df</code>:</p><ul>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(<span class='kw'>per_strap_mean</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(<span class='no'>Petal.Width</span>))</div><div class='output co'>#&gt; # A tibble: 5 x 2
 #&gt;   .bootstrap per_strap_mean
 #&gt;        &lt;int&gt;          &lt;dbl&gt;
-#&gt; 1          1           1.12
-#&gt; 2          2           1.23
-#&gt; 3          3           1.18
-#&gt; 4          4           1.10
-#&gt; 5          5           1.14</div><div class='input'>
+#&gt; 1          1           1.18
+#&gt; 2          2           1.25
+#&gt; 3          3           1.20
+#&gt; 4          4           1.16
+#&gt; 5          5           1.29</div><div class='input'>
 <span class='no'>iris</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>Species</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>bootstrapify</span>(<span class='fl'>5</span>) <span class='kw'>%&gt;%</span>
@@ -218,74 +219,74 @@ a <code>resampled_df</code>:</p><ul>
 #&gt; # Groups:   Species [3]
 #&gt;    Species    .bootstrap per_strap_species_mean
 #&gt;    &lt;fct&gt;           &lt;int&gt;                  &lt;dbl&gt;
-#&gt;  1 setosa              1                  0.232
-#&gt;  2 setosa              2                  0.264
-#&gt;  3 setosa              3                  0.246
-#&gt;  4 setosa              4                  0.248
-#&gt;  5 setosa              5                  0.244
-#&gt;  6 versicolor          1                  1.31 
-#&gt;  7 versicolor          2                  1.29 
-#&gt;  8 versicolor          3                  1.33 
-#&gt;  9 versicolor          4                  1.30 
-#&gt; 10 versicolor          5                  1.33 
-#&gt; 11 virginica           1                  2.05 
-#&gt; 12 virginica           2                  1.99 
+#&gt;  1 setosa              1                  0.246
+#&gt;  2 setosa              2                  0.274
+#&gt;  3 setosa              3                  0.224
+#&gt;  4 setosa              4                  0.242
+#&gt;  5 setosa              5                  0.232
+#&gt;  6 versicolor          1                  1.35 
+#&gt;  7 versicolor          2                  1.31 
+#&gt;  8 versicolor          3                  1.32 
+#&gt;  9 versicolor          4                  1.31 
+#&gt; 10 versicolor          5                  1.35 
+#&gt; 11 virginica           1                  2.06 
+#&gt; 12 virginica           2                  2.03 
 #&gt; 13 virginica           3                  2.05 
-#&gt; 14 virginica           4                  1.99 
-#&gt; 15 virginica           5                  2.02 </div><div class='input'>
+#&gt; 14 virginica           4                  2.11 
+#&gt; 15 virginica           5                  2.07 </div><div class='input'>
 <span class='no'>iris</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>bootstrapify</span>(<span class='fl'>5</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/do.html'>do</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/broom/topics/reexports'>tidy</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/lm'>lm</a></span>(<span class='no'>Sepal.Width</span> ~ <span class='no'>Sepal.Length</span> + <span class='no'>Species</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>.</span>)))</div><div class='output co'>#&gt; # A tibble: 20 x 6
 #&gt; # Groups:   .bootstrap [5]
 #&gt;    .bootstrap term              estimate std.error statistic  p.value
 #&gt;         &lt;int&gt; &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-#&gt;  1          1 (Intercept)          1.54     0.281       5.49 1.74e- 7
-#&gt;  2          1 Sepal.Length         0.373    0.0560      6.66 5.27e-10
-#&gt;  3          1 Speciesversicolor   -1.00     0.0824    -12.2  6.35e-24
-#&gt;  4          1 Speciesvirginica    -1.09     0.112      -9.73 1.45e-17
-#&gt;  5          2 (Intercept)          1.34     0.256       5.23 5.69e- 7
-#&gt;  6          2 Sepal.Length         0.416    0.0498      8.36 4.63e-14
-#&gt;  7          2 Speciesversicolor   -1.05     0.0691    -15.2  6.57e-32
-#&gt;  8          2 Speciesvirginica    -1.07     0.0836    -12.8  1.14e-25
-#&gt;  9          3 (Intercept)          1.86     0.222       8.38 4.10e-14
-#&gt; 10          3 Sepal.Length         0.312    0.0430      7.26 2.08e-11
-#&gt; 11          3 Speciesversicolor   -0.885    0.0714    -12.4  1.39e-24
-#&gt; 12          3 Speciesvirginica    -0.990    0.0827    -12.0  1.98e-23
-#&gt; 13          4 (Intercept)          1.51     0.268       5.63 8.81e- 8
-#&gt; 14          4 Sepal.Length         0.377    0.0524      7.18 3.23e-11
-#&gt; 15          4 Speciesversicolor   -1.01     0.0742    -13.6  9.49e-28
-#&gt; 16          4 Speciesvirginica    -0.920    0.0952     -9.66 2.19e-17
-#&gt; 17          5 (Intercept)          1.78     0.215       8.28 7.32e-14
-#&gt; 18          5 Sepal.Length         0.347    0.0420      8.27 7.41e-14
-#&gt; 19          5 Speciesversicolor   -1.07     0.0745    -14.3  1.37e-29
-#&gt; 20          5 Speciesvirginica    -1.15     0.0930    -12.4  1.41e-24</div><div class='input'>
-<span class='co'># Alternatively, use the newer group_map()</span>
+#&gt;  1          1 (Intercept)          1.69     0.229       7.38 1.12e-11
+#&gt;  2          1 Sepal.Length         0.346    0.0444      7.79 1.12e-12
+#&gt;  3          1 Speciesversicolor   -0.961    0.0693    -13.9  1.93e-28
+#&gt;  4          1 Speciesvirginica    -1.04     0.0893    -11.7  1.13e-22
+#&gt;  5          2 (Intercept)          1.94     0.223       8.69 6.68e-15
+#&gt;  6          2 Sepal.Length         0.302    0.0428      7.05 6.64e-11
+#&gt;  7          2 Speciesversicolor   -0.952    0.0643    -14.8  7.54e-31
+#&gt;  8          2 Speciesvirginica    -0.898    0.0807    -11.1  3.34e-21
+#&gt;  9          3 (Intercept)          1.51     0.260       5.81 3.72e- 8
+#&gt; 10          3 Sepal.Length         0.394    0.0503      7.84 8.82e-13
+#&gt; 11          3 Speciesversicolor   -1.07     0.0716    -15.0  2.07e-31
+#&gt; 12          3 Speciesvirginica    -1.13     0.103     -11.0  9.46e-21
+#&gt; 13          4 (Intercept)          1.58     0.198       7.99 3.77e-13
+#&gt; 14          4 Sepal.Length         0.368    0.0392      9.39 1.10e-16
+#&gt; 15          4 Speciesversicolor   -1.00     0.0660    -15.2  7.40e-32
+#&gt; 16          4 Speciesvirginica    -0.983    0.0825    -11.9  2.79e-23
+#&gt; 17          5 (Intercept)          1.77     0.239       7.43 8.54e-12
+#&gt; 18          5 Sepal.Length         0.340    0.0474      7.17 3.41e-11
+#&gt; 19          5 Speciesversicolor   -0.971    0.0722    -13.5  2.33e-27
+#&gt; 20          5 Speciesvirginica    -1.10     0.0990    -11.1  4.62e-21</div><div class='input'>
+<span class='co'># Alternatively, use the newer group_modify()</span>
 <span class='no'>iris</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>bootstrapify</span>(<span class='fl'>5</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_map.html'>group_map</a></span>(~<span class='fu'><a href='https://www.rdocumentation.org/packages/broom/topics/reexports'>tidy</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/lm'>lm</a></span>(<span class='no'>Sepal.Width</span> ~ <span class='no'>Sepal.Length</span> + <span class='no'>Species</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>.x</span>)))</div><div class='output co'>#&gt; # A tibble: 20 x 6
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_map.html'>group_modify</a></span>(~<span class='fu'><a href='https://www.rdocumentation.org/packages/broom/topics/reexports'>tidy</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/lm'>lm</a></span>(<span class='no'>Sepal.Width</span> ~ <span class='no'>Sepal.Length</span> + <span class='no'>Species</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>.x</span>)))</div><div class='output co'>#&gt; # A tibble: 20 x 6
 #&gt; # Groups:   .bootstrap [5]
 #&gt;    .bootstrap term              estimate std.error statistic  p.value
 #&gt;         &lt;int&gt; &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-#&gt;  1          1 (Intercept)          1.44     0.224       6.43 1.74e- 9
-#&gt;  2          1 Sepal.Length         0.406    0.0446      9.12 5.54e-16
-#&gt;  3          1 Speciesversicolor   -1.07     0.0678    -15.7  2.93e-33
-#&gt;  4          1 Speciesvirginica    -1.17     0.0882    -13.3  5.86e-27
-#&gt;  5          2 (Intercept)          1.77     0.205       8.62 1.02e-14
-#&gt;  6          2 Sepal.Length         0.321    0.0402      7.98 3.86e-13
-#&gt;  7          2 Speciesversicolor   -0.831    0.0666    -12.5  8.57e-25
-#&gt;  8          2 Speciesvirginica    -0.888    0.0900     -9.87 6.39e-18
-#&gt;  9          3 (Intercept)          1.47     0.245       6.00 1.50e- 8
-#&gt; 10          3 Sepal.Length         0.391    0.0485      8.05 2.63e-13
-#&gt; 11          3 Speciesversicolor   -1.01     0.0734    -13.8  3.92e-28
-#&gt; 12          3 Speciesvirginica    -1.13     0.0979    -11.5  2.76e-22
-#&gt; 13          4 (Intercept)          1.52     0.225       6.74 3.40e-10
-#&gt; 14          4 Sepal.Length         0.379    0.0445      8.52 1.86e-14
-#&gt; 15          4 Speciesversicolor   -0.982    0.0704    -14.0  1.19e-28
-#&gt; 16          4 Speciesvirginica    -0.978    0.0925    -10.6  9.70e-20
-#&gt; 17          5 (Intercept)          1.96     0.226       8.66 7.95e-15
-#&gt; 18          5 Sepal.Length         0.279    0.0454      6.15 7.11e- 9
-#&gt; 19          5 Speciesversicolor   -0.928    0.0763    -12.2  6.09e-24
-#&gt; 20          5 Speciesvirginica    -0.814    0.103      -7.93 5.13e-13</div><div class='input'>
+#&gt;  1          1 (Intercept)          1.93     0.271       7.14 4.09e-11
+#&gt;  2          1 Sepal.Length         0.297    0.0533      5.57 1.20e- 7
+#&gt;  3          1 Speciesversicolor   -0.931    0.0859    -10.8  1.83e-20
+#&gt;  4          1 Speciesvirginica    -0.937    0.101      -9.32 1.71e-16
+#&gt;  5          2 (Intercept)          1.73     0.224       7.70 1.85e-12
+#&gt;  6          2 Sepal.Length         0.353    0.0437      8.08 2.18e-13
+#&gt;  7          2 Speciesversicolor   -1.06     0.0691    -15.3  3.17e-32
+#&gt;  8          2 Speciesvirginica    -1.18     0.0871    -13.5  1.67e-27
+#&gt;  9          3 (Intercept)          1.95     0.225       8.66 7.85e-15
+#&gt; 10          3 Sepal.Length         0.299    0.0436      6.87 1.72e-10
+#&gt; 11          3 Speciesversicolor   -0.885    0.0686    -12.9  7.05e-26
+#&gt; 12          3 Speciesvirginica    -0.970    0.0873    -11.1  3.41e-21
+#&gt; 13          4 (Intercept)          1.58     0.243       6.52 1.09e- 9
+#&gt; 14          4 Sepal.Length         0.359    0.0484      7.43 8.30e-12
+#&gt; 15          4 Speciesversicolor   -0.960    0.0787    -12.2  4.69e-24
+#&gt; 16          4 Speciesvirginica    -0.905    0.0929     -9.74 1.41e-17
+#&gt; 17          5 (Intercept)          1.43     0.238       6.00 1.49e- 8
+#&gt; 18          5 Sepal.Length         0.401    0.0468      8.56 1.47e-14
+#&gt; 19          5 Speciesversicolor   -1.02     0.0692    -14.7  1.18e-30
+#&gt; 20          5 Speciesvirginica    -1.07     0.0872    -12.3  2.70e-24</div><div class='input'>
 <span class='co'># Alter the name of the group with `key`</span>
 <span class='co'># Materialize them with collect()</span>
 <span class='no'>straps</span> <span class='kw'>&lt;-</span> <span class='fu'>bootstrapify</span>(<span class='no'>iris</span>, <span class='fl'>5</span>, <span class='kw'>key</span> <span class='kw'>=</span> <span class='st'>".straps"</span>)
@@ -293,16 +294,16 @@ a <code>resampled_df</code>:</p><ul>
 #&gt; # Groups:   .straps [5]
 #&gt;    .straps Sepal.Length Sepal.Width Petal.Length Petal.Width Species   
 #&gt;      &lt;int&gt;        &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;     
-#&gt;  1       1          5.1         2.5          3           1.1 versicolor
-#&gt;  2       1          4.8         3.4          1.9         0.2 setosa    
-#&gt;  3       1          6.5         3            5.8         2.2 virginica 
-#&gt;  4       1          4.8         3.4          1.6         0.2 setosa    
-#&gt;  5       1          5.8         2.8          5.1         2.4 virginica 
-#&gt;  6       1          5.6         2.5          3.9         1.1 versicolor
-#&gt;  7       1          6.1         2.8          4           1.3 versicolor
-#&gt;  8       1          6.6         3            4.4         1.4 versicolor
-#&gt;  9       1          6.2         3.4          5.4         2.3 virginica 
-#&gt; 10       1          5.5         2.4          3.7         1   versicolor
+#&gt;  1       1          7           3.2          4.7         1.4 versicolor
+#&gt;  2       1          5.1         2.5          3           1.1 versicolor
+#&gt;  3       1          5.5         2.5          4           1.3 versicolor
+#&gt;  4       1          7.4         2.8          6.1         1.9 virginica 
+#&gt;  5       1          6           2.2          4           1   versicolor
+#&gt;  6       1          4.7         3.2          1.3         0.2 setosa    
+#&gt;  7       1          6.9         3.2          5.7         2.3 virginica 
+#&gt;  8       1          6.3         3.4          5.6         2.4 virginica 
+#&gt;  9       1          4.9         3.1          1.5         0.2 setosa    
+#&gt; 10       1          4.6         3.2          1.4         0.2 setosa    
 #&gt; # … with 740 more rows</div><div class='input'>
 </div></pre>
   </div>

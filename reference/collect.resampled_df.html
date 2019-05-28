@@ -64,7 +64,7 @@ are made explicit." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">strapgod</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
       </span>
     </div>
 
@@ -166,31 +166,31 @@ a column containing the original position of the bootstrapped row.</p></td>
 #&gt;    .bootstrap Sepal.Length Sepal.Width Petal.Length Petal.Width Species   
 #&gt;         &lt;int&gt;        &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;     
 #&gt;  1          1          6.2         3.4          5.4         2.3 virginica 
-#&gt;  2          1          6.1         2.6          5.6         1.4 virginica 
-#&gt;  3          1          4.6         3.6          1           0.2 setosa    
-#&gt;  4          1          5.8         2.7          4.1         1   versicolor
-#&gt;  5          1          5.8         2.8          5.1         2.4 virginica 
-#&gt;  6          1          5.4         3            4.5         1.5 versicolor
-#&gt;  7          1          6.3         2.8          5.1         1.5 virginica 
-#&gt;  8          1          6.7         3            5.2         2.3 virginica 
-#&gt;  9          1          5.6         2.7          4.2         1.3 versicolor
-#&gt; 10          1          6.5         3.2          5.1         2   virginica 
+#&gt;  2          1          5.2         3.5          1.5         0.2 setosa    
+#&gt;  3          1          7.7         2.6          6.9         2.3 virginica 
+#&gt;  4          1          6.7         3            5           1.7 versicolor
+#&gt;  5          1          5.1         3.8          1.9         0.4 setosa    
+#&gt;  6          1          5.1         3.5          1.4         0.3 setosa    
+#&gt;  7          1          5.7         2.9          4.2         1.3 versicolor
+#&gt;  8          1          6.7         3.1          4.7         1.5 versicolor
+#&gt;  9          1          6.3         2.5          5           1.9 virginica 
+#&gt; 10          1          4.8         3            1.4         0.1 setosa    
 #&gt; # … with 740 more rows</div><div class='input'>
 <span class='co'># add on the id column for an identifier per bootstrap</span>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/compute.html'>collect</a></span>(<span class='fu'><a href='bootstrapify.html'>bootstrapify</a></span>(<span class='no'>iris</span>, <span class='fl'>5</span>), <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>".id"</span>)</div><div class='output co'>#&gt; # A tibble: 750 x 7
 #&gt; # Groups:   .bootstrap [5]
 #&gt;    .bootstrap   .id Sepal.Length Sepal.Width Petal.Length Petal.Width Species   
 #&gt;         &lt;int&gt; &lt;int&gt;        &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;     
-#&gt;  1          1     1          6.9         3.2          5.7         2.3 virginica 
-#&gt;  2          1     2          6.7         3.3          5.7         2.5 virginica 
-#&gt;  3          1     3          6.1         2.9          4.7         1.4 versicolor
-#&gt;  4          1     4          5.6         2.7          4.2         1.3 versicolor
-#&gt;  5          1     5          6.3         2.5          4.9         1.5 versicolor
-#&gt;  6          1     6          6.4         3.2          5.3         2.3 virginica 
-#&gt;  7          1     7          5.1         3.8          1.9         0.4 setosa    
-#&gt;  8          1     8          6.7         3.3          5.7         2.5 virginica 
-#&gt;  9          1     9          4.5         2.3          1.3         0.3 setosa    
-#&gt; 10          1    10          4.4         2.9          1.4         0.2 setosa    
+#&gt;  1          1     1          5.4         3            4.5         1.5 versicolor
+#&gt;  2          1     2          5.4         3.7          1.5         0.2 setosa    
+#&gt;  3          1     3          6.3         2.5          5           1.9 virginica 
+#&gt;  4          1     4          5.7         2.8          4.5         1.3 versicolor
+#&gt;  5          1     5          4.3         3            1.1         0.1 setosa    
+#&gt;  6          1     6          5           3.6          1.4         0.2 setosa    
+#&gt;  7          1     7          6           2.2          5           1.5 virginica 
+#&gt;  8          1     8          6.4         3.2          4.5         1.5 versicolor
+#&gt;  9          1     9          5.5         2.4          3.7         1   versicolor
+#&gt; 10          1    10          6.2         3.4          5.4         2.3 virginica 
 #&gt; # … with 740 more rows</div><div class='input'>
 <span class='co'># add on the original_id column to know which row this bootstrapped row</span>
 <span class='co'># originally came from</span>
@@ -198,16 +198,16 @@ a column containing the original position of the bootstrapped row.</p></td>
 #&gt; # Groups:   .bootstrap [5]
 #&gt;    .bootstrap .original_id Sepal.Length Sepal.Width Petal.Length Petal.Width
 #&gt;         &lt;int&gt;        &lt;int&gt;        &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
-#&gt;  1          1          131          7.4         2.8          6.1         1.9
-#&gt;  2          1          139          6           3            4.8         1.8
-#&gt;  3          1           99          5.1         2.5          3           1.1
-#&gt;  4          1           32          5.4         3.4          1.5         0.4
-#&gt;  5          1           25          4.8         3.4          1.9         0.2
-#&gt;  6          1           72          6.1         2.8          4           1.3
-#&gt;  7          1           47          5.1         3.8          1.6         0.2
-#&gt;  8          1           28          5.2         3.5          1.5         0.2
-#&gt;  9          1          126          7.2         3.2          6           1.8
-#&gt; 10          1           52          6.4         3.2          4.5         1.5
+#&gt;  1          1           52          6.4         3.2          4.5         1.5
+#&gt;  2          1           81          5.5         2.4          3.8         1.1
+#&gt;  3          1          117          6.5         3            5.5         1.8
+#&gt;  4          1            8          5           3.4          1.5         0.2
+#&gt;  5          1           41          5           3.5          1.3         0.3
+#&gt;  6          1          149          6.2         3.4          5.4         2.3
+#&gt;  7          1          144          6.8         3.2          5.9         2.3
+#&gt;  8          1            3          4.7         3.2          1.3         0.2
+#&gt;  9          1           43          4.4         3.2          1.3         0.2
+#&gt; 10          1          117          6.5         3            5.5         1.8
 #&gt; # … with 740 more rows, and 1 more variable: Species &lt;fct&gt;</div><div class='input'>
 </div></pre>
   </div>

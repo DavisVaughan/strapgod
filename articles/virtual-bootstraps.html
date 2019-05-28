@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">strapgod</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
       </span>
     </div>
 
@@ -186,15 +186,15 @@
 <a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt;    .bootstrap mean_length</span></a>
 <a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt;         &lt;int&gt;       &lt;dbl&gt;</span></a>
 <a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt;  1          1        5.90</span></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt;  2          2        5.80</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt;  3          3        5.80</span></a>
-<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt;  4          4        5.80</span></a>
-<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt;  5          5        5.81</span></a>
-<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co">#&gt;  6          6        5.84</span></a>
-<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co">#&gt;  7          7        5.79</span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt;  2          2        5.75</span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt;  3          3        5.82</span></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt;  4          4        5.94</span></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt;  5          5        5.82</span></a>
+<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co">#&gt;  6          6        5.86</span></a>
+<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co">#&gt;  7          7        5.77</span></a>
 <a class="sourceLine" id="cb4-27" data-line-number="27"><span class="co">#&gt;  8          8        5.86</span></a>
-<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co">#&gt;  9          9        5.86</span></a>
-<a class="sourceLine" id="cb4-29" data-line-number="29"><span class="co">#&gt; 10         10        5.86</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co">#&gt;  9          9        5.80</span></a>
+<a class="sourceLine" id="cb4-29" data-line-number="29"><span class="co">#&gt; 10         10        5.89</span></a></code></pre></div>
 <p>This makes it easy to compute bootstrapped estimates of individual statistics, along with bootstrapped standard deviations around those estimates.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">iris <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/bootstrapify.html">bootstrapify</a></span>(<span class="dv">10</span>) <span class="op">%&gt;%</span></a>
@@ -206,7 +206,7 @@
 <a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt;   bootstrapped_mean bootstrapped_sd</span></a>
 <a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;               &lt;dbl&gt;           &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; 1              5.83          0.0592</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; 1              5.86          0.0524</span></a></code></pre></div>
 <p>If you want, you can take an existing grouped data frame and bootstrapify that as well, allowing you to compute bootstrapped statistics <em>across</em> some other variable.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">iris_group_strap &lt;-<span class="st"> </span>iris <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(Species) <span class="op">%&gt;%</span></a>
@@ -238,9 +238,9 @@
 <a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; # A tibble: 3 x 3</span></a>
 <a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;   Species    bootstrapped_mean bootstrapped_sd</span></a>
 <a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;   &lt;fct&gt;                  &lt;dbl&gt;           &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt; 1 setosa                  5.00          0.0514</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; 2 versicolor              5.92          0.0685</span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; 3 virginica               6.59          0.0969</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt; 1 setosa                  5.01          0.0488</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; 2 versicolor              5.95          0.0784</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; 3 virginica               6.58          0.0815</span></a></code></pre></div>
 </div>
 <div id="understanding-virtual-groups" class="section level1">
 <h1 class="hasAnchor">
@@ -262,31 +262,31 @@
 <a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; 10         10 &lt;int [150]&gt;</span></a></code></pre></div>
 <p>The <code>.bootstrap</code> column contains the unique values of the groups, and the <code>.rows</code> column is a list column, where each element is an integer vector. That integer vector holds the rows that belong to that specific group. So, for <code>.bootstrap == 1</code>, there is a vector with 150 integers identifying the rows belonging to that resample.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_data.html">group_data</a></span>(iris_boot)<span class="op">$</span>.rows[[<span class="dv">1</span>]]</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt;   [1]  44 119  62 133 142   7  80 134  83  69 144  69 102  86  16 135  37</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt;  [18]   7  50 144 134 104  97 150  99 107  82  90  44  23 145 136 104 120</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt;  [35]   4  72 114  33  48  35  22  63  63  56  23  21  35  70  40 129   7</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt;  [52]  67 120  19  85  31  20 113 135  57 100  15  58  42 123  68 122 122</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;  [69] 120  66 114  95 107   1  72  34  57  92  53  17  37 101  63 119  16</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;  [86]  66 148 134 133  27  20  98  52  99  49  29 118  15  71  77  90  50</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; [103]  74 144  73 134 138  92  62  23 141  46  10 143 109  22  83 144  88</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; [120]  61  98  48  47  33  56 148  24  14  22 104  93 134 101 111  79  99</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; [137] 124 118 147  66  47  62   2  28 127  35  36  12  37 110</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt;   [1]  14  50 118  43  14 118  90  91  91  92 137  99  72  26   7 137  78</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt;  [18]  81  43 103 117  76 143  32 109   7 137  74  23  53 135  53  34  69</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt;  [35]  72  76  63 141  97  91  38  21  41  90  60  16 116  94   6  86  86</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt;  [52]  39 118  50  34   4  13  69 127  52  22  89  25  35 112  30 140 121</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;  [69] 110  64 142  67 122  79  85 136  51  74 106  98  74 127  17  46  54</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;  [86] 110  94  79  24 113 107 135 102 135   5  70  16  24  32  21  55  75</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; [103]  83  39  54 137  48  77  83 111  39   1  30  94  16  88  54  20 104</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; [120]  93  52 108  22  42  59  84  11 121 136  46  85 109 107  77  36 142</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; [137]  16 125  33  40  10 125   9   7 135  61  63  54  26  33</span></a></code></pre></div>
 <p>When a call to <code><a href="https://dplyr.tidyverse.org/reference/compute.html">collect()</a></code> is made, this row index information is used to construct the output. Essentially, we start with the <code><a href="https://dplyr.tidyverse.org/reference/group_data.html">group_data()</a></code> and utilize the <code>.rows</code> info to replicate the rows of the original data frame for each group, building up the complete resampled data frame. Notice how we now have the <code>150 * 10 = 1500</code> rows from the 10 bootstraps.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span>(iris_boot)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1,500 x 6</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; # Groups:   .bootstrap [10]</span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt;    .bootstrap Sepal.Length Sepal.Width Petal.Length Petal.Width Species   </span></a>
 <a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt;         &lt;int&gt;        &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;     </span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;  1          1          5           3.5          1.6         0.6 setosa    </span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;  2          1          7.7         2.6          6.9         2.3 virginica </span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  3          1          5.9         3            4.2         1.5 versicolor</span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;  4          1          6.4         2.8          5.6         2.2 virginica </span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;  5          1          6.9         3.1          5.1         2.3 virginica </span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  6          1          4.6         3.4          1.4         0.3 setosa    </span></a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;  7          1          5.7         2.6          3.5         1   versicolor</span></a>
-<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  8          1          6.3         2.8          5.1         1.5 virginica </span></a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt;  9          1          5.8         2.7          3.9         1.2 versicolor</span></a>
-<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; 10          1          6.2         2.2          4.5         1.5 versicolor</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;  1          1          4.3         3            1.1         0.1 setosa    </span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;  2          1          5           3.3          1.4         0.2 setosa    </span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  3          1          7.7         3.8          6.7         2.2 virginica </span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;  4          1          4.4         3.2          1.3         0.2 setosa    </span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;  5          1          4.3         3            1.1         0.1 setosa    </span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  6          1          7.7         3.8          6.7         2.2 virginica </span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;  7          1          5.5         2.5          4           1.3 versicolor</span></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  8          1          5.5         2.6          4.4         1.2 versicolor</span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt;  9          1          5.5         2.6          4.4         1.2 versicolor</span></a>
+<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; 10          1          6.1         3            4.6         1.4 versicolor</span></a>
 <a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt; # … with 1,490 more rows</span></a></code></pre></div>
 <p>To learn more about <code><a href="https://dplyr.tidyverse.org/reference/compute.html">collect()</a></code>, and the other supported dplyr functions in strapgod, read the <code><a href="../articles/dplyr-support.html">vignette("dplyr-support", "strapgod")</a></code>.</p>
 </div>
