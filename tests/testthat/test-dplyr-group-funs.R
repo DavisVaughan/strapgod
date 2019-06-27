@@ -61,7 +61,9 @@ test_that("group_map()", {
   x <- iris %>%
     bootstrapify(5)
 
-  expect_equal(
+  # Don't check attributes, as group_split()
+  # also adds the ptype as an attribute as of dplyr 0.8.2
+  expect_equivalent(
     group_map(x, ~.x),
     group_split(x, keep = FALSE)
   )
