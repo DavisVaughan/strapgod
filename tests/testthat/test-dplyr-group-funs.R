@@ -193,7 +193,7 @@ test_that("group_vars() returns virtual groups", {
   # I think it is correct to expect that tbl_vars()
   # doesn't return the virtual group
   expect_equal(
-    tbl_vars(x),
+    as.character(tbl_vars(x)),
     colnames(iris)
   )
 
