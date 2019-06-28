@@ -49,9 +49,9 @@ devtools::install_github("DavisVaughan/strapgod")
 
 If you aren't already on the [pkgdown site](https://davisvaughan.github.io/strapgod/), I would encourage starting there. From there, you will be able to click on these two vignettes to learn about working with resampled tibbles.
 
-- `vignette("virtual-bootstraps", "strapgod")`
+- [`vignette("virtual-bootstraps", "strapgod")`](https://davisvaughan.github.io/strapgod/articles/virtual-bootstraps.html)
 
-- `vignette("dplyr-support", "strapgod")`
+- [`vignette("dplyr-support", "strapgod")`](https://davisvaughan.github.io/strapgod/articles/dplyr-support.html)
 
 ## Example
 

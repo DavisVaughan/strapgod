@@ -51,9 +51,11 @@ site](https://davisvaughan.github.io/strapgod/), I would encourage
 starting there. From there, you will be able to click on these two
 vignettes to learn about working with resampled tibbles.
 
-  - `vignette("virtual-bootstraps", "strapgod")`
+  - [`vignette("virtual-bootstraps",
+    "strapgod")`](https://davisvaughan.github.io/strapgod/articles/virtual-bootstraps.html)
 
-  - `vignette("dplyr-support", "strapgod")`
+  - [`vignette("dplyr-support",
+    "strapgod")`](https://davisvaughan.github.io/strapgod/articles/dplyr-support.html)
 
 ## Example
 
@@ -82,10 +84,10 @@ bootstrapify(iris, 10)
 #>  8          5           3.4          1.5         0.2 setosa 
 #>  9          4.4         2.9          1.4         0.2 setosa 
 #> 10          4.9         3.1          1.5         0.1 setosa 
-#> # … with 140 more rows
+#> # ... with 140 more rows
 ```
 
-You can feed a `resampled_df` into `summarise()` or `group_map()` to
+You can feed a `resampled_df` into `summarise()` or `group_modify()` to
 perform efficient bootstrapped computations.
 
 ``` r
@@ -95,16 +97,16 @@ iris %>%
 #> # A tibble: 10 x 2
 #>    .bootstrap per_strap_mean
 #>         <int>          <dbl>
-#>  1          1           1.20
-#>  2          2           1.22
-#>  3          3           1.23
-#>  4          4           1.13
-#>  5          5           1.20
-#>  6          6           1.15
-#>  7          7           1.18
-#>  8          8           1.13
-#>  9          9           1.31
-#> 10         10           1.19
+#>  1          1           1.16
+#>  2          2           1.15
+#>  3          3           1.12
+#>  4          4           1.15
+#>  5          5           1.25
+#>  6          6           1.23
+#>  7          7           1.23
+#>  8          8           1.08
+#>  9          9           1.16
+#> 10         10           1.14
 ```
 
 The original data can be grouped as well, and the bootstraps will be
@@ -119,17 +121,17 @@ iris %>%
 #> # Groups:   Species [3]
 #>    Species .bootstrap per_strap_per_species_mean
 #>    <fct>        <int>                      <dbl>
-#>  1 setosa           1                      0.25 
-#>  2 setosa           2                      0.246
-#>  3 setosa           3                      0.24 
-#>  4 setosa           4                      0.238
-#>  5 setosa           5                      0.252
-#>  6 setosa           6                      0.274
+#>  1 setosa           1                      0.23 
+#>  2 setosa           2                      0.238
+#>  3 setosa           3                      0.236
+#>  4 setosa           4                      0.242
+#>  5 setosa           5                      0.264
+#>  6 setosa           6                      0.23 
 #>  7 setosa           7                      0.238
-#>  8 setosa           8                      0.258
-#>  9 setosa           9                      0.252
-#> 10 setosa          10                      0.256
-#> # … with 20 more rows
+#>  8 setosa           8                      0.248
+#>  9 setosa           9                      0.268
+#> 10 setosa          10                      0.248
+#> # ... with 20 more rows
 ```
 
 ## Plotting bootstrapped results
