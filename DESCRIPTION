@@ -19,7 +19,7 @@ Depends:
     R (>= 3.2.0)
 Imports: 
     dplyr (>= 0.8.3),
-    tidyr,
+    tidyr (>= 0.8.3.9000),
     rlang,
     tibble
 Suggests: 
