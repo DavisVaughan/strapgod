@@ -1,3 +1,5 @@
+# strapgod (development version)
+
 # strapgod 0.0.3
 
 * In dplyr 0.8.2, the `ptype` is carried along as an attribute 
