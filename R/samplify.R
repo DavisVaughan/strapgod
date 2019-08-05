@@ -174,7 +174,7 @@ samplify.grouped_df <- function(data, times, size, ...,
 
   # overwrite current .rows and unnest
   group_info[[".rows"]] <- new_row_index_tbl
-  group_info <- tidyr::unnest(group_info)
+  group_info <- tidyr::unnest(group_info, cols = .rows, names_repair = "universal")
 
   dplyr::new_grouped_df(data, group_info, class = "resampled_df")
 }
