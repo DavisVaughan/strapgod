@@ -49,8 +49,8 @@ collect.resampled_df <- function(x, ..., id = NULL, original_id = NULL) {
   .out <- add_straps(.out, x)
   .out <- maybe_use_original_id(.out, original_id)
 
-  # Flatten (default unnests all the right things)
-  .out <- tidyr::unnest(.out)
+  # Flatten
+  .out <- tidyr::unnest(.out, cols = c(!!id, !!original_id, ...x))
 
   .out <- dplyr::group_by(.out, !!!group_syms)
 
