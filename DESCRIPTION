@@ -19,7 +19,7 @@ Depends:
     R (>= 3.2.0)
 Imports: 
     dplyr (>= 0.8.3),
-    tidyr (>= 0.8.3.9000),
+    tidyr (>= 1.0.0),
     rlang,
     tibble
 Suggests: 
@@ -31,5 +31,3 @@ Suggests:
 URL: https://github.com/DavisVaughan/strapgod
 BugReports: https://github.com/DavisVaughan/strapgod/issues
 VignetteBuilder: knitr
-Remotes:
-    tidyverse/tidyr
