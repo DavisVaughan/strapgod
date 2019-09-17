@@ -21,7 +21,8 @@ Imports:
     dplyr (>= 0.8.3),
     tidyr (>= 1.0.0),
     rlang,
-    tibble
+    tibble,
+    lifecycle
 Suggests: 
     broom,
     testthat,
