@@ -67,7 +67,7 @@ test_that("can correctly double bootstrap", {
     bootstrapify(5)
 
   twice <- once %>%
-    bootstrapify(5)
+    bootstrapify(5, key = ".bootstrap1")
 
   once_gd <- group_data(once)
   twice_gd <- group_data(twice)
@@ -93,6 +93,23 @@ test_that("can correctly double bootstrap", {
     c(".bootstrap", ".bootstrap1", ".rows")
   )
 
+})
+
+test_that("universal name repair kicks in with double bootstrap", {
+  once <- iris %>%
+    bootstrapify(5)
+
+  # Expect universal name repair
+  expect_message(
+    twice <- once %>%
+      bootstrapify(5),
+    ".bootstrap -> .bootstrap...1"
+  )
+
+  expect_equal(
+    colnames(group_data(twice)),
+    c(".bootstrap...1", ".bootstrap...2", ".rows")
+  )
 })
 
 test_that("can alter the key", {

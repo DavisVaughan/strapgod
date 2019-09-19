@@ -1,5 +1,7 @@
 context("test-collect")
 
+library(dplyr)
+
 test_that("can collect()", {
 
   x <- bootstrapify(iris, 5)

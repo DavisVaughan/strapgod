@@ -5,4 +5,9 @@ NULL
 NULL
 
 # For collect()
-utils::globalVariables(".rows")
+utils::globalVariables(
+  c(
+    ".rows",
+    "...x"
+  )
+)

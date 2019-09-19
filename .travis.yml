@@ -4,18 +4,16 @@ language: r
 sudo: false
 cache: packages
 
-before_cache:
-  - Rscript -e 'remotes::install_cran("pkgdown")'
-  # For the README
-  - Rscript -e 'remotes::install_cran("ggplot2")'
-
 matrix:
   include:
   - r: devel
   - r: release
     after_success:
     - Rscript -e 'covr::codecov()'
-
+    before_cache:
+      - Rscript -e 'remotes::install_cran("pkgdown")'
+      # For the README
+      - Rscript -e 'remotes::install_cran("ggplot2")'
     deploy:
       provider: script
       script: Rscript -e 'pkgdown::deploy_site_github(run_dont_run = TRUE)'

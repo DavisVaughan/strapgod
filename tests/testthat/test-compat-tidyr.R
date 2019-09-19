@@ -15,7 +15,7 @@ test_that("nest()", {
   )
 
   expect_equal(
-    colnames(nest(x, .key = ".x")),
+    colnames(nest(x, .x = -.bootstrap)),
     c(".bootstrap", ".x")
   )
 
