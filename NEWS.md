@@ -1,5 +1,8 @@
 # strapgod (development version)
 
+* The resampled data frame method for `tidyr::nest()` has been updated to
+  support the changes in tidyr 1.0.0.
+
 # strapgod 0.0.3
 
 * In dplyr 0.8.2, the `ptype` is carried along as an attribute 
