@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Support for dplyr • strapgod</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Support for dplyr">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -38,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -67,7 +68,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/DavisVaughan/strapgod">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -80,6 +81,7 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -93,9 +95,9 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">123</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(strapgod)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(strapgod)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a></code></pre></div>
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
@@ -184,7 +186,7 @@
 <h1 class="hasAnchor">
 <a href="#summarise" class="anchor"></a>summarise()</h1>
 <p>The motivation for this package was <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code>. It efficiently computes the summary results, only materializing the bootstrap rows as they are needed at the C++ level.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(x, <span class="dt">mean_length =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(Sepal.Length))</a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(x, <span class="dt">mean_length =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(Sepal.Length))</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; # A tibble: 10 x 2</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;    .bootstrap mean_length</span></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;         &lt;int&gt;       &lt;dbl&gt;</span></a>
@@ -203,7 +205,7 @@
 <a class="sourceLine" id="cb6-2" data-line-number="2">iris <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(Species) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">    <span class="dt">mean_length_across_species =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(Sepal.Length)</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">    <span class="dt">mean_length_across_species =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(Sepal.Length)</a>
 <a class="sourceLine" id="cb6-6" data-line-number="6">  )</a>
 <a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; # A tibble: 3 x 2</span></a>
 <a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt;   Species    mean_length_across_species</span></a>
@@ -217,7 +219,7 @@
 <a class="sourceLine" id="cb6-16" data-line-number="16"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(Species) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-17" data-line-number="17"><span class="st">  </span><span class="kw"><a href="../reference/bootstrapify.html">bootstrapify</a></span>(<span class="dv">5</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-18" data-line-number="18"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(</a>
-<a class="sourceLine" id="cb6-19" data-line-number="19">    <span class="dt">mean_length_across_species =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(Sepal.Length)</a>
+<a class="sourceLine" id="cb6-19" data-line-number="19">    <span class="dt">mean_length_across_species =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(Sepal.Length)</a>
 <a class="sourceLine" id="cb6-20" data-line-number="20">  )</a>
 <a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">#&gt; # A tibble: 15 x 3</span></a>
 <a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt; # Groups:   Species [3]</span></a>
@@ -243,7 +245,7 @@
 <h1 class="hasAnchor">
 <a href="#do" class="anchor"></a>do()</h1>
 <p>While <code><a href="https://dplyr.tidyverse.org/reference/do.html">dplyr::do()</a></code> is basically deprecated and has been replaced by <code><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_modify()</a></code>, it still has its uses sometimes. Like <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/do.html">do()</a></code> materializes the groups only when they are required. Here we run the same linear model on each bootstrapped set of data.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/do.html">do</a></span>(x, <span class="dt">model =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/lm">lm</a></span>(Sepal.Length <span class="op">~</span><span class="st"> </span>Sepal.Width, <span class="dt">data =</span> .))</a>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/do.html">do</a></span>(x, <span class="dt">model =</span> <span class="kw"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span>(Sepal.Length <span class="op">~</span><span class="st"> </span>Sepal.Width, <span class="dt">data =</span> .))</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; Source: local data frame [10 x 2]</span></a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; Groups: &lt;by row&gt;</span></a>
 <a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; </span></a>
@@ -300,7 +302,7 @@
 <h1 class="hasAnchor">
 <a href="#group_split" class="anchor"></a>group_split()</h1>
 <p><code><a href="https://dplyr.tidyverse.org/reference/group_split.html">group_split()</a></code> allows you to materialize all of the bootstrap tibbles into separate tibbles, all bundled together into a list.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_split.html">group_split</a></span>(x) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="dt">n =</span> <span class="dv">3</span>)</a>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_split.html">group_split</a></span>(x) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="dt">n =</span> <span class="dv">3</span>)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; [[1]]</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; # A tibble: 150 x 6</span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt;    .bootstrap Sepal.Length Sepal.Width Petal.Length Petal.Width Species   </span></a>
@@ -349,7 +351,7 @@
 <a class="sourceLine" id="cb10-47" data-line-number="47"><span class="co">#&gt; 10          3          5           3            1.6         0.2 setosa    </span></a>
 <a class="sourceLine" id="cb10-48" data-line-number="48"><span class="co">#&gt; # … with 140 more rows</span></a></code></pre></div>
 <p>You can specify <code>keep = FALSE</code> if you never want to see the bootstrap columns.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_split.html">group_split</a></span>(x, <span class="dt">keep =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="dt">n =</span> <span class="dv">3</span>)</a>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_split.html">group_split</a></span>(x, <span class="dt">keep =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="dt">n =</span> <span class="dv">3</span>)</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; [[1]]</span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt; # A tibble: 150 x 5</span></a>
 <a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt;    Sepal.Length Sepal.Width Petal.Length Petal.Width Species   </span></a>
@@ -403,7 +405,7 @@
 <a href="#group_modify" class="anchor"></a>group_modify()</h1>
 <p><code><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_modify()</a></code> is similar to <code><a href="https://dplyr.tidyverse.org/reference/do.html">do()</a></code>, but (as of dplyr 0.8.0.1) always returns a data frame and gives you access to the non-group and group data separately.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># Just show the first 2 rows of each bootstrap</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_modify</a></span>(x, <span class="op">~</span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(.x, <span class="dt">n =</span> <span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_modify</a></span>(x, <span class="op">~</span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(.x, <span class="dt">n =</span> <span class="dv">2</span>))</a>
 <a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; # A tibble: 20 x 6</span></a>
 <a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt; # Groups:   .bootstrap [10]</span></a>
 <a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt;    .bootstrap Sepal.Length Sepal.Width Petal.Length Petal.Width Species   </span></a>
@@ -431,7 +433,7 @@
 <a class="sourceLine" id="cb12-27" data-line-number="27"></a>
 <a class="sourceLine" id="cb12-28" data-line-number="28"><span class="co"># As you iterate though each group, you have access to that</span></a>
 <a class="sourceLine" id="cb12-29" data-line-number="29"><span class="co"># group's metadata through `.y` if you need it.</span></a>
-<a class="sourceLine" id="cb12-30" data-line-number="30">group_modify_group_data &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_modify</a></span>(x, <span class="op">~</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">tibble</a></span>(<span class="dt">.g =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(.y)))</a>
+<a class="sourceLine" id="cb12-30" data-line-number="30">group_modify_group_data &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_modify</a></span>(x, <span class="op">~</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">tibble</a></span>(<span class="dt">.g =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(.y)))</a>
 <a class="sourceLine" id="cb12-31" data-line-number="31"></a>
 <a class="sourceLine" id="cb12-32" data-line-number="32">group_modify_group_data</a>
 <a class="sourceLine" id="cb12-33" data-line-number="33"><span class="co">#&gt; # A tibble: 10 x 2</span></a>
@@ -457,7 +459,7 @@
 <p>Like <code><a href="https://dplyr.tidyverse.org/reference/do.html">do()</a></code>, it can be a convenient way to run multiple models as long as you return a data frame from each one.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">x <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(Species, <span class="dt">add =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_modify</a></span>(<span class="op">~</span><span class="st"> </span>broom<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/broom/topics/reexports">tidy</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/lm">lm</a></span>(Petal.Length <span class="op">~</span><span class="st"> </span>Sepal.Length, <span class="dt">data =</span> .x)))</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_modify</a></span>(<span class="op">~</span><span class="st"> </span>broom<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/broom/man/reexports.html">tidy</a></span>(<span class="kw"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span>(Petal.Length <span class="op">~</span><span class="st"> </span>Sepal.Length, <span class="dt">data =</span> .x)))</a>
 <a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; # A tibble: 60 x 7</span></a>
 <a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; # Groups:   .bootstrap, Species [30]</span></a>
 <a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt;    .bootstrap Species    term         estimate std.error statistic  p.value</span></a>
@@ -518,7 +520,7 @@
 <h1 class="hasAnchor">
 <a href="#other-dplyr-functions" class="anchor"></a>Other dplyr functions</h1>
 <p>Most other dplyr functions work by first calling <code><a href="https://dplyr.tidyverse.org/reference/compute.html">collect()</a></code>, and then passing off to the underlying dplyr implementation. This means you can use <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> like so:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(x, <span class="dt">mean =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(Sepal.Length))</a>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(x, <span class="dt">mean =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(Sepal.Length))</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1,500 x 7</span></a>
 <a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#&gt; # Groups:   .bootstrap [10]</span></a>
 <a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt;    .bootstrap Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span></a>
@@ -539,6 +541,7 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -560,17 +563,20 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Davis Vaughan.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>
