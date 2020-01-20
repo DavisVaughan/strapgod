@@ -1,3 +1,5 @@
+# strapgod (development version)
+
 # strapgod 0.0.4
 
 * The resampled data frame method for `tidyr::nest()` has been updated to
