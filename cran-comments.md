@@ -1,7 +1,8 @@
 ## Comments
-This is the third release of this package.
+This is the fourth release of this package.
 
-This release updates a few tests related to the dplyr 0.8.2 update.
+This release requires tidyr 1.0.0 and updates the `resampled_df` method for
+`tidyr::nest()`.
 
 ## Test environments
 * local OS X install, R 3.6.0

@@ -1,6 +1,6 @@
 Package: strapgod
 Title: Resampled Data Frames
-Version: 0.0.3.9000
+Version: 0.0.4
 Authors@R: 
     person(given = "Davis",
            family = "Vaughan",
