@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">strapgod</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4.9000</span>
       </span>
     </div>
 
@@ -264,15 +264,15 @@
 <a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; 10         10 &lt;int [150]&gt;</span></a></code></pre></div>
 <p>The <code>.bootstrap</code> column contains the unique values of the groups, and the <code>.rows</code> column is a list column, where each element is an integer vector. That integer vector holds the rows that belong to that specific group. So, for <code>.bootstrap == 1</code>, there is a vector with 150 integers identifying the rows belonging to that resample.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_data.html">group_data</a></span>(iris_boot)<span class="op">$</span>.rows[[<span class="dv">1</span>]]</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt;   [1]  14  50 118  43  14 118  90  91  91  92 137  99  72  26   7 137  78</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt;  [18]  81  43 103 117  76 143  32 109   7 137  74  23  53 135  53  34  69</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt;  [35]  72  76  63 141  97  91  38  21  41  90  60  16 116  94   6  86  86</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt;  [52]  39 118  50  34   4  13  69 127  52  22  89  25  35 112  30 140 121</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;  [69] 110  64 142  67 122  79  85 136  51  74 106  98  74 127  17  46  54</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;  [86] 110  94  79  24 113 107 135 102 135   5  70  16  24  32  21  55  75</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; [103]  83  39  54 137  48  77  83 111  39   1  30  94  16  88  54  20 104</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; [120]  93  52 108  22  42  59  84  11 121 136  46  85 109 107  77  36 142</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; [137]  16 125  33  40  10 125   9   7 135  61  63  54  26  33</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt;   [1]  14  50 118  43  14 118  90  91  91  92 137  99  72  26   7 137  78  81</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt;  [19]  43 103 117  76 143  32 109   7 137  74  23  53 135  53  34  69  72  76</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt;  [37]  63 141  97  91  38  21  41  90  60  16 116  94   6  86  86  39 118  50</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt;  [55]  34   4  13  69 127  52  22  89  25  35 112  30 140 121 110  64 142  67</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;  [73] 122  79  85 136  51  74 106  98  74 127  17  46  54 110  94  79  24 113</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;  [91] 107 135 102 135   5  70  16  24  32  21  55  75  83  39  54 137  48  77</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; [109]  83 111  39   1  30  94  16  88  54  20 104  93  52 108  22  42  59  84</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; [127]  11 121 136  46  85 109 107  77  36 142  16 125  33  40  10 125   9   7</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; [145] 135  61  63  54  26  33</span></a></code></pre></div>
 <p>When a call to <code><a href="https://dplyr.tidyverse.org/reference/compute.html">collect()</a></code> is made, this row index information is used to construct the output. Essentially, we start with the <code><a href="https://dplyr.tidyverse.org/reference/group_data.html">group_data()</a></code> and utilize the <code>.rows</code> info to replicate the rows of the original data frame for each group, building up the complete resampled data frame. Notice how we now have the <code>150 * 10 = 1500</code> rows from the 10 bootstraps.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span>(iris_boot)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1,500 x 6</span></a>

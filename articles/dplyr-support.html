@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">strapgod</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4.9000</span>
       </span>
     </div>
 
@@ -150,37 +150,36 @@
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span>(x, <span class="dt">id =</span> <span class="st">".id"</span>)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1,500 x 7</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; # Groups:   .bootstrap [10]</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;    .bootstrap   .id Sepal.Length Sepal.Width Petal.Length Petal.Width</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt;         &lt;int&gt; &lt;int&gt;        &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;  1          1     1          4.3         3            1.1         0.1</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;  2          1     2          5           3.3          1.4         0.2</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt;  3          1     3          7.7         3.8          6.7         2.2</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt;  4          1     4          4.4         3.2          1.3         0.2</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt;  5          1     5          4.3         3            1.1         0.1</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt;  6          1     6          7.7         3.8          6.7         2.2</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt;  7          1     7          5.5         2.5          4           1.3</span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;  8          1     8          5.5         2.6          4.4         1.2</span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt;  9          1     9          5.5         2.6          4.4         1.2</span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; 10          1    10          6.1         3            4.6         1.4</span></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; # … with 1,490 more rows, and 1 more variable: Species &lt;fct&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;    .bootstrap   .id Sepal.Length Sepal.Width Petal.Length Petal.Width Species   </span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt;         &lt;int&gt; &lt;int&gt;        &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;     </span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;  1          1     1          4.3         3            1.1         0.1 setosa    </span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;  2          1     2          5           3.3          1.4         0.2 setosa    </span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt;  3          1     3          7.7         3.8          6.7         2.2 virginica </span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt;  4          1     4          4.4         3.2          1.3         0.2 setosa    </span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt;  5          1     5          4.3         3            1.1         0.1 setosa    </span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt;  6          1     6          7.7         3.8          6.7         2.2 virginica </span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt;  7          1     7          5.5         2.5          4           1.3 versicolor</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;  8          1     8          5.5         2.6          4.4         1.2 versicolor</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt;  9          1     9          5.5         2.6          4.4         1.2 versicolor</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; 10          1    10          6.1         3            4.6         1.4 versicolor</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; # … with 1,490 more rows</span></a></code></pre></div>
 <p><code>original_id</code> tacks on the original row of the current bootstrap observation. It is generally more useful than <code>id</code>, as it provides a way to link the bootstrap rows back to the original data.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span>(x, <span class="dt">original_id =</span> <span class="st">".original_id"</span>)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1,500 x 7</span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; # Groups:   .bootstrap [10]</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;    .bootstrap .original_id Sepal.Length Sepal.Width Petal.Length</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;         &lt;int&gt;        &lt;int&gt;        &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;  1          1           14          4.3         3            1.1</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;  2          1           50          5           3.3          1.4</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  3          1          118          7.7         3.8          6.7</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;  4          1           43          4.4         3.2          1.3</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  5          1           14          4.3         3            1.1</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt;  6          1          118          7.7         3.8          6.7</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt;  7          1           90          5.5         2.5          4  </span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt;  8          1           91          5.5         2.6          4.4</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt;  9          1           91          5.5         2.6          4.4</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; 10          1           92          6.1         3            4.6</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; # … with 1,490 more rows, and 2 more variables: Petal.Width &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt; #   Species &lt;fct&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;    .bootstrap .original_id Sepal.Length Sepal.Width Petal.Length Petal.Width</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;         &lt;int&gt;        &lt;int&gt;        &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;  1          1           14          4.3         3            1.1         0.1</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;  2          1           50          5           3.3          1.4         0.2</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  3          1          118          7.7         3.8          6.7         2.2</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;  4          1           43          4.4         3.2          1.3         0.2</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  5          1           14          4.3         3            1.1         0.1</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt;  6          1          118          7.7         3.8          6.7         2.2</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt;  7          1           90          5.5         2.5          4           1.3</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt;  8          1           91          5.5         2.6          4.4         1.2</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt;  9          1           91          5.5         2.6          4.4         1.2</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; 10          1           92          6.1         3            4.6         1.4</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; # … with 1,490 more rows, and 1 more variable: Species &lt;fct&gt;</span></a></code></pre></div>
 </div>
 <div id="summarise" class="section level1">
 <h1 class="hasAnchor">
@@ -523,19 +522,19 @@
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(x, <span class="dt">mean =</span> <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(Sepal.Length))</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1,500 x 7</span></a>
 <a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#&gt; # Groups:   .bootstrap [10]</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt;    .bootstrap Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">#&gt;         &lt;int&gt;        &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  </span></a>
-<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="co">#&gt;  1          1          4.3         3            1.1         0.1 setosa </span></a>
-<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co">#&gt;  2          1          5           3.3          1.4         0.2 setosa </span></a>
-<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co">#&gt;  3          1          7.7         3.8          6.7         2.2 virgin…</span></a>
-<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="co">#&gt;  4          1          4.4         3.2          1.3         0.2 setosa </span></a>
-<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="co">#&gt;  5          1          4.3         3            1.1         0.1 setosa </span></a>
-<a class="sourceLine" id="cb16-11" data-line-number="11"><span class="co">#&gt;  6          1          7.7         3.8          6.7         2.2 virgin…</span></a>
-<a class="sourceLine" id="cb16-12" data-line-number="12"><span class="co">#&gt;  7          1          5.5         2.5          4           1.3 versic…</span></a>
-<a class="sourceLine" id="cb16-13" data-line-number="13"><span class="co">#&gt;  8          1          5.5         2.6          4.4         1.2 versic…</span></a>
-<a class="sourceLine" id="cb16-14" data-line-number="14"><span class="co">#&gt;  9          1          5.5         2.6          4.4         1.2 versic…</span></a>
-<a class="sourceLine" id="cb16-15" data-line-number="15"><span class="co">#&gt; 10          1          6.1         3            4.6         1.4 versic…</span></a>
-<a class="sourceLine" id="cb16-16" data-line-number="16"><span class="co">#&gt; # … with 1,490 more rows, and 1 more variable: mean &lt;dbl&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt;    .bootstrap Sepal.Length Sepal.Width Petal.Length Petal.Width Species     mean</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">#&gt;         &lt;int&gt;        &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;      &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="co">#&gt;  1          1          4.3         3            1.1         0.1 setosa      5.77</span></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co">#&gt;  2          1          5           3.3          1.4         0.2 setosa      5.77</span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co">#&gt;  3          1          7.7         3.8          6.7         2.2 virginica   5.77</span></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="co">#&gt;  4          1          4.4         3.2          1.3         0.2 setosa      5.77</span></a>
+<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="co">#&gt;  5          1          4.3         3            1.1         0.1 setosa      5.77</span></a>
+<a class="sourceLine" id="cb16-11" data-line-number="11"><span class="co">#&gt;  6          1          7.7         3.8          6.7         2.2 virginica   5.77</span></a>
+<a class="sourceLine" id="cb16-12" data-line-number="12"><span class="co">#&gt;  7          1          5.5         2.5          4           1.3 versicolor  5.77</span></a>
+<a class="sourceLine" id="cb16-13" data-line-number="13"><span class="co">#&gt;  8          1          5.5         2.6          4.4         1.2 versicolor  5.77</span></a>
+<a class="sourceLine" id="cb16-14" data-line-number="14"><span class="co">#&gt;  9          1          5.5         2.6          4.4         1.2 versicolor  5.77</span></a>
+<a class="sourceLine" id="cb16-15" data-line-number="15"><span class="co">#&gt; 10          1          6.1         3            4.6         1.4 versicolor  5.77</span></a>
+<a class="sourceLine" id="cb16-16" data-line-number="16"><span class="co">#&gt; # … with 1,490 more rows</span></a></code></pre></div>
 <p>This doesn’t really get you anything in terms of speed, but can be convenient as an automatic way to convert back to a tibble and keep going with your workflow.</p>
 </div>
   </div>
