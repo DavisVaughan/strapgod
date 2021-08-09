@@ -46,7 +46,7 @@ group_nest.resampled_df <- function(.tbl, ..., .key = "data", keep = FALSE) {
 group_split.resampled_df <- function(.tbl, ..., keep = TRUE) {
 
   if (keep) {
-    dplyr::group_split(collect(.tbl), ..., keep = keep)
+    dplyr::group_split(collect(.tbl), ..., .keep = keep)
   }
   else {
     NextMethod()
